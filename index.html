@@ -3,37 +3,1680 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<meta name="theme-color" content="#7B1FA2">
+<meta name="theme-color" content="#5B21B6">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Nyumba Budget">
-<link rel="manifest" id="pwa-manifest">
-<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%237B1FA2'/%3E%3Ctext y='.9em' font-size='75' x='12'%3E%F0%9F%8F%A0%3C/text%3E%3C/svg%3E">
 <title>Nyumba Budget</title>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
-<script>
-const FIREBASE_CONFIG = {
-  apiKey: "AIzaSyA5TdvAFE0cFkme7O--LtJNKIikM-KXFdM",
-  authDomain: "bajeti-yanga.firebaseapp.com",
-  projectId: "bajeti-yanga",
-  storageBucket: "bajeti-yanga.firebasestorage.app",
-  messagingSenderId: "585037359165",
-  appId: "1:585037359165:web:01b831d5277faed34be254",
-  measurementId: "G-G2WH2K91E7"
-};
-</script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-analytics-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 <style>
+/* ── TOKENS ───────────────────────────────────── */
 :root{
-  --p1:#7B1FA2;--p2:#9C27B0;--p3:#CE93D8;
-  --a1:#FF6F00;--a2:#FFA000;
-  --g1:#1B5E20;--g2:#388E3C;
-  --r1:#B71C1C;--r2:#E53935;
-  --y1:#F57F17;--y2:#F9A825;
-  --ink:#1A1A2E;--mid:#607D8B;
+  --bg:#F7F5FF;--card:#fff;--ink:#1C1040;--sub:#6B7280;
+  --p:#5B21B6;--p2:#7C3AED;--p3:#EDE9FE;
+  --g:#065F46;--g2:#D1FAE5;
+  --r:#991B1B;--r2:#FEE2E2;
+  --y:#92400E;--y2:#FEF3C7;
+  --border:#E5E7EB;
+  --sh:0 2px 12px rgba(91,33,182,.10);
+  --sh2:0 8px 32px rgba(91,33,182,.18);
+  --rad:16px;
+}
+/* ── RESET ────────────────────────────────────── */
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;font-family:'DM Sans',sans-serif;color:var(--ink);background:var(--bg);overflow:hidden}
+button{font-family:'DM Sans',sans-serif;cursor:pointer;border:none;outline:none}
+input,select{font-family:'DM Sans',sans-serif;outline:none}
+/* ── LAYOUT ───────────────────────────────────── */
+#shell{display:flex;flex-direction:column;height:100dvh;max-width:480px;margin:0 auto;position:relative}
+#topbar{background:linear-gradient(135deg,var(--p),var(--p2));flex-shrink:0;padding:14px 16px 12px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+#view{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;background:var(--bg)}
+.page{padding:16px 16px 100px}
+#nav{flex-shrink:0;display:flex;background:var(--card);border-top:1px solid var(--border);padding-bottom:env(safe-area-inset-bottom,4px)}
+/* ── TOPBAR ───────────────────────────────────── */
+.tb-brand{display:flex;align-items:center;gap:10px}
+.tb-ico{width:36px;height:36px;background:rgba(255,255,255,.2);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem}
+.tb-title{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:#fff;line-height:1.1}
+.tb-sub{font-size:.62rem;color:rgba(255,255,255,.7);margin-top:1px}
+.tb-right{display:flex;align-items:center;gap:8px}
+.sync{width:8px;height:8px;border-radius:50%;background:#4ADE80;box-shadow:0 0 6px #4ADE80;flex-shrink:0}
+.sync.off{background:#F87171;box-shadow:0 0 6px #F87171}
+.sync.busy{background:#FCD34D;animation:blink 1s infinite}
+@keyframes blink{50%{opacity:.3}}
+.pill{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.18);border:1.5px solid rgba(255,255,255,.28);border-radius:20px;padding:5px 10px 5px 6px;cursor:pointer}
+.pill-av{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;color:#fff}
+.pill-nm{font-size:.68rem;font-weight:600;color:#fff;max-width:55px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lang-btn{background:rgba(255,255,255,.18);border:1.5px solid rgba(255,255,255,.28);color:#fff;font-size:.65rem;font-weight:700;padding:5px 9px;border-radius:14px}
+/* ── NAV ──────────────────────────────────────── */
+.nb{flex:1;padding:9px 2px 8px;background:none;border:none;display:flex;flex-direction:column;align-items:center;gap:2px;position:relative;color:var(--sub)}
+.nb-ico{font-size:1.2rem;transition:transform .15s}
+.nb-lbl{font-size:.56rem;font-weight:600;text-transform:uppercase;letter-spacing:.3px;transition:color .15s}
+.nb.on{color:var(--p)}
+.nb.on .nb-ico{transform:scale(1.1)}
+.nb.on::after{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:26px;height:3px;background:var(--p);border-radius:0 0 3px 3px}
+/* ── CARDS ────────────────────────────────────── */
+.card{background:var(--card);border-radius:var(--rad);box-shadow:var(--sh);margin-bottom:12px;overflow:hidden}
+.card-head{padding:14px 16px 10px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.card-title{font-family:'Playfair Display',serif;font-size:.95rem;font-weight:700}
+.card-body{padding:14px 16px}
+/* ── HERO CARD ────────────────────────────────── */
+.hero{background:linear-gradient(145deg,var(--p),#4C1D95);border-radius:var(--rad);padding:20px;margin-bottom:12px;box-shadow:var(--sh2);color:#fff}
+.hero-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.hero-label{font-size:.62rem;font-weight:600;text-transform:uppercase;letter-spacing:.5px;opacity:.75}
+.hero-val{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700;margin-top:2px}
+.hero-row{display:flex;gap:12px;margin-top:4px}
+.hero-chip{flex:1;background:rgba(255,255,255,.12);border-radius:10px;padding:10px 12px}
+.hero-chip-lbl{font-size:.6rem;font-weight:600;opacity:.75;text-transform:uppercase;letter-spacing:.4px}
+.hero-chip-val{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;margin-top:2px}
+/* ── PROGRESS BAR ─────────────────────────────── */
+.pbar{height:6px;background:rgba(255,255,255,.2);border-radius:6px;overflow:hidden;margin:14px 0 4px}
+.pfill{height:100%;border-radius:6px;transition:width .6s ease;background:#4ADE80}
+.pfill.warn{background:#FCD34D}
+.pfill.over{background:#F87171}
+/* ── MONTH NAV ────────────────────────────────── */
+.mnav{display:flex;align-items:center;justify-content:space-between;background:var(--card);border-radius:var(--rad);padding:10px 14px;margin-bottom:12px;box-shadow:var(--sh)}
+.mnav-btn{background:none;border:none;font-size:1rem;color:var(--p);padding:4px 8px;border-radius:8px}
+.mnav-btn:active{background:var(--p3)}
+.mnav-lbl{font-family:'Playfair Display',serif;font-size:.9rem;font-weight:700}
+/* ── STAT GRID ────────────────────────────────── */
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.stat{background:var(--card);border-radius:14px;padding:12px;box-shadow:var(--sh)}
+.stat-lbl{font-size:.6rem;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--sub)}
+.stat-val{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;margin-top:3px}
+.stat-sub{font-size:.65rem;color:var(--sub);margin-top:1px}
+/* ── ENTRY ROW ────────────────────────────────── */
+.entry{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--border)}
+.entry:last-child{border-bottom:none}
+.entry-ico{width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+.entry-main{flex:1;min-width:0}
+.entry-name{font-weight:600;font-size:.85rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.entry-meta{font-size:.65rem;color:var(--sub);margin-top:2px;display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.who-tag{font-size:.58rem;font-weight:700;padding:2px 6px;border-radius:6px;color:#fff}
+.entry-amt{font-family:'Playfair Display',serif;font-weight:700;font-size:.9rem;flex-shrink:0}
+.entry-amt.inc{color:var(--g)}
+/* ── FULL PURCHASE CARD ───────────────────────── */
+.pcard{background:var(--card);border-radius:14px;padding:12px;margin-bottom:8px;box-shadow:var(--sh);display:flex;gap:10px}
+.pcard.inc-card{border-left:3px solid #059669}
+.pcard-ico{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+.pcard-body{flex:1;min-width:0}
+.pcard-top{display:flex;align-items:flex-start;justify-content:space-between;gap:6px}
+.pcard-name{font-weight:700;font-size:.86rem}
+.pcard-amt{font-family:'Playfair Display',serif;font-weight:700;font-size:.9rem;white-space:nowrap}
+.pcard-amt.inc{color:#059669}
+.pcard-note{font-size:.67rem;color:var(--sub);font-style:italic;margin-top:2px}
+.pcard-meta{display:flex;align-items:center;gap:5px;margin-top:4px;flex-wrap:wrap}
+.pcard-actions{display:flex;gap:6px;margin-top:8px}
+/* ── BUDGET ROW ───────────────────────────────── */
+.brow{padding:12px 0;border-bottom:1px solid var(--border)}
+.brow:last-child{border-bottom:none}
+.brow-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.brow-left{display:flex;align-items:center;gap:8px}
+.brow-name{font-weight:600;font-size:.85rem}
+.brow-badge{font-size:.58rem;font-weight:700;padding:2px 7px;border-radius:6px;text-transform:uppercase}
+.bb-ok{background:var(--g2);color:var(--g)}
+.bb-warn{background:var(--y2);color:var(--y)}
+.bb-over{background:var(--r2);color:var(--r)}
+.brow-nums{font-size:.7rem;color:var(--sub);margin-bottom:5px;display:flex;justify-content:space-between}
+.brow-bar{height:5px;background:var(--p3);border-radius:4px;overflow:hidden}
+.brow-fill{height:100%;border-radius:4px;transition:width .5s ease}
+.brow-acts{display:flex;gap:5px;flex-shrink:0}
+/* ── FORMS ────────────────────────────────────── */
+.form-group{margin-bottom:14px}
+.form-label{font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--sub);display:block;margin-bottom:5px}
+.fi,.fs{width:100%;padding:11px 13px;border:1.5px solid var(--border);border-radius:11px;font-size:.9rem;color:var(--ink);background:var(--card);transition:border-color .15s}
+.fi:focus,.fs:focus{border-color:var(--p)}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+/* TYPE TOGGLE */
+.type-toggle{display:flex;background:var(--p3);border-radius:10px;padding:3px;margin-bottom:14px}
+.tt{flex:1;padding:9px;border:none;background:none;border-radius:8px;font-size:.8rem;font-weight:600;color:var(--sub);transition:all .15s}
+.tt.on-exp{background:var(--r);color:#fff}
+.tt.on-inc{background:var(--g);color:#fff}
+/* USER PICKER */
+.upick{display:flex;gap:8px;flex-wrap:wrap}
+.upick-btn{flex:1;min-width:80px;padding:10px 6px;border:1.5px solid var(--border);border-radius:11px;background:var(--card);display:flex;flex-direction:column;align-items:center;gap:4px;transition:all .15s}
+.upick-av{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:700;color:#fff}
+.upick-nm{font-size:.72rem;font-weight:600;color:var(--sub)}
+.upick-btn.sel{border-color:var(--p);background:var(--p3)}
+.upick-btn.sel .upick-nm{color:var(--p)}
+/* ITEM GRID */
+.igrid{display:grid;grid-template-columns:1fr 1fr;gap:7px;max-height:200px;overflow-y:auto;padding-right:2px}
+.icard{padding:9px 7px;border:1.5px solid var(--border);border-radius:10px;font-size:.7rem;font-weight:600;text-align:center;cursor:pointer;background:var(--card);line-height:1.4;transition:all .15s}
+.icard.sel{border-color:var(--p);background:var(--p3);color:var(--p)}
+/* BUDGET HINT */
+.bhint{background:var(--y2);border-left:3px solid #D97706;border-radius:10px;padding:9px 12px;margin-bottom:14px;display:flex;justify-content:space-between}
+.bh{text-align:center}
+.bh-lbl{font-size:.58rem;font-weight:600;text-transform:uppercase;color:var(--y);letter-spacing:.3px}
+.bh-val{font-family:'Playfair Display',serif;font-size:.9rem;font-weight:700;color:var(--y);margin-top:1px}
+/* QUICK PICKS */
+.qpicks{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:4px}
+.qp{padding:5px 10px;border-radius:14px;font-size:.68rem;font-weight:600;cursor:pointer;border:1.5px solid var(--border);background:var(--card);color:var(--sub);transition:all .15s}
+.qp.sel{background:var(--p);color:#fff;border-color:var(--p)}
+/* CALC */
+.calc{background:var(--p3);border-radius:12px;padding:10px;margin-bottom:14px}
+.calc-disp{background:var(--card);border:1.5px solid var(--border);border-radius:9px;padding:9px 12px;font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;text-align:right;margin-bottom:8px;min-height:44px;word-break:break-all}
+.calc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}
+.ck{padding:12px 6px;border:none;border-radius:8px;font-size:.88rem;font-weight:700;transition:transform .1s}
+.ck:active{transform:scale(.92)}
+.ck.n{background:var(--card);color:var(--ink)}
+.ck.o{background:#DDD6FE;color:var(--p)}
+.ck.eq{background:var(--p);color:#fff}
+.ck.dl{background:var(--r2);color:var(--r)}
+/* BUTTONS */
+.btn-main{width:100%;padding:14px;border:none;border-radius:12px;background:var(--p);color:#fff;font-size:.92rem;font-weight:700;transition:transform .1s,opacity .15s}
+.btn-main:active{transform:scale(.98)}
+.btn-main:disabled{opacity:.55}
+.btn-main.green{background:#059669}
+.btn-sm{padding:7px 12px;border-radius:8px;font-size:.7rem;font-weight:600;border:none}
+.btn-edit{background:var(--p3);color:var(--p)}
+.btn-del{background:var(--r2);color:var(--r)}
+.btn-ok{background:var(--g2);color:var(--g)}
+.btn-out{background:none;border:1.5px solid var(--p);color:var(--p);padding:9px 16px;border-radius:10px;font-size:.8rem;font-weight:600}
+/* FILTERS */
+.filters{display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;padding-bottom:2px}
+.filters::-webkit-scrollbar{display:none}
+.ftag{padding:6px 13px;border-radius:16px;font-size:.68rem;font-weight:600;cursor:pointer;white-space:nowrap;background:var(--card);border:1.5px solid var(--border);color:var(--sub);flex-shrink:0;transition:all .15s}
+.ftag.on{background:var(--p);color:#fff;border-color:var(--p)}
+/* SEARCH */
+.search-wrap{position:relative;margin-bottom:12px}
+.search-wrap input{width:100%;padding:10px 12px 10px 36px;border:1.5px solid var(--border);border-radius:11px;font-size:.88rem;color:var(--ink);background:var(--card)}
+.search-wrap input:focus{border-color:var(--p)}
+.search-ico{position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:.85rem;pointer-events:none}
+/* SUMMARY ────── */
+.sum-row{padding:12px 0;border-bottom:1px solid var(--border)}
+.sum-row:last-child{border-bottom:none}
+.sum-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.sum-name{display:flex;align-items:center;gap:7px;font-weight:600;font-size:.85rem}
+.sum-nums{font-size:.68rem;color:var(--sub);margin-bottom:5px;display:flex;justify-content:space-between}
+/* GOALS */
+.goal-card{background:linear-gradient(135deg,#EEF2FF,#E0E7FF);border-radius:12px;padding:13px;margin-bottom:8px}
+.goal-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.goal-name{font-weight:700;font-size:.85rem;color:#1E40AF}
+.goal-pct{font-family:'Playfair Display',serif;font-weight:700;font-size:.85rem;color:#3730A3}
+.goal-bar{height:7px;background:rgba(99,102,241,.2);border-radius:6px;overflow:hidden;margin-bottom:5px}
+.goal-fill{height:100%;background:linear-gradient(90deg,#4F46E5,#7C3AED);border-radius:6px;transition:width .5s}
+.goal-meta{display:flex;justify-content:space-between;font-size:.67rem;color:#4338CA}
+/* MANAGE MEMBER CARDS */
+.mem-grid{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:4px}
+.mem-card{flex:1;min-width:110px;border-radius:14px;padding:13px;text-align:center;position:relative;box-shadow:var(--sh)}
+.mem-av{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:700;color:#fff;margin:0 auto 7px}
+.mem-name{font-weight:700;font-size:.82rem}
+.mem-count{font-size:.65rem;color:var(--sub);margin-top:2px}
+.mem-edit{position:absolute;top:7px;right:7px;background:var(--p3);border:none;border-radius:6px;padding:3px 7px;font-size:.6rem;color:var(--p);cursor:pointer}
+.mem-del{position:absolute;top:7px;left:7px;background:var(--r2);border:none;border-radius:6px;padding:3px 7px;font-size:.6rem;color:var(--r);cursor:pointer}
+/* COLOUR PICKER */
+.cpick{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:4px}
+.cp{width:30px;height:30px;border-radius:50%;cursor:pointer;border:3px solid transparent;transition:transform .15s}
+.cp.sel{border-color:var(--ink);transform:scale(1.15)}
+/* HOUSEHOLD CODE */
+.hcode{background:linear-gradient(135deg,#EEF2FF,#E0E7FF);border-radius:12px;padding:12px 14px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.hcode-lbl{font-size:.62rem;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:#4338CA}
+.hcode-val{font-family:'Playfair Display',serif;font-weight:700;font-size:1rem;color:#1E1B4B;letter-spacing:.5px}
+.hcode-btns{display:flex;gap:6px;flex-wrap:wrap}
+.hcode-btn{padding:6px 12px;border:none;border-radius:8px;font-size:.7rem;font-weight:600;cursor:pointer}
+/* SETTINGS */
+.set-row{display:flex;align-items:center;justify-content:space-between;padding:13px 0;border-bottom:1px solid var(--border)}
+.set-row:last-child{border-bottom:none}
+.set-lbl{font-weight:600;font-size:.86rem}
+.set-sub{font-size:.68rem;color:var(--sub);margin-top:2px}
+.set-val{font-family:'Playfair Display',serif;font-weight:700;font-size:.82rem;color:var(--p)}
+/* TOGGLE SWITCH */
+.sw{position:relative;width:42px;height:22px;flex-shrink:0}
+.sw input{opacity:0;width:0;height:0;position:absolute}
+.sw-slider{position:absolute;inset:0;background:#D1D5DB;border-radius:22px;transition:.25s;cursor:pointer}
+.sw-slider::before{content:'';position:absolute;width:16px;height:16px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.25s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.sw input:checked+.sw-slider{background:var(--p)}
+.sw input:checked+.sw-slider::before{transform:translateX(20px)}
+/* ACCOUNT BOX */
+.acct-box{background:linear-gradient(135deg,var(--p),var(--p2));border-radius:var(--rad);padding:18px;margin-bottom:14px;display:flex;align-items:center;gap:14px}
+.acct-av{width:50px;height:50px;border-radius:50%;background:rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:1.3rem;font-weight:700;color:#fff;flex-shrink:0}
+.acct-name{font-family:'Playfair Display',serif;font-weight:700;font-size:1rem;color:#fff}
+.acct-email{font-size:.7rem;color:rgba(255,255,255,.75);margin-top:2px}
+/* EXPORT */
+.export-btn{width:100%;padding:12px;border:1.5px dashed var(--p);border-radius:11px;background:none;color:var(--p);font-size:.85rem;font-weight:600;display:flex;align-items:center;justify-content:center;gap:7px;margin-bottom:10px}
+/* SORT BAR */
+.sort-bar{display:flex;gap:6px;padding:8px 0 10px;overflow-x:auto}
+.sort-bar::-webkit-scrollbar{display:none}
+.sbt{padding:5px 12px;border-radius:14px;font-size:.67rem;font-weight:600;cursor:pointer;border:1.5px solid var(--border);background:var(--card);color:var(--sub);flex-shrink:0;transition:all .15s}
+.sbt.on{background:var(--p);color:#fff;border-color:var(--p)}
+/* BULK */
+.bulk{background:linear-gradient(135deg,#EEF2FF,#E0E7FF);border-radius:10px;padding:9px 12px;margin-bottom:10px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.bulk-lbl{flex:1;font-size:.72rem;font-weight:600;color:#3730A3}
+.bulk-in{width:60px;padding:5px 8px;border:1.5px solid #6366F1;border-radius:7px;font-size:.8rem;font-weight:700;color:#3730A3;text-align:center}
+.bulk-btn{padding:5px 11px;border:none;border-radius:7px;background:#4F46E5;color:#fff;font-size:.68rem;font-weight:700;cursor:pointer}
+/* ADD FORM */
+.add-form{background:var(--p3);border-radius:0 0 var(--rad) var(--rad);padding:14px 16px;border-top:1.5px dashed #C4B5FD}
+.add-form-title{font-family:'Playfair Display',serif;font-size:.9rem;font-weight:700;color:var(--p);margin-bottom:10px}
+/* OVERLAY / MODAL */
+.overlay{position:fixed;inset:0;background:rgba(17,7,40,.55);z-index:400;display:flex;align-items:flex-end;opacity:0;pointer-events:none;transition:opacity .22s;backdrop-filter:blur(3px)}
+.overlay.open{opacity:1;pointer-events:all}
+.modal{background:var(--card);border-radius:22px 22px 0 0;padding:22px 18px calc(22px + env(safe-area-inset-bottom,0));width:100%;transform:translateY(100%);transition:transform .28s cubic-bezier(.4,0,.2,1);max-height:90vh;overflow-y:auto}
+.overlay.open .modal{transform:translateY(0)}
+.modal-drag{width:32px;height:4px;background:#D1D5DB;border-radius:4px;margin:0 auto 16px}
+.modal-title{font-family:'Playfair Display',serif;font-weight:700;font-size:1rem;margin-bottom:14px}
+/* AUTH SCREEN */
+#auth-screen{position:fixed;inset:0;background:linear-gradient(160deg,#3B0764,var(--p) 55%,#6D28D9);z-index:900;display:flex;flex-direction:column;align-items:center;overflow-y:auto}
+#auth-screen.hide{display:none}
+.auth-hero{width:100%;background:rgba(0,0,0,.15);padding:40px 24px 26px;text-align:center;flex-shrink:0}
+.auth-logo{width:64px;height:64px;background:rgba(255,255,255,.18);border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:2rem;margin:0 auto 12px}
+.auth-title{font-family:'Playfair Display',serif;font-size:1.9rem;font-weight:800;color:#fff}
+.auth-sub{font-size:.8rem;color:rgba(255,255,255,.72);margin-top:4px}
+.auth-body{width:100%;max-width:420px;padding:22px 20px 32px}
+.auth-tabs{display:flex;background:rgba(255,255,255,.12);border-radius:10px;padding:3px;margin-bottom:20px}
+.at{flex:1;padding:8px;border:none;background:none;font-size:.76rem;font-weight:600;color:rgba(255,255,255,.6);border-radius:8px;transition:all .2s}
+.at.on{background:rgba(255,255,255,.22);color:#fff}
+.auth-method{display:flex;gap:8px;margin-bottom:16px}
+.am{flex:1;padding:9px;border:1.5px solid rgba(255,255,255,.22);border-radius:10px;background:none;font-size:.73rem;font-weight:600;color:rgba(255,255,255,.65);cursor:pointer;text-align:center;transition:all .2s}
+.am.on{background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.5);color:#fff}
+.auth-field{margin-bottom:13px}
+.auth-lbl{font-size:.65rem;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,.6);display:block;margin-bottom:4px}
+.auth-in{width:100%;padding:12px 14px;border:1.5px solid rgba(255,255,255,.22);border-radius:11px;background:rgba(255,255,255,.1);color:#fff;font-size:.9rem}
+.auth-in::placeholder{color:rgba(255,255,255,.38)}
+.auth-in:focus{border-color:rgba(255,255,255,.5)}
+.pass-wrap{position:relative}
+.pass-wrap .auth-in{padding-right:44px}
+.pass-eye{position:absolute;right:13px;top:50%;transform:translateY(-50%);background:none;border:none;color:rgba(255,255,255,.55);font-size:1rem;padding:3px;cursor:pointer}
+.auth-err{background:rgba(153,27,27,.4);border:1px solid rgba(239,68,68,.4);border-radius:9px;padding:9px 12px;font-size:.76rem;color:#FECACA;margin-bottom:12px;display:none}
+.auth-err.show{display:block}
+.auth-ok{background:rgba(6,78,59,.4);border:1px solid rgba(52,211,153,.35);border-radius:9px;padding:9px 12px;font-size:.76rem;color:#A7F3D0;margin-bottom:12px;display:none}
+.auth-ok.show{display:block}
+.auth-btn{width:100%;padding:13px;border:none;border-radius:11px;background:#fff;color:var(--p);font-size:.92rem;font-weight:700;margin-top:5px;transition:transform .1s,opacity .15s}
+.auth-btn:active{transform:scale(.98)}
+.auth-btn:disabled{opacity:.6}
+.auth-divider{display:flex;align-items:center;gap:10px;margin:14px 0}
+.auth-divider::before,.auth-divider::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.18)}
+.auth-divider span{font-size:.7rem;color:rgba(255,255,255,.42)}
+.google-btn{width:100%;padding:12px;border:1.5px solid rgba(255,255,255,.28);border-radius:11px;background:rgba(255,255,255,.93);color:#3C4043;font-size:.88rem;font-weight:700;display:flex;align-items:center;justify-content:center;gap:9px;margin-bottom:4px}
+.google-btn:active{transform:scale(.98)}
+.auth-hint{font-size:.7rem;color:rgba(255,255,255,.5);text-align:center;margin-top:14px;line-height:1.5}
+.auth-link{color:rgba(255,255,255,.8);font-weight:700;cursor:pointer;text-decoration:underline}
+.auth-forgot{text-align:right;margin-top:-7px;margin-bottom:11px}
+.auth-forgot a{font-size:.7rem;color:rgba(255,255,255,.6);cursor:pointer;text-decoration:underline}
+.otp-row{display:flex;gap:7px;justify-content:center;margin:10px 0 14px}
+.otp-box{width:44px;height:52px;border:1.5px solid rgba(255,255,255,.28);border-radius:10px;background:rgba(255,255,255,.1);color:#fff;font-size:1.3rem;font-weight:700;text-align:center}
+.otp-box:focus{border-color:rgba(255,255,255,.7)}
+.phone-row{display:flex;gap:8px}
+.phone-cc{width:76px;flex-shrink:0;padding:12px 10px;border:1.5px solid rgba(255,255,255,.22);border-radius:11px;background:rgba(255,255,255,.1);color:#fff;font-size:.9rem}
+.auth-back{background:none;border:none;color:rgba(255,255,255,.6);font-size:.76rem;font-weight:600;cursor:pointer;padding:4px 0;margin-bottom:12px;display:flex;align-items:center;gap:4px}
+.auth-copy{font-size:.6rem;color:rgba(255,255,255,.22);text-align:center;margin-top:26px;letter-spacing:.3px}
+#recaptcha-container{margin:8px 0}
+/* SETUP SCREEN */
+#setup-screen{position:fixed;inset:0;background:linear-gradient(160deg,#3B0764,var(--p));z-index:850;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 22px;text-align:center;overflow-y:auto}
+#setup-screen.hide{display:none}
+.setup-ico{font-size:3.5rem;margin-bottom:14px}
+.setup-title{font-family:'Playfair Display',serif;font-size:1.55rem;font-weight:700;color:#fff;margin-bottom:6px}
+.setup-sub{font-size:.8rem;color:rgba(255,255,255,.75);margin-bottom:24px;line-height:1.6}
+.setup-card{background:rgba(255,255,255,.12);border:1.5px solid rgba(255,255,255,.22);border-radius:16px;padding:18px;width:100%;max-width:360px;margin-bottom:12px;backdrop-filter:blur(6px);text-align:left}
+.setup-card h3{font-family:'Playfair Display',serif;font-size:.9rem;font-weight:700;color:#fff;margin-bottom:8px}
+.setup-card p{font-size:.73rem;color:rgba(255,255,255,.72);margin-bottom:12px;line-height:1.5}
+.setup-in{width:100%;padding:12px;border:1.5px solid rgba(255,255,255,.35);border-radius:10px;background:rgba(255,255,255,.13);color:#fff;font-size:.95rem;text-align:center;letter-spacing:.5px}
+.setup-in::placeholder{color:rgba(255,255,255,.45);letter-spacing:0}
+.setup-btn{width:100%;padding:13px;border:none;border-radius:10px;background:#fff;color:var(--p);font-size:.9rem;font-weight:700;margin-top:9px;transition:transform .1s}
+.setup-btn:active{transform:scale(.98)}
+.setup-or{color:rgba(255,255,255,.45);font-size:.75rem;margin:8px 0;font-weight:600;text-align:center}
+/* PIN SCREEN */
+#pin-screen{position:fixed;inset:0;background:linear-gradient(160deg,#3B0764,var(--p));z-index:950;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px}
+#pin-screen.hide{display:none}
+.pin-title{font-family:'Playfair Display',serif;font-size:1.35rem;font-weight:700;color:#fff;margin-bottom:4px}
+.pin-sub{font-size:.78rem;color:rgba(255,255,255,.65);margin-bottom:26px}
+.pin-dots{display:flex;gap:14px;margin-bottom:26px}
+.pd{width:15px;height:15px;border-radius:50%;border:2px solid rgba(255,255,255,.45);transition:all .15s}
+.pd.on{background:#fff;border-color:#fff}
+.pin-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;width:210px}
+.pk{padding:15px;border:none;border-radius:13px;background:rgba(255,255,255,.14);color:#fff;font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;cursor:pointer}
+.pk:active{background:rgba(255,255,255,.28)}
+.pin-hint{font-size:.7rem;color:rgba(255,255,255,.45);margin-top:14px;cursor:pointer}
+/* TOAST */
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(16px);padding:10px 18px;border-radius:22px;font-size:.8rem;font-weight:600;z-index:999;opacity:0;transition:all .28s;pointer-events:none;white-space:nowrap;box-shadow:0 4px 16px rgba(0,0,0,.22)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.ok{background:#065F46;color:#fff}
+.toast.err{background:#991B1B;color:#fff}
+.toast.inf{background:var(--p);color:#fff}
+/* UTILS */
+.empty{text-align:center;padding:28px 16px;color:var(--sub)}
+.empty-ico{font-size:2.6rem;margin-bottom:8px}
+.empty p{font-size:.82rem;line-height:1.5}
+.spinner-wrap{display:flex;align-items:center;justify-content:center;padding:32px;gap:10px;color:var(--sub)}
+.spinner{width:20px;height:20px;border:2.5px solid var(--p3);border-top-color:var(--p);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-thumb{background:#DDD6FE;border-radius:3px}
+.suma-foot{background:linear-gradient(135deg,var(--p),var(--p2));padding:14px 16px;display:flex;justify-content:space-between}
+.sf{text-align:center}
+.sf-lbl{font-size:.58rem;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:rgba(255,255,255,.68)}
+.sf-val{font-family:'Playfair Display',serif;font-weight:700;font-size:.95rem;color:#fff;margin-top:1px}
+.ob-row{display:flex;align-items:center;gap:9px;background:linear-gradient(135deg,#EEF2FF,#E0E7FF);border-radius:12px;padding:11px 13px;margin-bottom:12px}
+.ob-lbl{flex:1;font-weight:700;font-size:.8rem;color:#3730A3}
+.ob-in{width:120px;padding:7px 10px;border:1.5px solid #6366F1;border-radius:8px;font-family:'Playfair Display',serif;font-weight:700;font-size:.86rem;color:#3730A3;text-align:right}
+.logout-btn{width:100%;padding:12px;border:1.5px solid var(--r);border-radius:11px;background:none;color:var(--r);font-size:.88rem;font-weight:700;margin-top:8px;display:flex;align-items:center;justify-content:center;gap:8px}
+</style>
+</head>
+<body>
+
+<!-- ══════════════ AUTH SCREEN ══════════════ -->
+<div id="auth-screen" class="hide">
+  <div class="auth-hero">
+    <div class="auth-logo">🏠</div>
+    <div class="auth-title">Nyumba Budget</div>
+    <div class="auth-sub" id="as-sub">Track household spending together</div>
+  </div>
+  <div class="auth-body">
+    <div class="auth-tabs">
+      <button class="at on" onclick="authTab('login')" id="at-login" data-en="Sign In" data-cw="Lowani">Sign In</button>
+      <button class="at" onclick="authTab('register')" id="at-register" data-en="Create Account" data-cw="Pangani Akaunti">Create Account</button>
+    </div>
+    <div class="auth-err" id="auth-err"></div>
+    <div class="auth-ok" id="auth-ok"></div>
+
+    <!-- method tabs -->
+    <div class="auth-method" id="auth-method-tabs">
+      <button class="am on" onclick="authMethod('email')" id="am-email">✉ Email</button>
+      <button class="am" onclick="authMethod('phone')" id="am-phone">📱 Phone / OTP</button>
+    </div>
+
+    <!-- EMAIL PANEL -->
+    <div id="panel-email">
+      <div class="auth-field" id="field-name" style="display:none">
+        <label class="auth-lbl" data-en="Your Name" data-cw="Dzina Lanu">Your Name</label>
+        <input class="auth-in" id="in-name" type="text" placeholder="e.g. John Banda">
+      </div>
+      <div class="auth-field">
+        <label class="auth-lbl" data-en="Email Address" data-cw="Imelo">Email Address</label>
+        <input class="auth-in" id="in-email" type="email" placeholder="you@example.com" autocomplete="email">
+      </div>
+      <div class="auth-field">
+        <label class="auth-lbl" data-en="Password" data-cw="Chinsinsi">Password</label>
+        <div class="pass-wrap">
+          <input class="auth-in" id="in-pass" type="password" placeholder="••••••••" autocomplete="current-password">
+          <button class="pass-eye" type="button" onclick="toggleEye('in-pass',this)">👁</button>
+        </div>
+      </div>
+      <div class="auth-field" id="field-pass2" style="display:none">
+        <label class="auth-lbl" data-en="Confirm Password" data-cw="Tsimikizirani Chinsinsi">Confirm Password</label>
+        <div class="pass-wrap">
+          <input class="auth-in" id="in-pass2" type="password" placeholder="••••••••">
+          <button class="pass-eye" type="button" onclick="toggleEye('in-pass2',this)">👁</button>
+        </div>
+      </div>
+      <div class="auth-forgot" id="forgot-link">
+        <a onclick="authTab('reset')" data-en="Forgot Password?" data-cw="Mwayiwala Chinsinsi?">Forgot Password?</a>
+      </div>
+      <button class="auth-btn" id="btn-email-auth" onclick="doEmailAuth()">Sign In</button>
+      <div class="auth-divider"><span data-en="or continue with" data-cw="kapena">or continue with</span></div>
+      <button class="google-btn" onclick="doGoogle()">
+        <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+        <span data-en="Continue with Google" data-cw="Lowani ndi Google">Continue with Google</span>
+      </button>
+    </div>
+
+    <!-- PHONE PANEL -->
+    <div id="panel-phone" style="display:none">
+      <div id="phone-step1">
+        <div class="auth-field">
+          <label class="auth-lbl" data-en="Phone Number" data-cw="Nambala ya Foni">Phone Number</label>
+          <div class="phone-row">
+            <input class="auth-in phone-cc" id="in-cc" value="+265" placeholder="+265">
+            <input class="auth-in" id="in-phone" type="tel" placeholder="888 123 456" style="flex:1">
+          </div>
+        </div>
+        <div id="recaptcha-container"></div>
+        <button class="auth-btn" id="btn-otp" onclick="sendOTP()">Send OTP</button>
+      </div>
+      <div id="phone-step2" style="display:none">
+        <button class="auth-back" onclick="backToPhone()">← <span data-en="Change number" data-cw="Sinthani nambala">Change number</span></button>
+        <p style="color:rgba(255,255,255,.78);font-size:.8rem;margin-bottom:12px;text-align:center" data-en="Enter the 6-digit code sent to you" data-cw="Lowetsani manambala 6 omwe anatumizidwa">Enter the 6-digit code sent to you</p>
+        <div class="otp-row">
+          <input class="otp-box" id="otp0" maxlength="1" type="tel" oninput="otpStep(this,0)">
+          <input class="otp-box" id="otp1" maxlength="1" type="tel" oninput="otpStep(this,1)">
+          <input class="otp-box" id="otp2" maxlength="1" type="tel" oninput="otpStep(this,2)">
+          <input class="otp-box" id="otp3" maxlength="1" type="tel" oninput="otpStep(this,3)">
+          <input class="otp-box" id="otp4" maxlength="1" type="tel" oninput="otpStep(this,4)">
+          <input class="otp-box" id="otp5" maxlength="1" type="tel" oninput="otpStep(this,5)">
+        </div>
+        <button class="auth-btn" onclick="verifyOTP()">Verify &amp; Sign In</button>
+      </div>
+    </div>
+
+    <!-- RESET PANEL -->
+    <div id="panel-reset" style="display:none">
+      <button class="auth-back" onclick="authTab('login')">← <span data-en="Back to Sign In" data-cw="Bwerani ku Kulowera">Back to Sign In</span></button>
+      <p style="color:rgba(255,255,255,.76);font-size:.78rem;margin-bottom:12px;line-height:1.5" data-en="Enter your email to receive a reset link." data-cw="Lowetsani imelo yanu kuti mulandire nambala yosintha chinsinsi.">Enter your email to receive a reset link.</p>
+      <div class="auth-field">
+        <label class="auth-lbl">Email</label>
+        <input class="auth-in" id="in-reset-email" type="email" placeholder="you@example.com">
+      </div>
+      <button class="auth-btn" id="btn-reset" onclick="doReset()">📧 <span data-en="Send Reset Link" data-cw="Tumizani Nambala">Send Reset Link</span></button>
+    </div>
+
+    <p class="auth-hint" id="auth-hint">Don't have an account? <span class="auth-link" onclick="authTab('register')">Create one</span></p>
+    <p class="auth-copy">© Rodart Creatives. All Rights Reserved.</p>
+  </div>
+</div>
+
+<!-- ══════════════ SETUP SCREEN ══════════════ -->
+<div id="setup-screen" class="hide">
+  <div class="setup-ico">🏠</div>
+  <div class="setup-title" data-en="Nyumba Budget" data-cw="Bajeti ya Nyumba">Nyumba Budget</div>
+  <div class="setup-sub" data-en="Create a household or join an existing one." data-cw="Pangani nyumba kapena lowani ku nyumba yomwe ilipo kale.">Create a household or join an existing one.</div>
+  <div class="setup-card">
+    <h3 data-en="➕ Create New Household" data-cw="➕ Pangani Nyumba Yatsopano">➕ Create New Household</h3>
+    <p data-en="Start fresh. Share the code with your partner." data-cw="Yambitsani patsopano. Mugawane khodi ndi mnzanu.">Start fresh. Share the code with your partner.</p>
+    <button class="setup-btn" onclick="createHousehold()">Create Household</button>
+  </div>
+  <div class="setup-or">— or —</div>
+  <div class="setup-card">
+    <h3 data-en="👥 Join Existing Household" data-cw="👥 Lowani ku Nyumba">👥 Join Existing Household</h3>
+    <p data-en="Enter the household code from your partner." data-cw="Lowetsani khodi ya nyumba yomwe munalandira kwa mnzanu.">Enter the household code from your partner.</p>
+    <input class="setup-in" id="join-code" placeholder="e.g. nyumba-4829" maxlength="20">
+    <button class="setup-btn" onclick="joinHousehold()">Join Household</button>
+  </div>
+  <p style="font-size:.6rem;color:rgba(255,255,255,.28);margin-top:20px">© Rodart Creatives</p>
+</div>
+
+<!-- ══════════════ PIN SCREEN ══════════════ -->
+<div id="pin-screen" class="hide">
+  <div class="pin-title">🔐 Nyumba Budget</div>
+  <div class="pin-sub" id="pin-sub">Enter your PIN</div>
+  <div class="pin-dots">
+    <div class="pd" id="pd0"></div><div class="pd" id="pd1"></div>
+    <div class="pd" id="pd2"></div><div class="pd" id="pd3"></div>
+  </div>
+  <div class="pin-grid">
+    <button class="pk" onclick="pk('1')">1</button>
+    <button class="pk" onclick="pk('2')">2</button>
+    <button class="pk" onclick="pk('3')">3</button>
+    <button class="pk" onclick="pk('4')">4</button>
+    <button class="pk" onclick="pk('5')">5</button>
+    <button class="pk" onclick="pk('6')">6</button>
+    <button class="pk" onclick="pk('7')">7</button>
+    <button class="pk" onclick="pk('8')">8</button>
+    <button class="pk" onclick="pk('9')">9</button>
+    <button class="pk" style="font-size:.75rem" onclick="pk('C')">CLR</button>
+    <button class="pk" onclick="pk('0')">0</button>
+    <button class="pk" onclick="pk('X')">⌫</button>
+  </div>
+  <div class="pin-hint" onclick="pinForgot()">Forgot PIN?</div>
+</div>
+
+<!-- ══════════════ APP SHELL ══════════════ -->
+<div id="shell">
+  <div id="topbar">
+    <div class="tb-brand">
+      <div class="tb-ico">🏠</div>
+      <div>
+        <div class="tb-title" id="tb-title">Nyumba Budget</div>
+        <div class="tb-sub" id="tb-sub">Household Tracker</div>
+      </div>
+    </div>
+    <div class="tb-right">
+      <div class="sync off" id="sync-dot"></div>
+      <div class="pill" onclick="openUserSwitch()">
+        <div class="pill-av" id="pill-av">H</div>
+        <span class="pill-nm" id="pill-nm">User</span>
+        <span style="color:rgba(255,255,255,.55);font-size:.6rem">▾</span>
+      </div>
+      <button class="lang-btn" id="lang-btn" onclick="toggleLang()">CW</button>
+    </div>
+  </div>
+
+  <div id="view">
+    <div class="spinner-wrap"><div class="spinner"></div><span>Loading…</span></div>
+  </div>
+
+  <nav id="nav">
+    <button class="nb on" id="nb-home" onclick="go('home')">
+      <span class="nb-ico">🏠</span><span class="nb-lbl" id="nl-home">Home</span>
+    </button>
+    <button class="nb" id="nb-log" onclick="go('log')">
+      <span class="nb-ico">➕</span><span class="nb-lbl" id="nl-log">Log</span>
+    </button>
+    <button class="nb" id="nb-purchases" onclick="go('purchases')">
+      <span class="nb-ico">📋</span><span class="nb-lbl" id="nl-purchases">Purchases</span>
+    </button>
+    <button class="nb" id="nb-summary" onclick="go('summary')">
+      <span class="nb-ico">📊</span><span class="nb-lbl" id="nl-summary">Summary</span>
+    </button>
+    <button class="nb" id="nb-manage" onclick="go('manage')">
+      <span class="nb-ico">⚙️</span><span class="nb-lbl" id="nl-manage">Manage</span>
+    </button>
+    <button class="nb" id="nb-settings" onclick="go('settings')">
+      <span class="nb-ico">👤</span><span class="nb-lbl" id="nl-settings">Settings</span>
+    </button>
+  </nav>
+</div>
+
+<!-- MODALS -->
+<div class="overlay" id="ov-user"><div class="modal" id="mo-user"></div></div>
+<div class="overlay" id="ov-edit"><div class="modal" id="mo-edit"></div></div>
+<div class="overlay" id="ov-ep"><div class="modal" id="mo-ep"></div></div>
+<div class="overlay" id="ov-goal"><div class="modal" id="mo-goal"></div></div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ════════════════════════════════════════
+//  CONFIG
+// ════════════════════════════════════════
+const FB = {
+  apiKey:"AIzaSyA5TdvAFE0cFkme7O--LtJNKIikM-KXFdM",
+  authDomain:"bajeti-yanga.firebaseapp.com",
+  projectId:"bajeti-yanga",
+  storageBucket:"bajeti-yanga.firebasestorage.app",
+  messagingSenderId:"585037359165",
+  appId:"1:585037359165:web:01b831d5277faed34be254"
+};
+
+// ════════════════════════════════════════
+//  TRANSLATIONS  (real Chichewa)
+// ════════════════════════════════════════
+const T = {
+  en:{
+    appTitle:'Nyumba Budget', appSub:'Household Tracker',
+    home:'Home', log:'Log', purchases:'Purchases', summary:'Summary', manage:'Manage', settings:'Settings',
+    budget:'Budget', spent:'Spent', left:'Left', income:'Income', expense:'Expense',
+    thisMon:'This Month', recent:'Recent Entries', viewAll:'View All',
+    noEntries:'No entries yet.', tapAdd:'Tap ➕ to add one.',
+    logTitle:'New Entry', selItem:'Select an Item', selWho:'Who is logging?',
+    date:'Date', qty:'Qty', unit:'Unit', amount:'Amount (MK)', notes:'Note (shown on home)',
+    save:'Save Entry', saved:'Saved!', source:'Income Source',
+    allEntries:'All Entries', all:'All', edit:'Edit', del:'Delete',
+    delConfirm:'Delete this entry?', deleted:'Deleted!', updated:'Updated!',
+    sumTitle:'Monthly Summary', total:'Total',
+    manage:'Manage', overallCap:'Overall Monthly Budget (MK)',
+    members:'Household Members', addMember:'Add Member', editMember:'Edit Member',
+    delMember:'Remove this member?', memberName:'Name', memberColour:'Colour',
+    items:'Items & Budgets', addItem:'Add Item', itemName:'Item name',
+    itemBudget:'Monthly budget (MK)', itemAdded:'Item added!',
+    budgetUpdated:'Budget updated!', itemDeleted:'Item removed!',
+    sortCat:'By Category', sortAZ:'A–Z', sortOver:'Over Budget', sortSpend:'Most Spent',
+    bulkLabel:'Adjust all budgets by %', apply:'Apply',
+    goals:'Savings Goals', addGoal:'Add Goal', goalName:'Goal name',
+    goalTarget:'Target (MK)', goalSaved:'Already saved (MK)', topUp:'Top Up',
+    noGoals:'No savings goals yet.',
+    hCode:'Household Code', copy:'Copy', shareWA:'WhatsApp', resetCode:'Reset Code',
+    resetCodeConfirm:'This will generate a new code. All members must rejoin. Continue?',
+    codeCopied:'Code copied!',
+    pinSetup:'Set 4-digit PIN', pinChange:'Change PIN', pinRemove:'Remove PIN',
+    pinOff:'PIN removed', pinOn:'PIN saved!', pinMismatch:'PINs did not match — try again.',
+    enterPin:'Enter your PIN', confirmPin:'Confirm your PIN', setPin:'Choose a PIN',
+    pinForgotConfirm:'Remove PIN? You can set a new one anytime.',
+    exportCSV:'Export to CSV', downloaded:'Downloaded!',
+    signOut:'Sign Out', signOutConfirm:'Sign out of this household?',
+    quickPick:'Quick Pick',
+    recurrLabel:'Mark as recurring monthly',
+    units:['kg','g','litres','ml','pieces','packets','bundles','bags','bottles','bars'],
+    months:['January','February','March','April','May','June','July','August','September','October','November','December'],
+    cats:{Food:'🌽 Food',Household:'🧴 Household',Transport:'🚌 Transport',Personal:'🧼 Personal',Other:'📦 Other'}
+  },
+  cw:{
+    appTitle:'Bajeti ya Nyumba', appSub:'Kusunga Ndalama za Nyumba',
+    home:'Kunyumba', log:'Lembani', purchases:'Zogula', summary:'Chidule', manage:'Konzekera', settings:'Zikhazikiko',
+    budget:'Bajeti', spent:'Wogwiritsa', left:'Wotsala', income:'Ndalama Zolowera', expense:'Ndalama Zotuluka',
+    thisMon:'Mwezi Uno', recent:'Zolemba Zasopano', viewAll:'Onanso Zonse',
+    noEntries:'Palibe cholemba.', tapAdd:'Dina ➕ kwonjeza.',
+    logTitle:'Cholembedwa Chatsopano', selItem:'Sankhani Katundu', selWho:'Ndani akutembenuka?',
+    date:'Tsiku', qty:'Kuchuluka', unit:'Gawo', amount:'Ndalama (MK)', notes:'Ndemanga (idzawonekera panyumba)',
+    save:'Sungani', saved:'Zasungidwa!', source:'Gwero la Ndalama',
+    allEntries:'Zolemba Zonse', all:'Zonse', edit:'Sinthani', del:'Chotsani',
+    delConfirm:'Muchotse cholembedwa ichi?', deleted:'Wachotsedwa!', updated:'Yasinthidwa!',
+    sumTitle:'Chidule cha Mwezi', total:'Kapiringidzo',
+    manage:'Konzekera', overallCap:'Bajeti Yonse ya Mwezi (MK)',
+    members:'Anthu a Nyumba', addMember:'Onjezani Munthu', editMember:'Sinthani Munthu',
+    delMember:'Muchotse munthu ameneyu?', memberName:'Dzina', memberColour:'Barwa',
+    items:'Katundu ndi Bajeti', addItem:'Onjezani Katundu', itemName:'Dzina la katundu',
+    itemBudget:'Bajeti ya mwezi (MK)', itemAdded:'Katundu aonjezedwa!',
+    budgetUpdated:'Bajeti yasinthidwa!', itemDeleted:'Katundu wachotsedwa!',
+    sortCat:'Mitundu', sortAZ:'A–Z', sortOver:'Yopitilira', sortSpend:'Yochuluka Kwambiri',
+    bulkLabel:'Sinthani bajeti zonse ndi %', apply:'Thandizani',
+    goals:'Zolinga za Ndalama', addGoal:'Onjeza Cholinga', goalName:'Dzina la cholinga',
+    goalTarget:'Cholinga (MK)', goalSaved:'Ndalama yosungidwa kale (MK)', topUp:'Onjeza',
+    noGoals:'Palibe zolinga za ndalama.',
+    hCode:'Khodi ya Nyumba', copy:'Kopya', shareWA:'WhatsApp', resetCode:'Sintha Khodi',
+    resetCodeConfirm:'Izi zidzapanga khodi yatsopano. Anthu onse ayenera kulowanso. Pitani patsogolo?',
+    codeCopied:'Khodi yakopedwa!',
+    pinSetup:'Ikani PIN ya manambala 4', pinChange:'Sinthani PIN', pinRemove:'Chotsani PIN',
+    pinOff:'PIN yachotsedwa', pinOn:'PIN yasungidwa!', pinMismatch:'Manambala salingana — yesani again.',
+    enterPin:'Lowetsani PIN yanu', confirmPin:'Tsimikizirani PIN', setPin:'Sankhani PIN',
+    pinForgotConfirm:'Muchotse PIN? Mutha kuikaNso nthawi iliyonse.',
+    exportCSV:'Tumirani ku CSV', downloaded:'Yatsitsidwa!',
+    signOut:'Chotsani Akaunti', signOutConfirm:'Muchotse akaunti ya nyumba imeneyi?',
+    quickPick:'Sankhani Msanga',
+    recurrLabel:'Lembani bwalo lililonse la mwezi',
+    units:['kg','g','malikita','ml','zobiriwira','mapaketi','magwirizana','mabegi','mabotolo','mabara'],
+    months:['Januware','Febuwale','Marichi','Epulo','Meyi','Juni','Julaye','Ogasiti','Seputembala','Okutobala','Novembala','Disembala'],
+    cats:{Food:'🌽 Chakudya',Household:'🧴 Nyumba',Transport:'🚌 Mayendedwe',Personal:'🧼 Munthu Payekha',Other:'📦 Zina'}
+  }
+};
+
+// ════════════════════════════════════════
+//  DATA CONSTANTS
+// ════════════════════════════════════════
+const ICONS = {
+  'Tomatoes':'🍅','Onions':'🧅','Maize Flour (ufa)':'🌽','Cooking Oil':'🛢️','Sugar':'🍬','Salt':'🧂',
+  'Soap (bar)':'🧼','Washing Powder':'🫧','Rice':'🍚','Beans (nandolo)':'🫘','Potatoes':'🥔',
+  'Cabbage':'🥬','Chicken':'🍗','Fish (matemba)':'🐟','Bread':'🍞','Milk':'🥛','Tea Leaves':'🍵',
+  'Charcoal':'🪨','Toilet Paper':'🧻','Matches/Candles':'🕯️','Bathing Soap':'🧴','Toothpaste':'🦷',
+  'Airtime / Data':'📱','Transport':'🚌','Other':'📦','Salary/Income':'💰','Business Income':'💼'
+};
+const CATS = {
+  Food:['Tomatoes','Onions','Maize Flour (ufa)','Cooking Oil','Sugar','Salt','Rice','Beans (nandolo)','Potatoes','Cabbage','Chicken','Fish (matemba)','Bread','Milk','Tea Leaves'],
+  Household:['Soap (bar)','Washing Powder','Charcoal','Toilet Paper','Matches/Candles'],
+  Personal:['Bathing Soap','Toothpaste'],
+  Transport:['Transport'],
+  Other:['Airtime / Data','Other']
+};
+const CAT_COLORS = {Food:'#059669',Household:'#2563EB',Personal:'#DB2777',Transport:'#D97706',Other:'#6D4C41'};
+const MEM_COLORS = ['#5B21B6','#DB2777','#2563EB','#059669','#D97706','#0E7490','#7C3AED','#B45309'];
+const QUICK = ['Tomatoes','Onions','Maize Flour (ufa)','Cooking Oil','Sugar','Salt','Rice','Charcoal','Bread','Milk','Transport','Airtime / Data'];
+const DEF_ITEMS = [
+  {name:'Tomatoes',budget:15000},{name:'Onions',budget:8000},{name:'Maize Flour (ufa)',budget:35000},
+  {name:'Cooking Oil',budget:20000},{name:'Sugar',budget:12000},{name:'Salt',budget:2000},
+  {name:'Soap (bar)',budget:6000},{name:'Washing Powder',budget:8000},{name:'Rice',budget:18000},
+  {name:'Beans (nandolo)',budget:10000},{name:'Potatoes',budget:9000},{name:'Cabbage',budget:5000},
+  {name:'Chicken',budget:25000},{name:'Fish (matemba)',budget:12000},{name:'Bread',budget:8000},
+  {name:'Milk',budget:10000},{name:'Tea Leaves',budget:4000},{name:'Charcoal',budget:20000},
+  {name:'Toilet Paper',budget:5000},{name:'Matches/Candles',budget:2000},{name:'Bathing Soap',budget:4000},
+  {name:'Toothpaste',budget:3500},{name:'Airtime / Data',budget:15000},{name:'Transport',budget:20000},{name:'Other',budget:15000}
+];
+const DEF_USERS = [{id:'u1',name:'Husband',color:'#5B21B6'},{id:'u2',name:'Wife',color:'#DB2777'}];
+const DEF_CFG = {items:DEF_ITEMS,users:DEF_USERS,overallBudget:400000,goals:[]};
+
+// ════════════════════════════════════════
+//  STATE
+// ════════════════════════════════════════
+let db=null, fbAuth=null, fbUser=null;
+let hid=null, unsub=null;
+let cfg=JSON.parse(JSON.stringify(DEF_CFG)), entries=[];
+let tab='home', lang=localStorage.getItem('nb_lang')||'en';
+let viewMonth=null, selItem=null, logType='expense';
+let fUser='all', search='', itemSort='cat';
+let calcVal='', calcExpr='';
+let pinMode='check', pinEntry='', pinTemp='';
+let authMode='login', authMethodMode='email';
+let otpConfirm=null, recapVerifier=null;
+
+// ════════════════════════════════════════
+//  HELPERS
+// ════════════════════════════════════════
+const t = () => T[lang];
+const MK = n => 'MK ' + Math.round(n).toLocaleString();
+const MKs = n => n>=1e6?'MK '+(n/1e6).toFixed(1)+'M':n>=1000?'MK '+(n/1e3).toFixed(0)+'K':'MK '+Math.round(n);
+const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const ico = n => ICONS[n]||'🛒';
+const today = () => new Date().toISOString().split('T')[0];
+const vm = () => viewMonth || (()=>{const d=new Date();return{m:d.getMonth(),y:d.getFullYear()}})();
+const isCur = () => { const v=vm(),d=new Date(); return v.m===d.getMonth()&&v.y===d.getFullYear(); };
+const inMonth = s => { if(!s) return false; const d=new Date(s),v=vm(); return d.getMonth()===v.m&&d.getFullYear()===v.y; };
+const mName = () => t().months[vm().m] + ' ' + vm().y;
+const mPrev = () => { const v=vm(); viewMonth=v.m===0?{m:11,y:v.y-1}:{m:v.m-1,y:v.y}; render(); };
+const mNext = () => { if(isCur()) return; const v=vm(); viewMonth=v.m===11?{m:0,y:v.y+1}:{m:v.m+1,y:v.y}; render(); };
+const spent = name => entries.filter(e=>e.item===name&&e.type!=='income'&&inMonth(e.date)).reduce((s,e)=>s+Number(e.amount),0);
+const totSpent = () => entries.filter(e=>e.type!=='income'&&inMonth(e.date)).reduce((s,e)=>s+Number(e.amount),0);
+const totIncome = () => entries.filter(e=>e.type==='income'&&inMonth(e.date)).reduce((s,e)=>s+Number(e.amount),0);
+const actUser = () => cfg.users.find(u=>u.id===localStorage.getItem('nb_uid'))||cfg.users[0];
+const uById = id => cfg.users.find(u=>u.id===id)||cfg.users[0];
+const catOf = name => { for(const[c,its] of Object.entries(CATS)){if(its.includes(name)) return c;} return 'Other'; };
+const statOf = (sp,bg) => { if(!sp) return 'none'; const r=sp/bg; return r>=1?'over':r>=.8?'warn':'ok'; };
+const randCode = () => ['nyumba','banja','tsamba','nkhokwe','manda','khomo'][Math.floor(Math.random()*6)]+'-'+Math.floor(1000+Math.random()*9000);
+
+function toast(msg, type='ok') {
+  const el = document.getElementById('toast');
+  el.className = 'toast ' + type;
+  el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2600);
+}
+function setSyncDot(s) {
+  const d = document.getElementById('sync-dot');
+  if(!d) return;
+  d.className = 'sync' + (s==='off'?' off':s==='busy'?' busy':'');
+}
+function updatePill() {
+  const u = actUser();
+  if(!u) return;
+  const av = document.getElementById('pill-av'), nm = document.getElementById('pill-nm');
+  if(av){ av.textContent=u.name[0]; av.style.background=u.color; }
+  if(nm) nm.textContent = u.name;
+}
+
+// ════════════════════════════════════════
+//  LANGUAGE
+// ════════════════════════════════════════
+function toggleLang() {
+  lang = lang==='en'?'cw':'en';
+  localStorage.setItem('nb_lang', lang);
+  document.getElementById('lang-btn').textContent = lang==='en'?'CW':'EN';
+  applyLang();
+  render();
+}
+function applyLang() {
+  const l = t();
+  // topbar
+  document.getElementById('tb-title').textContent = l.appTitle;
+  document.getElementById('tb-sub').textContent = l.appSub;
+  // nav labels
+  ['home','log','purchases','summary','manage','settings'].forEach(k => {
+    const el = document.getElementById('nl-'+k);
+    if(el) el.textContent = l[k];
+  });
+  // translate all elements with data-en / data-cw
+  document.querySelectorAll('[data-'+lang+']').forEach(el => {
+    el.textContent = el.getAttribute('data-'+lang);
+  });
+  updatePill();
+}
+
+// ════════════════════════════════════════
+//  FIREBASE
+// ════════════════════════════════════════
+function initFB() {
+  try {
+    if(!firebase.apps.length) firebase.initializeApp(FB);
+    db = firebase.firestore();
+    fbAuth = firebase.auth();
+    fbAuth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(()=>{});
+    db.enablePersistence({synchronizeTabs:true}).catch(()=>{});
+    return true;
+  } catch(e) { toast('Firebase error: '+e.message,'err'); return false; }
+}
+function boot() {
+  if(!initFB()) { fallbackBoot(); return; }
+  // Safety: show auth after 7s if nothing happens
+  const timer = setTimeout(()=>{
+    if(!hid) showAuth();
+  }, 7000);
+  fbAuth.onAuthStateChanged(user => {
+    clearTimeout(timer);
+    if(user) {
+      fbUser = user;
+      db.collection('users').doc(user.uid).get().then(doc => {
+        if(doc.exists && doc.data().householdId) {
+          const h = doc.data().householdId;
+          localStorage.setItem('nb_hid', h);
+          hideAll();
+          connectHousehold(h);
+        } else {
+          showSetup();
+        }
+      }).catch(() => showSetup());
+    } else {
+      fbUser = null;
+      showAuth();
+    }
+  });
+}
+function fallbackBoot() {
+  const raw = localStorage.getItem('nb_offline');
+  if(raw) { try { const d=JSON.parse(raw); cfg=d.cfg||JSON.parse(JSON.stringify(DEF_CFG)); entries=d.entries||[]; }catch(e){} }
+  setSyncDot('off');
+  applyLang();
+  render();
+}
+function connectHousehold(code) {
+  hid = code;
+  setSyncDot('busy');
+  // config listener
+  db.collection('households').doc(code).onSnapshot(doc => {
+    if(doc.exists) {
+      const d = doc.data();
+      cfg = d.config || JSON.parse(JSON.stringify(DEF_CFG));
+      if(!cfg.goals) cfg.goals=[];
+      setSyncDot('');
+      updatePill();
+      render();
+    }
+  }, () => setSyncDot('off'));
+  // entries listener
+  if(unsub) unsub();
+  unsub = db.collection('households').doc(code).collection('entries')
+    .orderBy('date','desc')
+    .onSnapshot(snap => {
+      entries = snap.docs.map(d=>({id:d.id,...d.data()}));
+      setSyncDot('');
+      render();
+    }, () => setSyncDot('off'));
+  applyLang();
+}
+function saveCfg(newCfg) {
+  cfg = newCfg;
+  if(!cfg.goals) cfg.goals=[];
+  if(db && hid) {
+    setSyncDot('busy');
+    db.collection('households').doc(hid).update({config:cfg}).then(()=>setSyncDot('')).catch(()=>{toast('Sync error','err');setSyncDot('off');});
+  } else {
+    saveOffline();
+  }
+}
+function addEntry(e) {
+  if(db && hid) {
+    setSyncDot('busy');
+    db.collection('households').doc(hid).collection('entries')
+      .add({...e, createdAt:firebase.firestore.FieldValue.serverTimestamp()})
+      .then(()=>setSyncDot('')).catch(()=>{toast('Sync error','err');setSyncDot('off');});
+  } else {
+    e.id='e'+Date.now(); entries.unshift(e); saveOffline(); render();
+  }
+}
+function editEntry(id, data) {
+  if(db && hid) {
+    setSyncDot('busy');
+    db.collection('households').doc(hid).collection('entries').doc(id).update(data)
+      .then(()=>setSyncDot('')).catch(()=>{toast('Sync error','err');setSyncDot('off');});
+  } else {
+    const i=entries.findIndex(e=>e.id===id); if(i>=0) entries[i]={...entries[i],...data}; saveOffline(); render();
+  }
+}
+function delEntry(id) {
+  if(db && hid) {
+    setSyncDot('busy');
+    db.collection('households').doc(hid).collection('entries').doc(id).delete()
+      .then(()=>setSyncDot('')).catch(()=>{toast('Sync error','err');setSyncDot('off');});
+  } else {
+    entries=entries.filter(e=>e.id!==id); saveOffline(); render();
+  }
+}
+function saveOffline() {
+  localStorage.setItem('nb_offline', JSON.stringify({cfg,entries}));
+}
+function createHousehold() {
+  if(!db){ toast('Not connected','err'); return; }
+  const code = randCode();
+  setSyncDot('busy');
+  db.collection('households').doc(code).set({
+    config:JSON.parse(JSON.stringify(DEF_CFG)),
+    createdAt:firebase.firestore.FieldValue.serverTimestamp(),
+    owner:fbUser?fbUser.uid:null
+  }).then(()=>{
+    if(fbUser) return db.collection('users').doc(fbUser.uid).set({householdId:code,updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});
+  }).then(()=>{
+    localStorage.setItem('nb_hid',code);
+    localStorage.setItem('nb_uid','u1');
+    hideAll();
+    connectHousehold(code);
+    toast('Household created!');
+  }).catch(e=>{ toast('Error: '+e.message,'err'); setSyncDot('off'); });
+}
+function joinHousehold() {
+  if(!db){ toast('Not connected','err'); return; }
+  const code = (document.getElementById('join-code').value||'').trim().toLowerCase();
+  if(!code){ toast('Enter a code','err'); return; }
+  setSyncDot('busy');
+  db.collection('households').doc(code).get().then(doc=>{
+    if(!doc.exists){ toast('Household not found','err'); setSyncDot('off'); return; }
+    const p = fbUser ? db.collection('users').doc(fbUser.uid).set({householdId:code,updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true}) : Promise.resolve();
+    return p.then(()=>{
+      localStorage.setItem('nb_hid',code);
+      localStorage.setItem('nb_uid','u2');
+      hideAll();
+      connectHousehold(code);
+      toast('Joined!');
+    });
+  }).catch(e=>{ toast('Error: '+e.message,'err'); setSyncDot('off'); });
+}
+function signOut() {
+  if(!confirm(t().signOutConfirm)) return;
+  if(unsub) unsub();
+  if(db && fbUser) db.collection('users').doc(fbUser.uid).update({householdId:firebase.firestore.FieldValue.delete()}).catch(()=>{});
+  localStorage.removeItem('nb_hid');
+  localStorage.removeItem('nb_uid');
+  localStorage.removeItem('nb_pin');
+  hid=null; cfg=JSON.parse(JSON.stringify(DEF_CFG)); entries=[];
+  if(fbAuth) fbAuth.signOut().catch(()=>{});
+  toast('Signed out','inf');
+}
+function resetHCode() {
+  if(!db||!hid){ toast('Not connected','err'); return; }
+  if(!confirm(t().resetCodeConfirm)) return;
+  const newCode = randCode();
+  setSyncDot('busy');
+  db.collection('households').doc(hid).get().then(doc=>{
+    return db.collection('households').doc(newCode).set({...doc.data(),createdAt:firebase.firestore.FieldValue.serverTimestamp()});
+  }).then(()=>{
+    return db.collection('households').doc(hid).collection('entries').get();
+  }).then(snap=>{
+    const batch=db.batch();
+    snap.docs.forEach(d=>batch.set(db.collection('households').doc(newCode).collection('entries').doc(d.id),d.data()));
+    return batch.commit();
+  }).then(()=>{
+    localStorage.setItem('nb_hid',newCode);
+    if(unsub) unsub();
+    connectHousehold(newCode);
+    toast('New code: '+newCode,'inf');
+  }).catch(e=>{ toast('Error: '+e.message,'err'); setSyncDot('off'); });
+}
+
+// ════════════════════════════════════════
+//  SCREEN VISIBILITY
+// ════════════════════════════════════════
+function hideAll() {
+  ['auth-screen','setup-screen','pin-screen'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.classList.add('hide');
+  });
+}
+function showAuth() { hideAll(); document.getElementById('auth-screen').classList.remove('hide'); }
+function showSetup() { hideAll(); document.getElementById('setup-screen').classList.remove('hide'); }
+function showPin() {
+  pinEntry='';
+  if(pinMode!=='confirm') pinTemp='';
+  document.getElementById('pin-screen').classList.remove('hide');
+  const subs={check:t().enterPin,set:t().setPin,confirm:t().confirmPin};
+  document.getElementById('pin-sub').textContent = subs[pinMode]||t().enterPin;
+  document.getElementById('pin-hint').style.display = pinMode==='check'?'block':'none';
+  updatePinDots();
+}
+function hidePin() { document.getElementById('pin-screen').classList.add('hide'); }
+function updatePinDots() {
+  for(let i=0;i<4;i++) document.getElementById('pd'+i).classList.toggle('on',i<pinEntry.length);
+}
+
+// ════════════════════════════════════════
+//  PIN
+// ════════════════════════════════════════
+function hasPIN() { return !!localStorage.getItem('nb_pin'); }
+function pk(k) {
+  if(k==='C') pinEntry='';
+  else if(k==='X') pinEntry=pinEntry.slice(0,-1);
+  else if(pinEntry.length<4) pinEntry+=k;
+  updatePinDots();
+  if(pinEntry.length===4) {
+    setTimeout(()=>{
+      if(pinMode==='check') {
+        if(pinEntry===localStorage.getItem('nb_pin')) { hidePin(); }
+        else { pinEntry=''; updatePinDots(); toast('Wrong PIN','err'); }
+      } else if(pinMode==='set') {
+        pinTemp=pinEntry; pinEntry=''; pinMode='confirm'; showPin();
+      } else if(pinMode==='confirm') {
+        if(pinEntry===pinTemp) {
+          localStorage.setItem('nb_pin',pinEntry);
+          pinMode='check'; hidePin(); toast(t().pinOn);
+          rSettings();
+        } else {
+          pinEntry=''; pinMode='set'; showPin(); toast(t().pinMismatch,'err');
+        }
+      }
+    },180);
+  }
+}
+function pinForgot() {
+  if(confirm(t().pinForgotConfirm)) { localStorage.removeItem('nb_pin'); hidePin(); }
+}
+function openSetPIN() { pinMode='set'; showPin(); }
+function removePIN() { localStorage.removeItem('nb_pin'); toast(t().pinOff); rSettings(); }
+
+// ════════════════════════════════════════
+//  AUTH
+// ════════════════════════════════════════
+function authErr(msg) { const el=document.getElementById('auth-err'); el.textContent=msg; el.classList.add('show'); }
+function authOk(msg) { const el=document.getElementById('auth-ok'); el.textContent=msg; el.classList.add('show'); }
+function clearAuthMsg() {
+  document.getElementById('auth-err').classList.remove('show');
+  document.getElementById('auth-ok').classList.remove('show');
+}
+function authTab(mode) {
+  authMode = mode;
+  clearAuthMsg();
+  document.getElementById('at-login').classList.toggle('on',mode==='login');
+  document.getElementById('at-register').classList.toggle('on',mode==='register');
+  document.getElementById('field-name').style.display = mode==='register'?'block':'none';
+  document.getElementById('field-pass2').style.display = mode==='register'?'block':'none';
+  document.getElementById('forgot-link').style.display = mode==='login'?'block':'none';
+  document.getElementById('btn-email-auth').textContent = mode==='login'?'Sign In':'Create Account';
+  document.getElementById('auth-hint').style.display = (mode==='reset'||mode==='register')?'none':'block';
+  // show/hide panels
+  document.getElementById('panel-email').style.display = mode==='reset'?'none':'block';
+  document.getElementById('panel-reset').style.display = mode==='reset'?'block':'none';
+  document.getElementById('auth-method-tabs').style.display = mode==='reset'?'none':'flex';
+  if(mode==='reset') document.getElementById('panel-phone').style.display='none';
+  // hint text
+  if(mode==='login') {
+    document.getElementById('auth-hint').innerHTML = "Don't have an account? <span class='auth-link' onclick=\"authTab('register')\">"+t().en?.createAcc||"Create one"+"</span>";
+  } else if(mode==='register') {
+    document.getElementById('auth-hint').innerHTML = "Already have an account? <span class='auth-link' onclick=\"authTab('login')\">Sign in</span>";
+  }
+}
+function authMethod(m) {
+  authMethodMode=m;
+  clearAuthMsg();
+  document.getElementById('am-email').classList.toggle('on',m==='email');
+  document.getElementById('am-phone').classList.toggle('on',m==='phone');
+  document.getElementById('panel-email').style.display=m==='email'?'block':'none';
+  document.getElementById('panel-phone').style.display=m==='phone'?'block':'none';
+  document.getElementById('forgot-link').style.display=m==='email'&&authMode==='login'?'block':'none';
+  document.getElementById('auth-hint').style.display=m==='email'?'block':'none';
+}
+function toggleEye(id,btn) {
+  const inp=document.getElementById(id);
+  inp.type=inp.type==='password'?'text':'password';
+  btn.textContent=inp.type==='password'?'👁':'🙈';
+}
+function authErrFriendly(code) {
+  const m={
+    'auth/user-not-found':'No account with that email.',
+    'auth/wrong-password':'Wrong password.',
+    'auth/invalid-credential':'Wrong email or password.',
+    'auth/email-already-in-use':'Email already registered.',
+    'auth/invalid-email':'Invalid email address.',
+    'auth/weak-password':'Password must be at least 6 characters.',
+    'auth/too-many-requests':'Too many attempts — try again later.',
+    'auth/invalid-verification-code':'Wrong OTP code.',
+    'auth/code-expired':'OTP expired — request a new one.',
+    'auth/invalid-phone-number':'Invalid phone number format.'
+  };
+  return m[code]||'Something went wrong. Try again.';
+}
+function doEmailAuth() {
+  if(!fbAuth){ authErr('Not ready — please wait.'); return; }
+  const email=(document.getElementById('in-email').value||'').trim();
+  const pass=document.getElementById('in-pass').value||'';
+  if(!email||!pass){ authErr('Please fill in email and password.'); return; }
+  const btn=document.getElementById('btn-email-auth');
+  btn.disabled=true; btn.textContent='Please wait…'; clearAuthMsg();
+  if(authMode==='register') {
+    const pass2=document.getElementById('in-pass2').value||'';
+    const name=(document.getElementById('in-name').value||'').trim();
+    if(pass!==pass2){ authErr('Passwords do not match.'); btn.disabled=false; btn.textContent='Create Account'; return; }
+    if(pass.length<6){ authErr('Password must be at least 6 characters.'); btn.disabled=false; btn.textContent='Create Account'; return; }
+    fbAuth.createUserWithEmailAndPassword(email,pass)
+      .then(cred=>{
+        const p=[];
+        if(name) p.push(cred.user.updateProfile({displayName:name}));
+        p.push(cred.user.sendEmailVerification());
+        return Promise.all(p).then(()=>fbAuth.signOut());
+      })
+      .then(()=>{
+        btn.disabled=false; btn.textContent='Create Account';
+        authOk('Account created! Check your email to verify, then sign in.');
+        authTab('login');
+      })
+      .catch(e=>{ authErr(authErrFriendly(e.code)); btn.disabled=false; btn.textContent='Create Account'; });
+  } else {
+    fbAuth.signInWithEmailAndPassword(email,pass)
+      .then(cred=>{
+        if(!cred.user.emailVerified) {
+          fbAuth.signOut();
+          authErr('Please verify your email first. Check your inbox.');
+          btn.disabled=false; btn.textContent='Sign In';
+          return;
+        }
+        btn.disabled=false;
+      })
+      .catch(e=>{ authErr(authErrFriendly(e.code)); btn.disabled=false; btn.textContent='Sign In'; });
+  }
+}
+function doGoogle() {
+  if(!fbAuth){ authErr('Not ready.'); return; }
+  clearAuthMsg();
+  const provider=new firebase.auth.GoogleAuthProvider();
+  provider.setCustomParameters({prompt:'select_account'});
+  fbAuth.signInWithPopup(provider).catch(e=>authErr(authErrFriendly(e.code)));
+}
+function doReset() {
+  if(!fbAuth){ return; }
+  const email=(document.getElementById('in-reset-email').value||'').trim();
+  if(!email){ authErr('Enter your email.'); return; }
+  const btn=document.getElementById('btn-reset');
+  btn.disabled=true; clearAuthMsg();
+  fbAuth.sendPasswordResetEmail(email)
+    .then(()=>{ authOk('Reset link sent! Check your inbox.'); btn.disabled=false; })
+    .catch(e=>{ authErr(authErrFriendly(e.code)); btn.disabled=false; });
+}
+function sendOTP() {
+  if(!fbAuth){ authErr('Not ready.'); return; }
+  const cc=(document.getElementById('in-cc').value||'+265').trim();
+  const num=(document.getElementById('in-phone').value||'').trim().replace(/\s/g,'');
+  if(!num){ authErr('Enter your phone number.'); return; }
+  const btn=document.getElementById('btn-otp');
+  btn.disabled=true; btn.textContent='Sending…'; clearAuthMsg();
+  if(!recapVerifier) {
+    recapVerifier=new firebase.auth.RecaptchaVerifier('recaptcha-container',{size:'invisible',callback:()=>{}});
+  }
+  fbAuth.signInWithPhoneNumber(cc+num,recapVerifier)
+    .then(result=>{
+      otpConfirm=result;
+      document.getElementById('phone-step1').style.display='none';
+      document.getElementById('phone-step2').style.display='block';
+      document.getElementById('otp0').focus();
+      btn.disabled=false; btn.textContent='Send OTP';
+      toast('OTP sent!','inf');
+    })
+    .catch(e=>{
+      authErr(authErrFriendly(e.code));
+      btn.disabled=false; btn.textContent='Send OTP';
+      if(recapVerifier){ recapVerifier.clear(); recapVerifier=null; }
+    });
+}
+function otpStep(el,idx) {
+  el.value=el.value.replace(/\D/g,'');
+  if(el.value&&idx<5) document.getElementById('otp'+(idx+1)).focus();
+  if(idx===5) {
+    const code=[0,1,2,3,4,5].map(i=>document.getElementById('otp'+i).value).join('');
+    if(code.length===6) verifyOTP();
+  }
+}
+function verifyOTP() {
+  const code=[0,1,2,3,4,5].map(i=>document.getElementById('otp'+i).value).join('');
+  if(code.length!==6){ authErr('Enter all 6 digits.'); return; }
+  if(!otpConfirm){ authErr('Session expired. Go back and try again.'); return; }
+  clearAuthMsg();
+  otpConfirm.confirm(code).catch(e=>authErr(authErrFriendly(e.code)));
+}
+function backToPhone() {
+  document.getElementById('phone-step1').style.display='block';
+  document.getElementById('phone-step2').style.display='none';
+  otpConfirm=null;
+  if(recapVerifier){ recapVerifier.clear(); recapVerifier=null; }
+}
+
+// ════════════════════════════════════════
+//  NAV
+// ════════════════════════════════════════
+function go(t_) {
+  tab=t_; search=''; selItem=null; logType='expense';
+  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));
+  document.getElementById('nb-'+t_).classList.add('on');
+  render();
+  document.getElementById('view').scrollTop=0;
+}
+function render() {
+  const fn={home:rHome,log:rLog,purchases:rPurchases,summary:rSummary,manage:rManage,settings:rSettings};
+  if(fn[tab]) fn[tab]();
+}
+
+// ════════════════════════════════════════
+//  HOME
+// ════════════════════════════════════════
+function rHome() {
+  const l=t(), sp=totSpent(), inc=totIncome(), bg=cfg.overallBudget;
+  const pct=bg>0?Math.min(sp/bg,1):0, rem=bg-sp;
+  const fillCls=pct>=1?'over':pct>=.8?'warn':'';
+  const recent=entries.filter(e=>inMonth(e.date)).slice(0,5);
+  const overB=cfg.items.filter(it=>spent(it.name)>it.budget).length;
+  const nearB=cfg.items.filter(it=>{const r=spent(it.name)/it.budget;return r>=.8&&r<1;}).length;
+  const onTrk=cfg.items.filter(it=>{const s=spent(it.name);return s>0&&s<it.budget*.8;}).length;
+  const moPc=entries.filter(e=>inMonth(e.date)&&e.type!=='income').length;
+
+  let h='<div class="page">';
+  // month nav
+  h+=`<div class="mnav"><button class="mnav-btn" onclick="mPrev()">◀</button><span class="mnav-lbl">📅 ${mName()}</span><button class="mnav-btn" onclick="mNext()" style="opacity:${isCur()?.35:1}">▶</button></div>`;
+  // hero
+  h+=`<div class="hero"><div class="hero-top"><div><div class="hero-label">${l.overallCap}</div><div class="hero-val">${MKs(bg)}</div></div><div style="text-align:right"><div class="hero-label">${l.spent}</div><div class="hero-val">${MKs(sp)}</div></div></div>`;
+  h+=`<div class="pbar"><div class="pfill ${fillCls}" style="width:${Math.round(pct*100)}%"></div></div>`;
+  h+=`<div style="display:flex;justify-content:space-between;font-size:.72rem;opacity:.8;margin-bottom:12px"><span>${Math.round(pct*100)}% ${l.spent}</span><span>${l.left}: ${rem<0?'- '+MKs(-rem):MKs(rem)}</span></div>`;
+  h+=`<div class="hero-row"><div class="hero-chip"><div class="hero-chip-lbl">↑ ${l.income}</div><div class="hero-chip-val">${MKs(inc)}</div></div><div class="hero-chip"><div class="hero-chip-lbl">↓ ${l.expense}</div><div class="hero-chip-val">${MKs(sp)}</div></div></div></div>`;
+  // stats
+  h+=`<div class="stats">`;
+  h+=`<div class="stat"><div class="stat-lbl">Purchases</div><div class="stat-val">${moPc}</div><div class="stat-sub">${l.thisMon}</div></div>`;
+  h+=`<div class="stat" style="background:${overB>0?'#FEE2E2':'#D1FAE5'};"><div class="stat-lbl" style="color:${overB>0?'#991B1B':'#065F46'}">Over Budget</div><div class="stat-val" style="color:${overB>0?'#991B1B':'#065F46'}">${overB}</div><div class="stat-sub">${l.items||'items'}</div></div>`;
+  h+=`<div class="stat" style="background:#FEF3C7"><div class="stat-lbl" style="color:#92400E">Near Limit</div><div class="stat-val" style="color:#92400E">${nearB}</div><div class="stat-sub">items</div></div>`;
+  h+=`<div class="stat" style="background:#D1FAE5"><div class="stat-lbl" style="color:#065F46">On Track</div><div class="stat-val" style="color:#065F46">${onTrk}</div><div class="stat-sub">items</div></div>`;
+  h+=`</div>`;
+  // recent
+  h+=`<div class="card"><div class="card-head"><span class="card-title">📋 ${l.recent}</span><button class="btn-out" onclick="go('purchases')" style="padding:6px 12px;font-size:.72rem">${l.viewAll}</button></div><div class="card-body" style="padding:0 16px 12px">`;
+  if(recent.length) {
+    recent.forEach(e=>{
+      const u=uById(e.userId),isInc=e.type==='income';
+      h+=`<div class="entry"><div class="entry-ico" style="background:${isInc?'#D1FAE5':u.color+'22'}">${ico(e.item)}</div><div class="entry-main"><div class="entry-name">${esc(e.item)}</div>${e.notes?`<div class="entry-meta" style="color:var(--sub);font-style:italic">${esc(e.notes)}</div>`:''}`;
+      h+=`<div class="entry-meta"><span>${e.date}</span><span class="who-tag" style="background:${u.color}">${esc(u.name)}</span>${e.recurring?'<span style="font-size:.58rem;background:#EDE9FE;padding:2px 5px;border-radius:5px;color:var(--p)">🔁</span>':''}</div></div>`;
+      h+=`<div class="entry-amt${isInc?' inc':''}">${isInc?'+':''}${MK(e.amount)}</div></div>`;
+    });
+  } else {
+    h+=`<div class="empty"><div class="empty-ico">🛒</div><p>${l.noEntries}<br>${l.tapAdd}</p></div>`;
+  }
+  h+=`</div></div></div>`;
+  document.getElementById('view').innerHTML=h;
+}
+
+// ════════════════════════════════════════
+//  LOG
+// ════════════════════════════════════════
+function rLog() {
+  const l=t(), hint=selItem!==null?cfg.items[selItem]:null;
+  let h=`<div class="page"><div class="card"><div class="card-head"><span class="card-title">✏️ ${l.logTitle}</span></div><div class="card-body">`;
+  // type toggle
+  h+=`<div class="type-toggle"><button class="tt${logType==='expense'?' on-exp':''}" onclick="setLogType('expense')">↓ ${l.expense}</button><button class="tt${logType==='income'?' on-inc':''}" onclick="setLogType('income')">↑ ${l.income}</button></div>`;
+  // who
+  h+=`<div class="form-group"><label class="form-label">${l.selWho}</label><div class="upick">`;
+  cfg.users.forEach(u=>{
+    const sel=actUser().id===u.id;
+    h+=`<button class="upick-btn${sel?' sel':''}" onclick="setWho('${u.id}')"><div class="upick-av" style="background:${u.color}">${u.name[0]}</div><div class="upick-nm">${esc(u.name)}</div></button>`;
+  });
+  h+=`</div></div>`;
+  if(logType==='expense') {
+    // quick pick
+    h+=`<div class="form-group"><label class="form-label">⚡ ${l.quickPick}</label><div class="qpicks">`;
+    QUICK.forEach(name=>{
+      const i=cfg.items.findIndex(it=>it.name===name);
+      if(i>=0) h+=`<button class="qp${selItem===i?' sel':''}" onclick="pickItem(${i})">${ico(name)} ${esc(name)}</button>`;
+    });
+    h+=`</div></div>`;
+    // item grid
+    h+=`<div class="form-group"><label class="form-label">${l.selItem}</label><div class="igrid">`;
+    cfg.items.forEach((it,i)=>{
+      h+=`<div class="icard${selItem===i?' sel':''}" onclick="pickItem(${i})">${ico(it.name)}<br>${esc(it.name)}</div>`;
+    });
+    h+=`</div></div>`;
+    // budget hint
+    if(hint) {
+      const sp2=spent(hint.name),rem2=hint.budget-sp2;
+      h+=`<div class="bhint"><div class="bh"><div class="bh-lbl">${l.budget}</div><div class="bh-val">${MK(hint.budget)}</div></div><div class="bh"><div class="bh-lbl">${l.spent}</div><div class="bh-val">${MK(sp2)}</div></div><div class="bh"><div class="bh-lbl">${l.left}</div><div class="bh-val" style="color:${rem2<0?'#991B1B':'var(--y)'}">${MK(rem2)}</div></div></div>`;
+    }
+  } else {
+    h+=`<div class="form-group"><label class="form-label">${l.source}</label><select class="fs" id="in-src"><option value="Salary/Income">💰 Salary / Income</option><option value="Business Income">💼 Business Income</option><option value="Other">📦 Other</option></select></div>`;
+  }
+  // date & amount
+  h+=`<div class="frow"><div class="form-group"><label class="form-label">${l.date}</label><input type="date" class="fi" id="in-date" value="${today()}"></div><div class="form-group"><label class="form-label">${l.amount}</label><input type="number" class="fi" id="in-amt" placeholder="0" inputmode="numeric"></div></div>`;
+  // calculator
+  h+=renderCalc();
+  // qty/unit
+  if(logType==='expense') {
+    h+=`<div class="frow"><div class="form-group"><label class="form-label">${l.qty}</label><input type="number" class="fi" id="in-qty" placeholder="1" inputmode="decimal"></div><div class="form-group"><label class="form-label">${l.unit}</label><select class="fs" id="in-unit">${l.units.map(u=>`<option>${u}</option>`).join('')}</select></div></div>`;
+  }
+  h+=`<div class="form-group"><label class="form-label">${l.notes}</label><input type="text" class="fi" id="in-notes" placeholder="e.g. Bought at Chipiku..."></div>`;
+  if(logType==='expense') {
+    h+=`<div style="display:flex;align-items:center;gap:8px;margin-bottom:14px"><input type="checkbox" id="in-recurr" style="width:17px;height:17px;accent-color:var(--p)"><label for="in-recurr" style="font-size:.8rem;font-weight:500">🔁 ${l.recurrLabel}</label></div>`;
+  }
+  const btnBg=logType==='income'?'class="btn-main green"':'class="btn-main"';
+  h+=`<button ${btnBg} onclick="saveEntry()">💾 ${l.save}</button></div></div></div>`;
+  document.getElementById('view').innerHTML=h;
+}
+function setLogType(tp){ logType=tp; selItem=null; rLog(); }
+function setWho(id){ localStorage.setItem('nb_uid',id); updatePill(); rLog(); }
+function pickItem(i){ selItem=i; rLog(); }
+function renderCalc() {
+  const keys=['7','8','9','÷','4','5','6','×','1','2','3','-','C','0','X','+'];
+  let g=keys.map(k=>{
+    const cls=(/[÷×\-+CX]/.test(k)?'o':'n');
+    return `<button class="ck ${cls}" onclick="cKey('${k}')">${k==='X'?'⌫':k}</button>`;
+  }).join('');
+  return `<div class="calc"><div class="calc-disp" id="calc-disp">0</div><div class="calc-grid">${g}<button class="ck eq" style="grid-column:span 3" onclick="cKey('=')">=</button><button class="ck n" onclick="cInsert()" style="background:#D1FAE5;color:#065F46">✔ Set</button></div></div>`;
+}
+function cKey(k) {
+  if(k==='C'){calcVal='';calcExpr='';}
+  else if(k==='X'){calcVal=calcVal.slice(0,-1);}
+  else if(k==='='){
+    try{const e=calcExpr.replace(/×/g,'*').replace(/÷/g,'/');calcVal=String(Math.round(Function('"use strict";return('+e+')')() *100)/100);calcExpr=calcVal;}
+    catch{calcVal='Err';calcExpr='';}
+  } else if('+-×÷'.includes(k)){calcExpr=(calcExpr||calcVal)+k;calcVal='';}
+  else{calcVal+=k;calcExpr+=k;}
+  const d=document.getElementById('calc-disp');
+  if(d) d.textContent=calcVal||calcExpr||'0';
+}
+function cInsert(){
+  const v=parseFloat(calcVal||calcExpr);
+  if(!isNaN(v)&&v>0){const f=document.getElementById('in-amt');if(f)f.value=v;calcVal='';calcExpr='';const d=document.getElementById('calc-disp');if(d)d.textContent='0';toast(MK(v)+' set','inf');}
+}
+function saveEntry(){
+  const l=t();
+  const amt=parseFloat((document.getElementById('in-amt')||{}).value||0);
+  if(!amt||amt<=0){toast('Enter an amount','err');return;}
+  if(logType==='expense'&&selItem===null){toast(l.selItem,'err');return;}
+  const e={
+    date:(document.getElementById('in-date')||{}).value||today(),
+    amount:amt,
+    notes:(document.getElementById('in-notes')||{}).value||'',
+    userId:actUser().id,
+    type:logType
+  };
+  if(logType==='expense'){
+    e.item=cfg.items[selItem].name;
+    e.qty=(document.getElementById('in-qty')||{}).value||'';
+    e.unit=(document.getElementById('in-unit')||{}).value||'';
+    e.recurring=document.getElementById('in-recurr')?document.getElementById('in-recurr').checked:false;
+  } else {
+    e.item=(document.getElementById('in-src')||{}).value||'Salary/Income';
+  }
+  addEntry(e);
+  selItem=null; calcVal=''; calcExpr='';
+  toast(l.saved);
+  rLog();
+}
+
+// ════════════════════════════════════════
+//  PURCHASES
+// ════════════════════════════════════════
+function rPurchases(){
+  const l=t();
+  let list=[...entries];
+  if(fUser!=='all') list=list.filter(e=>e.userId===fUser);
+  if(search) list=list.filter(e=>(e.item+' '+(e.notes||'')).toLowerCase().includes(search.toLowerCase()));
+  let h=`<div class="page">`;
+  h+=`<div class="search-wrap"><span class="search-ico">🔍</span><input type="text" placeholder="${l.allEntries}…" value="${esc(search)}" oninput="doSearch(this.value)"></div>`;
+  h+=`<div class="filters"><div class="ftag${fUser==='all'?' on':''}" onclick="setFUser('all')">${l.all}</div>`;
+  cfg.users.forEach(u=>{ h+=`<div class="ftag${fUser===u.id?' on':''}" onclick="setFUser('${u.id}')" style="${fUser===u.id?'background:'+u.color+';border-color:'+u.color:''}">${esc(u.name)}</div>`; });
+  h+=`</div>`;
+  if(list.length){
+    list.forEach(e=>{
+      const u=uById(e.userId),isInc=e.type==='income';
+      h+=`<div class="pcard${isInc?' inc-card':''}">`;
+      h+=`<div class="pcard-ico" style="background:${isInc?'#D1FAE5':u.color+'22'}">${ico(e.item)}</div>`;
+      h+=`<div class="pcard-body"><div class="pcard-top"><div class="pcard-name">${esc(e.item)}${e.recurring?' 🔁':''}</div><div class="pcard-amt${isInc?' inc':''}">${isInc?'+':''}${MK(e.amount)}</div></div>`;
+      if(e.notes) h+=`<div class="pcard-note">${esc(e.notes)}</div>`;
+      h+=`<div class="pcard-meta"><span style="font-size:.65rem;color:var(--sub)">${e.date}</span><span class="who-tag" style="background:${u.color}">${esc(u.name)}</span></div>`;
+      h+=`<div class="pcard-actions"><button class="btn-sm btn-edit" onclick="openEditEntry('${e.id}')">✏ ${l.edit}</button><button class="btn-sm btn-del" onclick="doDelEntry('${e.id}')">🗑 ${l.del}</button></div>`;
+      h+=`</div></div>`;
+    });
+  } else {
+    h+=`<div class="empty"><div class="empty-ico">📋</div><p>${l.noEntries}</p></div>`;
+  }
+  h+=`</div>`;
+  document.getElementById('view').innerHTML=h;
+}
+function doSearch(v){search=v;rPurchases();}
+function setFUser(id){fUser=id;rPurchases();}
+function doDelEntry(id){if(!confirm(t().delConfirm))return;delEntry(id);toast(t().deleted);}
+function openEditEntry(id){
+  const e=entries.find(x=>x.id===id); if(!e) return;
+  const l=t(),isInc=e.type==='income';
+  const uid=e.userId||cfg.users[0].id;
+  let h=`<div class="modal-drag"></div><div class="modal-title">✏️ ${l.edit}</div>`;
+  h+=`<input type="hidden" id="ep-id" value="${esc(id)}"><input type="hidden" id="ep-uid" value="${esc(uid)}">`;
+  h+=`<div class="form-group"><label class="form-label">${l.selWho}</label><div class="upick">`;
+  cfg.users.forEach(u=>{ h+=`<button class="upick-btn${uid===u.id?' sel':''}" onclick="epWho(this,'${u.id}')"><div class="upick-av" style="background:${u.color}">${u.name[0]}</div><div class="upick-nm">${esc(u.name)}</div></button>`; });
+  h+=`</div></div>`;
+  if(!isInc){h+=`<div class="form-group"><label class="form-label">Item</label><select class="fs" id="ep-item">${cfg.items.map(it=>`<option value="${esc(it.name)}"${e.item===it.name?' selected':''}>${ico(it.name)} ${esc(it.name)}</option>`).join('')}</select></div>`;}
+  h+=`<div class="frow"><div class="form-group"><label class="form-label">${l.date}</label><input type="date" class="fi" id="ep-date" value="${e.date}"></div><div class="form-group"><label class="form-label">${l.amount}</label><input type="number" class="fi" id="ep-amt" value="${e.amount}" inputmode="numeric"></div></div>`;
+  if(!isInc){h+=`<div class="frow"><div class="form-group"><label class="form-label">${l.qty}</label><input type="number" class="fi" id="ep-qty" value="${e.qty||''}" inputmode="decimal"></div><div class="form-group"><label class="form-label">${l.unit}</label><select class="fs" id="ep-unit">${l.units.map(u=>`<option${e.unit===u?' selected':''}>${u}</option>`).join('')}</select></div></div>`;}
+  h+=`<div class="form-group"><label class="form-label">${l.notes}</label><input type="text" class="fi" id="ep-notes" value="${esc(e.notes||'')}"></div>`;
+  h+=`<div style="display:flex;gap:9px"><button class="btn-out" style="flex:1" onclick="closeOv('ov-ep')">${l.all==='Zonse'?'Leka':'Cancel'}</button><button class="btn-main" style="flex:2" onclick="saveEditEntry(${isInc})">💾 ${l.save}</button></div>`;
+  document.getElementById('mo-ep').innerHTML=h; openOv('ov-ep');
+}
+function epWho(el,id){document.getElementById('ep-uid').value=id;el.closest('.upick').querySelectorAll('.upick-btn').forEach(b=>b.classList.remove('sel'));el.classList.add('sel');}
+function saveEditEntry(isInc){
+  const id=document.getElementById('ep-id').value;
+  const amt=parseFloat(document.getElementById('ep-amt').value);
+  if(!amt||amt<=0){toast('Amount required','err');return;}
+  const data={date:document.getElementById('ep-date').value,amount:amt,notes:document.getElementById('ep-notes').value||'',userId:document.getElementById('ep-uid').value};
+  if(!isInc){data.item=document.getElementById('ep-item').value;data.qty=document.getElementById('ep-qty').value||'';data.unit=document.getElementById('ep-unit').value;}
+  editEntry(id,data);closeOv('ov-ep');toast(t().updated);
+}
+
+// ════════════════════════════════════════
+//  SUMMARY
+// ════════════════════════════════════════
+function rSummary(){
+  const l=t(),tB=cfg.items.reduce((s,it)=>s+it.budget,0),tS=totSpent();
+  let h=`<div class="page">`;
+  h+=`<div class="mnav"><button class="mnav-btn" onclick="mPrev()">◀</button><span class="mnav-lbl">📊 ${mName()}</span><button class="mnav-btn" onclick="mNext()" style="opacity:${isCur()?.35:1}">▶</button></div>`;
+  h+=`<div class="card" style="overflow:hidden"><div class="card-head"><span class="card-title">📊 ${l.sumTitle}</span></div>`;
+  cfg.items.forEach(it=>{
+    const sp=spent(it.name),st=statOf(sp,it.budget),pct=Math.min(sp/it.budget,1);
+    const fillColor=st==='over'?'#EF4444':st==='warn'?'#F59E0B':'#10B981';
+    const badge=st==='over'?`<span class="brow-badge bb-over">${l.budget&&l.budget==='Bajeti'?'Yopitilira':'Over'}</span>`:st==='warn'?`<span class="brow-badge bb-warn">${lang==='cw'?'Pafupi':'Near'}</span>`:sp>0?`<span class="brow-badge bb-ok">${lang==='cw'?'Chabwino':'OK'}</span>`:'';
+    h+=`<div class="brow" style="padding:12px 16px"><div class="brow-top"><div class="brow-left"><span style="font-size:1rem">${ico(it.name)}</span><span class="brow-name">${esc(it.name)}</span>${badge}</div><div class="brow-acts"><button class="btn-sm btn-edit" onclick="openEditBudget(${cfg.items.indexOf(it)})">✏</button></div></div>`;
+    h+=`<div class="brow-nums"><span>${l.budget}: ${MK(it.budget)}</span><span>${l.spent}: ${MK(sp)}</span><span style="color:${it.budget-sp<0?'#991B1B':'var(--sub)'}">${l.left}: ${MK(it.budget-sp)}</span></div>`;
+    h+=`<div class="brow-bar"><div class="brow-fill" style="width:${Math.min(pct*100,100)}%;background:${fillColor}"></div></div></div>`;
+  });
+  h+=`<div class="suma-foot"><div class="sf"><div class="sf-lbl">${l.total} ${l.budget}</div><div class="sf-val">${MK(tB)}</div></div><div class="sf"><div class="sf-lbl">${l.total} ${l.spent}</div><div class="sf-val">${MK(tS)}</div></div><div class="sf"><div class="sf-lbl">${l.left}</div><div class="sf-val" style="color:${tS>tB?'#FCA5A5':'#A7F3D0'}">${MK(tB-tS)}</div></div></div></div>`;
+  // Goals
+  if(cfg.goals&&cfg.goals.length){
+    h+=`<div class="card"><div class="card-head"><span class="card-title">🎯 ${l.goals}</span></div><div class="card-body">`;
+    cfg.goals.forEach(g=>{const p=Math.min(g.saved/g.target,1);h+=`<div class="goal-card"><div class="goal-top"><span class="goal-name">${esc(g.name)}</span><span class="goal-pct">${Math.round(p*100)}%</span></div><div class="goal-bar"><div class="goal-fill" style="width:${Math.round(p*100)}%"></div></div><div class="goal-meta"><span>${MK(g.saved)} ${lang==='cw'?'yosungidwa':'saved'}</span><span>${lang==='cw'?'Cholinga':'Target'}: ${MK(g.target)}</span></div></div>`;});
+    h+=`</div></div>`;
+  }
+  h+=`</div>`;
+  document.getElementById('view').innerHTML=h;
+}
+
+// ════════════════════════════════════════
+//  MANAGE
+// ════════════════════════════════════════
+function rManage(){
+  const l=t();
+  let h=`<div class="page">`;
+  // household code
+  if(hid){
+    h+=`<div class="hcode"><div><div class="hcode-lbl">🏠 ${l.hCode}</div><div class="hcode-val">${hid}</div></div><div class="hcode-btns"><button class="hcode-btn" style="background:#4F46E5;color:#fff" onclick="copyCode()">${l.copy}</button><button class="hcode-btn" style="background:#25D366;color:#fff" onclick="shareWA()">${l.shareWA}</button><button class="hcode-btn" style="background:#B45309;color:#fff" onclick="resetHCode()">↻ ${l.resetCode}</button></div></div>`;
+  }
+  // members
+  h+=`<div class="card"><div class="card-head"><span class="card-title">👥 ${l.members}</span><button class="btn-sm btn-edit" onclick="openAddMember()">+ ${l.addMember}</button></div><div class="card-body"><div class="mem-grid">`;
+  cfg.users.forEach((u,i)=>{
+    h+=`<div class="mem-card" style="background:${u.color}18">`;
+    if(cfg.users.length>1) h+=`<button class="mem-del" onclick="delMember(${i})">✕</button>`;
+    h+=`<button class="mem-edit" onclick="openEditMember(${i})">✏</button>`;
+    h+=`<div class="mem-av" style="background:${u.color}">${u.name[0]}</div>`;
+    h+=`<div class="mem-name">${esc(u.name)}</div>`;
+    h+=`<div class="mem-count">${entries.filter(e=>e.userId===u.id&&inMonth(e.date)).length} ${lang==='cw'?'mwezi uno':'this month'}</div></div>`;
+  });
+  h+=`</div></div></div>`;
+  // overall budget
+  h+=`<div class="ob-row"><label class="ob-lbl">🏠 ${l.overallCap}</label><input type="number" class="ob-in" id="ob-val" value="${cfg.overallBudget}" inputmode="numeric" onchange="updateOB(this.value)"></div>`;
+  // goals
+  h+=`<div class="card"><div class="card-head"><span class="card-title">🎯 ${l.goals}</span><button class="btn-sm btn-edit" onclick="openAddGoal()">+ ${l.addGoal}</button></div><div class="card-body">`;
+  if(cfg.goals&&cfg.goals.length){
+    cfg.goals.forEach((g,i)=>{
+      const p=Math.min(g.saved/g.target,1);
+      h+=`<div class="goal-card"><div class="goal-top"><span class="goal-name">${esc(g.name)}</span><div style="display:flex;gap:6px;align-items:center"><span class="goal-pct">${Math.round(p*100)}%</span><button class="btn-sm btn-ok" onclick="topUpGoal(${i})" style="padding:3px 8px;font-size:.63rem">+${l.topUp}</button><button class="btn-sm btn-del" onclick="delGoal(${i})" style="padding:3px 8px;font-size:.63rem">🗑</button></div></div><div class="goal-bar"><div class="goal-fill" style="width:${Math.round(p*100)}%"></div></div><div class="goal-meta"><span>${MK(g.saved)}</span><span>${MK(g.target)}</span></div></div>`;
+    });
+  } else { h+=`<div class="empty" style="padding:10px 0"><p>${l.noGoals}</p></div>`; }
+  h+=`</div></div>`;
+  // items
+  h+=`<div class="card" style="overflow:hidden"><div class="card-head"><span class="card-title">🛒 ${l.items}</span></div>`;
+  h+=`<div class="card-body" style="padding:8px 16px 4px"><div class="sort-bar">`;
+  [{k:'cat',lbl:l.sortCat},{k:'az',lbl:l.sortAZ},{k:'over',lbl:l.sortOver},{k:'spend',lbl:l.sortSpend}].forEach(s=>{h+=`<button class="sbt${itemSort===s.k?' on':''}" onclick="setItemSort('${s.k}')">${s.lbl}</button>`;});
+  h+=`</div><div class="bulk"><span class="bulk-lbl">📈 ${l.bulkLabel}</span><input type="number" class="bulk-in" id="bulk-pct" placeholder="+10"><button class="bulk-btn" onclick="doBulk()">${l.apply}</button></div></div>`;
+  // items list
+  let its=cfg.items;
+  if(itemSort==='cat'){
+    ['Food','Household','Personal','Transport','Other'].forEach(cat=>{
+      const cits=its.map((it,i)=>({...it,i})).filter(it=>catOf(it.name)===cat);
+      if(!cits.length) return;
+      h+=`<div style="padding:6px 16px;background:linear-gradient(90deg,${CAT_COLORS[cat]}18,transparent);border-top:1px solid var(--border);border-bottom:1px solid var(--border)"><span style="font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:${CAT_COLORS[cat]}">${t().cats[cat]||cat}</span></div>`;
+      cits.forEach(it=>{ h+=renderItemRow(it,it.i); });
+    });
+  } else {
+    let sorted=its.map((it,i)=>({...it,i,sp:spent(it.name)}));
+    if(itemSort==='az') sorted.sort((a,b)=>a.name.localeCompare(b.name));
+    else if(itemSort==='over') sorted.sort((a,b)=>(b.sp/b.budget)-(a.sp/a.budget));
+    else if(itemSort==='spend') sorted.sort((a,b)=>b.sp-a.sp);
+    sorted.forEach(it=>{ h+=renderItemRow(it,it.i); });
+  }
+  // add item form
+  const avail=Object.keys(ICONS).filter(n=>!its.find(it=>it.name===n)).slice(0,8);
+  h+=`<div class="add-form"><div class="add-form-title">+ ${l.addItem}</div>`;
+  if(avail.length){h+=`<div class="form-group" style="margin-bottom:8px"><label class="form-label">Quick Add</label><div class="qpicks">${avail.map(n=>`<button class="qp" onclick="quickAddItem('${n.replace(/'/g,"\\'")}')">${ico(n)} ${n}</button>`).join('')}</div></div>`;}
+  h+=`<input type="text" class="fi" id="new-item-name" placeholder="${l.itemName}" style="margin-bottom:8px">`;
+  h+=`<div style="display:flex;gap:8px"><input type="number" class="fi" id="new-item-budget" placeholder="${l.itemBudget}" inputmode="numeric" style="flex:1"><button class="btn-main" onclick="addItem()" style="width:auto;padding:9px 16px;font-size:.8rem">+ ${l.addItem}</button></div></div></div>`;
+  h+=`</div>`;
+  document.getElementById('view').innerHTML=h;
+}
+function renderItemRow(it,i){
+  const sp=spent(it.name),st=statOf(sp,it.budget),pct=Math.min(sp/it.budget,1)*100;
+  const fc=st==='over'?'#EF4444':st==='warn'?'#F59E0B':'#10B981';
+  const l=t();
+  return `<div class="brow" style="padding:10px 16px"><div class="brow-top"><div class="brow-left"><span>${ico(it.name)}</span><span class="brow-name">${esc(it.name)}</span></div><div class="brow-acts"><button class="btn-sm btn-edit" onclick="openEditBudget(${i})">✏</button><button class="btn-sm btn-del" onclick="delItem(${i})">🗑</button></div></div><div class="brow-nums"><span>${l.budget}: ${MK(it.budget)}</span><span>${l.spent}: ${MK(sp)}</span></div><div class="brow-bar"><div class="brow-fill" style="width:${pct}%;background:${fc}"></div></div></div>`;
+}
+function setItemSort(s){itemSort=s;rManage();}
+function doBulk(){
+  const pct=parseFloat((document.getElementById('bulk-pct')||{}).value||0);
+  if(!pct){toast('Enter a %','err');return;}
+  if(!confirm(`Adjust all budgets by ${pct>0?'+':''}${pct}%?`)) return;
+  const nc=JSON.parse(JSON.stringify(cfg));
+  nc.items=nc.items.map(it=>({...it,budget:Math.round(it.budget*(1+pct/100))}));
+  saveCfg(nc); toast('Budgets updated!'); rManage();
+}
+function quickAddItem(name){const el=document.getElementById('new-item-name');if(el){el.value=name;document.getElementById('new-item-budget').focus();}}
+function updateOB(v){saveCfg({...cfg,overallBudget:parseFloat(v)||400000});}
+function addItem(){
+  const n=(document.getElementById('new-item-name')||{}).value?.trim();
+  const b=parseFloat((document.getElementById('new-item-budget')||{}).value||0);
+  if(!n||!b||b<=0){toast('Fill name and budget','err');return;}
+  const nc=JSON.parse(JSON.stringify(cfg));
+  nc.items.push({name:n,budget:b});
+  saveCfg(nc);toast(t().itemAdded);rManage();
+}
+function delItem(i){
+  if(!confirm(`${t().delConfirm} "${cfg.items[i].name}"?`)) return;
+  const nc=JSON.parse(JSON.stringify(cfg));
+  nc.items.splice(i,1);
+  saveCfg(nc);toast(t().itemDeleted);rManage();
+}
+function openEditBudget(i){
+  const it=cfg.items[i],l=t();
+  document.getElementById('mo-edit').innerHTML=`<div class="modal-drag"></div><div class="modal-title">${ico(it.name)} ${esc(it.name)}</div><input type="hidden" id="eb-i" value="${i}"><div class="form-group"><label class="form-label">${l.itemBudget}</label><input type="number" class="fi" id="eb-val" value="${it.budget}" inputmode="numeric"></div><div style="display:flex;gap:9px"><button class="btn-out" style="flex:1" onclick="closeOv('ov-edit')">${lang==='cw'?'Leka':'Cancel'}</button><button class="btn-main" style="flex:2" onclick="saveEditBudget()">💾 ${l.save}</button></div>`;
+  openOv('ov-edit');
+}
+function saveEditBudget(){
+  const i=parseInt(document.getElementById('eb-i').value);
+  const v=parseFloat(document.getElementById('eb-val').value);
+  if(v>0){const nc=JSON.parse(JSON.stringify(cfg));nc.items[i].budget=v;saveCfg(nc);toast(t().budgetUpdated);}
+  closeOv('ov-edit');rManage();
+}
+function copyCode(){if(hid){navigator.clipboard&&navigator.clipboard.writeText(hid).catch(()=>{});toast(t().codeCopied,'inf');}}
+function shareWA(){if(hid){window.open('https://wa.me/?text='+encodeURIComponent('Join my Nyumba Budget!\nCode: '+hid),'_blank');}}
+// members
+function openAddMember(){
+  const l=t();
+  let h=`<div class="modal-drag"></div><div class="modal-title">+ ${l.addMember}</div>`;
+  h+=`<div class="form-group"><label class="form-label">${l.memberName}</label><input type="text" class="fi" id="nm-name" placeholder="e.g. Son, Helper"></div>`;
+  h+=`<div class="form-group"><label class="form-label">${l.memberColour}</label><div class="cpick" id="nm-colors">${MEM_COLORS.map((c,i)=>`<div class="cp${i===0?' sel':''}" style="background:${c}" onclick="pickColor(this,'nm-col')"></div>`).join('')}</div><input type="hidden" id="nm-col" value="${MEM_COLORS[0]}"></div>`;
+  h+=`<div style="display:flex;gap:9px"><button class="btn-out" style="flex:1" onclick="closeOv('ov-edit')">${lang==='cw'?'Leka':'Cancel'}</button><button class="btn-main" style="flex:2" onclick="saveMember()">+ ${l.addMember}</button></div>`;
+  document.getElementById('mo-edit').innerHTML=h;openOv('ov-edit');
+}
+function openEditMember(i){
+  const u=cfg.users[i],l=t();
+  let h=`<div class="modal-drag"></div><div class="modal-title">✏ ${l.editMember}</div>`;
+  h+=`<input type="hidden" id="em-i" value="${i}"><div class="form-group"><label class="form-label">${l.memberName}</label><input type="text" class="fi" id="em-name" value="${esc(u.name)}"></div>`;
+  h+=`<div class="form-group"><label class="form-label">${l.memberColour}</label><div class="cpick" id="em-colors">${MEM_COLORS.map(c=>`<div class="cp${u.color===c?' sel':''}" style="background:${c}" onclick="pickColor(this,'em-col')"></div>`).join('')}</div><input type="hidden" id="em-col" value="${u.color}"></div>`;
+  h+=`<div style="display:flex;gap:9px"><button class="btn-out" style="flex:1" onclick="closeOv('ov-edit')">${lang==='cw'?'Leka':'Cancel'}</button><button class="btn-main" style="flex:2" onclick="saveEditMember()">💾 ${l.save}</button></div>`;
+  document.getElementById('mo-edit').innerHTML=h;openOv('ov-edit');
+}
+function pickColor(el,hid){document.getElementById(hid).value=el.style.background;el.parentElement.querySelectorAll('.cp').forEach(c=>c.classList.remove('sel'));el.classList.add('sel');}
+function saveMember(){
+  const nm=(document.getElementById('nm-name').value||'').trim();
+  if(!nm){toast('Enter a name','err');return;}
+  const nc=JSON.parse(JSON.stringify(cfg));
+  nc.users.push({id:'u'+Date.now(),name:nm,color:document.getElementById('nm-col').value});
+  saveCfg(nc);closeOv('ov-edit');toast(t().updated);rManage();
+}
+function saveEditMember(){
+  const i=parseInt(document.getElementById('em-i').value);
+  const nm=(document.getElementById('em-name').value||'').trim();
+  if(!nm){toast('Enter a name','err');return;}
+  const nc=JSON.parse(JSON.stringify(cfg));
+  nc.users[i].name=nm;nc.users[i].color=document.getElementById('em-col').value;
+  saveCfg(nc);closeOv('ov-edit');updatePill();toast(t().updated);rManage();
+}
+function delMember(i){
+  if(!confirm(t().delMember)) return;
+  const nc=JSON.parse(JSON.stringify(cfg));nc.users.splice(i,1);
+  saveCfg(nc);toast(t().deleted);rManage();
+}
+// goals
+function openAddGoal(){
+  const l=t();
+  document.getElementById('mo-goal').innerHTML=`<div class="modal-drag"></div><div class="modal-title">🎯 ${l.addGoal}</div><div class="form-group"><label class="form-label">${l.goalName}</label><input type="text" class="fi" id="g-name" placeholder="${lang==='cw'?'Mawindo atsopano, Sukulu...':'New TV, School Fees...'}"></div><div class="form-group"><label class="form-label">${l.goalTarget}</label><input type="number" class="fi" id="g-target" inputmode="numeric" placeholder="e.g. 150000"></div><div class="form-group"><label class="form-label">${l.goalSaved}</label><input type="number" class="fi" id="g-saved" inputmode="numeric" placeholder="0"></div><div style="display:flex;gap:9px"><button class="btn-out" style="flex:1" onclick="closeOv('ov-goal')">${lang==='cw'?'Leka':'Cancel'}</button><button class="btn-main" style="flex:2" onclick="saveGoal()">+ ${l.addGoal}</button></div>`;
+  openOv('ov-goal');
+}
+function saveGoal(){
+  const name=(document.getElementById('g-name').value||'').trim();
+  const target=parseFloat(document.getElementById('g-target').value||0);
+  const saved=parseFloat(document.getElementById('g-saved').value||0);
+  if(!name||!target||target<=0){toast('Fill name and target','err');return;}
+  const nc=JSON.parse(JSON.stringify(cfg));
+  if(!nc.goals)nc.goals=[];
+  nc.goals.push({name,target,saved});
+  saveCfg(nc);closeOv('ov-goal');toast(lang==='cw'?'Cholinga chaonjezedwa!':'Goal added!');rManage();
+}
+function topUpGoal(i){
+  const g=cfg.goals[i];
+  const amt=parseFloat(prompt(`Add to "${g.name}" (${MK(g.saved)} / ${MK(g.target)}):\nAmount to add (MK):`)||0);
+  if(!amt||amt<=0)return;
+  const nc=JSON.parse(JSON.stringify(cfg));
+  nc.goals[i].saved=Math.min(nc.goals[i].saved+amt,nc.goals[i].target);
+  saveCfg(nc);toast(lang==='cw'?'Cholinga chasinthidwa!':'Goal updated!');rManage();
+}
+function delGoal(i){
+  if(!confirm(t().delConfirm))return;
+  const nc=JSON.parse(JSON.stringify(cfg));nc.goals.splice(i,1);
+  saveCfg(nc);rManage();
+}
+
+// ════════════════════════════════════════
+//  SETTINGS
+// ════════════════════════════════════════
+function rSettings(){
+  const l=t();
+  const u=fbUser;
+  let h=`<div class="page">`;
+  // account box
+  h+=`<div class="acct-box"><div class="acct-av">${u?u.displayName?u.displayName[0]:u.email?u.email[0]:'U':'U'}</div><div><div class="acct-name">${u?u.displayName||u.email||'User':'Guest'}</div><div class="acct-email">${u?u.email||u.phoneNumber||'':hid||''}</div></div></div>`;
+  // PIN
+  h+=`<div class="card"><div class="card-head"><span class="card-title">🔐 ${lang==='cw'?'Chitetezo':'Security'}</span></div><div class="card-body">`;
+  if(hasPIN()){
+    h+=`<div style="display:flex;gap:8px"><button class="btn-sm btn-edit" style="flex:1;padding:10px" onclick="openSetPIN()">🔑 ${l.pinChange}</button><button class="btn-sm btn-del" style="flex:1;padding:10px" onclick="removePIN()">🔓 ${l.pinRemove}</button></div>`;
+  } else {
+    h+=`<button class="btn-sm btn-edit" style="width:100%;padding:11px;font-size:.8rem" onclick="openSetPIN()">🔐 ${l.pinSetup}</button>`;
+  }
+  h+=`</div></div>`;
+  // export
+  h+=`<div class="card"><div class="card-head"><span class="card-title">📁 ${lang==='cw'?'Kutumiza Data':'Data Export'}</span></div><div class="card-body"><button class="export-btn" onclick="exportCSV()">📄 ${l.exportCSV}</button></div></div>`;
+  // language
+  h+=`<div class="card"><div class="card-head"><span class="card-title">🌐 ${lang==='cw'?'Chinenero':'Language'}</span></div><div class="card-body"><div class="set-row"><div><div class="set-lbl">${lang==='cw'?'Chinenero Chosankhidwa':'Current Language'}</div><div class="set-sub">${lang==='en'?'English':'Chichewa'}</div></div><button class="btn-sm btn-edit" onclick="toggleLang()">${lang==='en'?'Switch to Chichewa':'Sintha ku Chingerezi'}</button></div></div></div>`;
+  // about
+  h+=`<div class="card"><div class="card-head"><span class="card-title">ℹ️ ${lang==='cw'?'Za App':'About'}</span></div><div class="card-body"><div class="set-row"><div class="set-lbl">Nyumba Budget</div><div class="set-val">v3.0</div></div><div class="set-row"><div><div class="set-lbl">${lang==='cw'?'Opanga':'Developer'}</div><div class="set-sub">Rodart Creatives</div></div></div></div></div>`;
+  // sign out
+  h+=`<button class="logout-btn" onclick="signOut()">🚪 ${l.signOut}</button>`;
+  h+=`</div>`;
+  document.getElementById('view').innerHTML=h;
+}
+function exportCSV(){
+  const rows=[['Date','Item','Type','Amount','User','Qty','Unit','Notes']];
+  entries.forEach(e=>{const u=uById(e.userId);rows.push([e.date,e.item,e.type||'expense',e.amount,u.name,e.qty||'',e.unit||'',e.notes||'']);});
+  const csv=rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\n');
+  const a=document.createElement('a');
+  a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
+  a.download='nyumba-budget-'+mName().replace(/\s/g,'-')+'.csv';
+  a.click();
+  toast(t().downloaded);
+}
+
+// ════════════════════════════════════════
+//  USER SWITCH MODAL
+// ════════════════════════════════════════
+function openUserSwitch(){
+  const l=t();
+  let h=`<div class="modal-drag"></div><div class="modal-title">👤 ${l.selWho}</div><div style="display:flex;flex-direction:column;gap:8px">`;
+  cfg.users.forEach(u=>{
+    const isAct=actUser().id===u.id;
+    h+=`<div style="display:flex;align-items:center;gap:12px;padding:12px;border-radius:12px;border:1.5px solid ${isAct?u.color:'var(--border)'};background:${isAct?u.color+'14':'var(--card)'};cursor:pointer" onclick="switchUser('${u.id}')">`;
+    h+=`<div style="width:42px;height:42px;border-radius:50%;background:${u.color};display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:700;color:#fff">${u.name[0]}</div>`;
+    h+=`<div style="flex:1"><div style="font-weight:700;font-size:.9rem">${esc(u.name)}</div><div style="font-size:.68rem;color:var(--sub)">${entries.filter(e=>e.userId===u.id&&inMonth(e.date)).length} ${lang==='cw'?'mwezi uno':'entries this month'}</div></div>`;
+    if(isAct) h+=`<span style="color:${u.color};font-size:1.1rem">✓</span>`;
+    h+=`</div>`;
+  });
+  h+=`</div>`;
+  document.getElementById('mo-user').innerHTML=h;openOv('ov-user');
+}
+function switchUser(id){localStorage.setItem('nb_uid',id);updatePill();closeOv('ov-user');render();}
+
+// ════════════════════════════════════════
+//  MODALS
+// ════════════════════════════════════════
+function openOv(id){document.getElementById(id).classList.add('open');}
+function closeOv(id){document.getElementById(id).classList.remove('open');}
+document.querySelectorAll('.overlay').forEach(o=>{o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');});});
+
+// ════════════════════════════════════════
+//  INIT
+// ════════════════════════════════════════
+if(!localStorage.getItem('nb_uid')) localStorage.setItem('nb_uid','u1');
+document.getElementById('lang-btn').textContent = lang==='en'?'CW':'EN';
+applyLang();
+
+// Check PIN before showing anything
+if(hasPIN() && localStorage.getItem('nb_hid')) {
+  pinMode='check';
+  showPin();
+  // Boot in background — PIN screen is on top
+  boot();
+} else {
+  boot();
+}
+</script>
+</body>
+</html>
   --mist:#F0EBF8;--white:#fff;
   --cr:20px;--sh:0 4px 20px rgba(0,0,0,.1);
 }
