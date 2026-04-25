@@ -15,6 +15,24 @@
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 
+<script>
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyA5TdvAFE0cFkme7O--LtJNKIikM-KXFdM",
+  authDomain: "bajeti-yanga.firebaseapp.com",
+  projectId: "bajeti-yanga",
+  storageBucket: "bajeti-yanga.firebasestorage.app",
+  messagingSenderId: "585037359165",
+  appId: "1:585037359165:web:01b831d5277faed34be254"
+};
+
+if (!firebase.apps.length) {
+    firebase.initializeApp(FIREBASE_CONFIG);
+}
+let db = firebase.firestore();
+let auth = firebase.auth();
+auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(()=>{});
+</script>
+
 <style>
   :root {
     --bg: #F8F9FA;
