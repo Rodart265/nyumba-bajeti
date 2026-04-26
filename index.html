@@ -45,7 +45,7 @@ auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(()=>{});
   --y1:#F57F17;--y2:#F9A825;
   --ink:#1A1A2E;--mid:#607D8B;
   --mist:#F5F0FB;--white:#fff;
-  --cr:16px;--sh:0 2px 10px rgba(0,0,0,.04);
+  --cr:14px;--sh:0 2px 8px rgba(0,0,0,.05);
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;overflow:hidden;background:var(--mist);font-family:'Plus Jakarta Sans',sans-serif;color:var(--ink);font-size:14px;}
@@ -96,7 +96,7 @@ i.fi { line-height: 1; display: inline-flex; align-items: center; justify-conten
 .cb{padding:10px 14px}
 
 /* HERO */
-.hero{background:linear-gradient(145deg,var(--p1),#6A1B9A 60%,#4A148C);border-radius:var(--cr);padding:16px;margin-bottom:12px;box-shadow:0 6px 20px rgba(123,31,162,.25);overflow:hidden;position:relative}
+.hero{background:linear-gradient(145deg,var(--p1),#6A1B9A 60%,#4A148C);border-radius:var(--cr);padding:16px;margin-bottom:12px;box-shadow:0 6px 16px rgba(123,31,162,.2);overflow:hidden;position:relative}
 .hero::before{content:'';position:absolute;right:-20px;top:-20px;width:110px;height:110px;background:rgba(255,255,255,.06);border-radius:50%}
 .htop{display:flex;align-items:center;gap:12px;position:relative;z-index:1}
 .donut{position:relative;flex-shrink:0}
@@ -111,19 +111,6 @@ i.fi { line-height: 1; display: inline-flex; align-items: center; justify-conten
 .hlbl{font-size:.55rem;color:rgba(255,255,255,.7);font-weight:600;text-transform:uppercase;letter-spacing:.3px}
 .hval{font-family:'Syne',sans-serif;font-size:.9rem;font-weight:800;color:#fff;margin-top:1px}
 .hval.gold{color:#FFD54F}.hval.danger{color:#FF8A80}
-
-/* CASH FLOW CARD */
-.cf-row{display:flex;gap:8px;margin-bottom:12px}
-.cf-box{flex:1;border-radius:12px;padding:10px}
-.cf-box.income{background:linear-gradient(135deg,#E8F5E9,#C8E6C9)}
-.cf-box.expense{background:linear-gradient(135deg,#FFEBEE,#FFCDD2)}
-.cf-lbl{font-size:.55rem;font-weight:700;text-transform:uppercase;letter-spacing:.2px;margin-bottom:2px; display:flex; align-items:center; gap:4px;}
-.cf-box.income .cf-lbl{color:#1B5E20}
-.cf-box.expense .cf-lbl{color:#B71C1C}
-.cf-val{font-family:'Syne',sans-serif;font-weight:800;font-size:.85rem}
-.cf-box.income .cf-val{color:#2E7D32}
-.cf-box.expense .cf-val{color:#C62828}
-.cf-sub{font-size:.6rem;margin-top:1px;opacity:.75}
 
 /* STAT CHIPS */
 .schips{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
@@ -145,7 +132,7 @@ i.fi { line-height: 1; display: inline-flex; align-items: center; justify-conten
 /* PURCHASE ROWS */
 .pri{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid #F5F0FB}
 .pri:last-child{border-bottom:none}
-.prico{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0; background:#F5F0FB; color:var(--p1);}
+.prico{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0; background:#F5F0FB; color:var(--p1);}
 .prinfo{flex:1;min-width:0}
 .prname{font-weight:700;font-size:.8rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .prnote{font-size:.6rem;color:var(--mid);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1px}
@@ -182,7 +169,7 @@ i.fi { line-height: 1; display: inline-flex; align-items: center; justify-conten
 .ck.eq{background:linear-gradient(135deg,var(--p1),var(--p2));color:#fff}
 
 /* BUTTONS */
-.btnM{width:100%;padding:12px;border:none;border-radius:10px;cursor:pointer;font-family:'Syne',sans-serif;font-size:.85rem;font-weight:800;background:linear-gradient(135deg,var(--p1),var(--p2));color:#fff;box-shadow:0 3px 12px rgba(123,31,162,.25);transition:transform .1s; display:flex; justify-content:center; align-items:center; gap:6px}
+.btnM{width:100%;padding:12px;border:none;border-radius:10px;cursor:pointer;font-family:'Syne',sans-serif;font-size:.85rem;font-weight:800;background:linear-gradient(135deg,var(--p1),var(--p2));color:#fff;box-shadow:0 3px 10px rgba(123,31,162,.2);transition:transform .1s; display:flex; justify-content:center; align-items:center; gap:6px}
 .btnM:active{transform:scale(.98)}
 .btnG{padding:8px 14px;border:2px solid var(--p1);border-radius:9px;background:none;color:var(--p1);font-family:'Syne',sans-serif;font-weight:700;font-size:.75rem;cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:4px}
 .bsm{padding:6px 10px;border-radius:8px;font-family:'Syne',sans-serif;font-weight:700;font-size:.65rem;cursor:pointer;border:none; display:inline-flex; align-items:center; justify-content:center; gap:4px}
@@ -207,8 +194,10 @@ i.fi { line-height: 1; display: inline-flex; align-items: center; justify-conten
 .settings-email { font-size: .75rem; color: var(--mid); margin-bottom: 2px; }
 .settings-plan { font-size: .65rem; font-weight: 700; color: var(--p1); }
 
-.settings-card { background: var(--white); border-radius: 12px; box-shadow: var(--sh); margin-bottom: 12px; overflow: hidden; }
-.sc-head { padding: 10px 14px 6px; font-family: 'Syne', sans-serif; font-size: .8rem; font-weight: 700; color: var(--ink); display: flex; align-items: center; gap: 6px; border-bottom: 1px solid #F5F0FB; }
+.upgrade-banner { background: linear-gradient(135deg, #FF8C00, #FF6D00); border-radius: 12px; padding: 12px 16px; color: #fff; font-family: 'Syne', sans-serif; font-weight: 800; font-size: .9rem; display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; cursor: pointer; box-shadow: 0 4px 10px rgba(255,140,0,0.25); }
+
+.settings-card { background: var(--white); border-radius: 14px; box-shadow: var(--sh); margin-bottom: 14px; overflow: hidden; }
+.sc-head { padding: 10px 14px 6px; font-family: 'Syne', sans-serif; font-size: .75rem; font-weight: 700; color: var(--ink); display: flex; align-items: center; gap: 6px; border-bottom: 1px solid #F5F0FB; }
 .sc-item { padding: 10px 14px; border-bottom: 1px solid #F5F0FB; display: flex; justify-content: space-between; align-items: center; }
 .sc-item:last-child { border-bottom: none; }
 .sc-label { font-weight: 700; font-size: .8rem; color: var(--ink); }
@@ -484,7 +473,7 @@ const TX={
 let lang=localStorage.getItem('nb_lang')||'en';
 const tx=()=>TX[lang];
 
-// REVERTED TO ORIGINAL EMOJIS FOR ITEMS (as requested: "old icons include all items")
+// REVERTED TO ORIGINAL EMOJIS FOR ITEMS 
 const ITEM_ICONS={'Tomatoes':'🍅','Onions':'🧅','Maize Flour (ufa)':'🌽','Cooking Oil':'🛢️','Sugar':'🍬','Salt':'🧂','Soap (bar)':'🧼','Washing Powder':'🫧','Rice':'🍚','Beans (nandolo)':'🫘','Potatoes':'🥔','Cabbage':'🥬','Chicken':'🍗','Fish (matemba)':'🐟','Bread':'🍞','Milk':'🥛','Tea Leaves':'🍵','Charcoal':'🪨','Toilet Paper':'🧻','Matches/Candles':'🕯️','Bathing Soap':'🧴','Toothpaste':'🦷','Airtime / Data':'📱','Transport':'🚌','Other':'📦','Salary/Income':'💰','Business Income':'💼','Fuel':'⛽','Diapers':'🍼'};
 
 const ITEM_CATS={'Food':['Tomatoes','Onions','Maize Flour (ufa)','Cooking Oil','Sugar','Salt','Rice','Beans (nandolo)','Potatoes','Cabbage','Chicken','Fish (matemba)','Bread','Milk','Tea Leaves'],'Household':['Soap (bar)','Washing Powder','Charcoal','Toilet Paper','Matches/Candles'],'Personal':['Bathing Soap','Toothpaste','Diapers'],'Transport':['Transport','Fuel'],'Other':['Airtime / Data','Other']};
@@ -525,12 +514,10 @@ function actUser(){return localConfig.users.find(u=>u.id===localStorage.getItem(
 function uById(id){return localConfig.users.find(u=>u.id===id)||localConfig.users[0]}
 
 function ico(name){
-  // Check if it's a new custom icon saved as fi-rr class
   const custom = localConfig.items.find(i=>i.name===name);
   if(custom && custom.icon && custom.icon.startsWith('fi-')) {
     return '<i class="fi '+custom.icon+'"></i>';
   }
-  // Otherwise return the emoji wrapper
   return '<span style="font-size:1.15rem;display:inline-block;margin-top:-2px;">' + (ITEM_ICONS[name]||'📦') + '</span>';
 }
 
@@ -543,6 +530,7 @@ function nextMonth(){if(isCurM())return;const{m,y}=vmObj();viewMonth=m===11?{m:0
 
 // ═══════ PIN LOCK ═══════
 function hasPIN(){return!!localStorage.getItem('nb_pin')}
+function checkPINOnLoad(){ if(hasPIN()&&localStorage.getItem('nb_household')){ pinMode='check';showPIN(); } }
 function showPIN(){
   pinEntry=''; if(pinMode!=='confirm')pinTemp='';
   showScreen('pin-screen');
@@ -584,16 +572,15 @@ function checkSetup(){
     initFallback();return;
   }
   
-  const savedHousehold = localStorage.getItem('nb_household');
-  
   auth.onAuthStateChanged(user => {
     if (user) {
       currentUser = user;
+      const savedHousehold = localStorage.getItem('nb_household');
       if (savedHousehold) {
         connectHousehold(savedHousehold);
         showScreen('app'); 
       } else {
-        // Find existing household or go to setup
+        // Fetch to see if they belong to a household already
         db.collection('users').doc(user.uid).get().then(doc => {
           if (doc.exists && doc.data().householdId) {
             const hid = doc.data().householdId;
@@ -1492,8 +1479,8 @@ function doGoogleAuth(){
   if(!auth){toast('Firebase not ready','e');return}
   const provider=new firebase.auth.GoogleAuthProvider();
   provider.setCustomParameters({prompt:'select_account'});
-  // Use redirect as popup fails in mobile webviews
-  auth.signInWithRedirect(provider).catch(e=>{
+  // Switched to Popup to prevent redirect loops on mobile webviews
+  auth.signInWithPopup(provider).catch(e=>{
     showAuthErr(friendlyAuthErr(e.code, e.message));
   });
 }
@@ -1610,10 +1597,10 @@ function backToPhone(){
 }
 function friendlyAuthErr(code, defaultMsg){
   const map={
-    'auth/user-not-found':'No account found with this email.',
-    'auth/wrong-password':'Incorrect password.',
-    'auth/invalid-credential':'Incorrect email or password.',
-    'auth/email-already-in-use':'This email is already registered.',
+    'auth/user-not-found':'Account not found. Please create one.',
+    'auth/wrong-password':'Incorrect password. Please try again.',
+    'auth/invalid-login-credentials':'Invalid email or password. Please try again or create an account.',
+    'auth/email-already-in-use':'This email is already registered. Try signing in.',
     'auth/invalid-email':'Please enter a valid email address.',
     'auth/weak-password':'Password is too weak (min 6 characters).',
     'auth/too-many-requests':'Too many attempts. Try again later.',
@@ -1633,15 +1620,6 @@ window.addEventListener('DOMContentLoaded', () => {
   applyDarkModeOnLoad();
   registerPWA();
   applyTranslations();
-
-  // Auth Result handling for Redirects (Google Auth)
-  if(auth) {
-      auth.getRedirectResult().catch(e => {
-         if (e.code !== 'auth/redirect-cancelled-by-user') {
-             showAuthErr(friendlyAuthErr(e.code, e.message));
-         }
-      });
-  }
 
   // Boot Logic
   if(hasPIN()&&localStorage.getItem('nb_household')){
