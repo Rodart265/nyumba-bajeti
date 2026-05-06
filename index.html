@@ -767,8 +767,27 @@ function showFgt(s){
 }
 function showAErr(msg){ const el=g('a-err'); if(!el)return; el.textContent=msg; el.classList.toggle('on',!!msg); }
 function fmtAErr(code){
-  const m={'auth/user-not-found':'No account found with this email.','auth/wrong-password':'Incorrect password.','auth/invalid-credential':'Incorrect email or password.','auth/email-already-in-use':'This email is already registered.','auth/invalid-email':'Please enter a valid email address.','auth/weak-password':'Password must be at least 6 characters.','auth/too-many-requests':'Too many attempts. Try again later.','auth/invalid-verification-code':'Wrong OTP code.','auth/code-expired':'OTP expired. Request a new one.','auth/invalid-phone-number':'Invalid phone number format.'};
-  return m[code]||'Something went wrong. Please try again.';
+  const m={
+    'auth/user-not-found':'No account found with this email.',
+    'auth/wrong-password':'Incorrect password. Please try again.',
+    'auth/invalid-credential':'Incorrect email or password.',
+    'auth/invalid-login-credentials':'Incorrect email or password.',
+    'auth/email-already-in-use':'This email is already registered.',
+    'auth/invalid-email':'Please enter a valid email address.',
+    'auth/weak-password':'Password must be at least 6 characters.',
+    'auth/too-many-requests':'Too many attempts. Try again later.',
+    'auth/invalid-verification-code':'Wrong OTP code.',
+    'auth/code-expired':'OTP expired. Request a new one.',
+    'auth/invalid-phone-number':'Invalid phone number format.',
+    'auth/network-request-failed':'Network error. Check your internet connection.',
+    'auth/operation-not-allowed':'This sign-in method is not enabled.',
+    'auth/popup-blocked':'Popup was blocked by your browser.',
+    'auth/cancelled-popup-request':'Sign-in cancelled.',
+    'auth/account-exists-with-different-credential':'An account already exists with this email using a different sign-in method.',
+    'auth/missing-password':'Please enter a password.',
+    'auth/missing-email':'Please enter your email address.'
+  };
+  return m[code]||(code?'Error: '+code:'Something went wrong. Please try again.');
 }
 function doEmailAuth(){
   const email=val('a-em').trim(), pass=val('a-pw');
@@ -893,9 +912,30 @@ function connectHH(code){
     if(doc.exists){ const d=doc.data(); lCfg=d.config||JSON.parse(JSON.stringify(DEF_CFG)); if(!lCfg.goals)lCfg.goals=[]; setDot(''); updatePill(); render(); }
   },()=>setDot('off'));
   if(unsub)unsub();
-  unsub=db.collection('households').doc(code).collection('purchases')
-    .orderBy('timestamp','desc')
-    .onSnapshot(snap=>{ lPx=snap.docs.map(d=>({id:d.id,...d.data()})); setDot(''); render(); },()=>setDot('off'));
+  // Try ordering by createdAt (works for all versions of data)
+  // If that fails (no index), fall back to unordered and sort client-side
+  const tryConnect = (field) => {
+    const q = field
+      ? db.collection('households').doc(code).collection('purchases').orderBy(field,'desc')
+      : db.collection('households').doc(code).collection('purchases');
+    return q.onSnapshot(snap=>{
+      lPx=snap.docs.map(d=>({id:d.id,...d.data()}));
+      // Sort client-side by date desc as fallback
+      lPx.sort((a,b)=>{
+        const ta=a.timestamp||a.createdAt||0, tb=b.timestamp||b.createdAt||0;
+        if(ta&&tb) return tb-ta;
+        return (b.date||'').localeCompare(a.date||'');
+      });
+      setDot(''); render();
+    }, err=>{
+      if(field&&(err.code==='failed-precondition'||err.code==='unimplemented')){
+        // Index not ready or field missing, try without ordering
+        if(unsub) unsub();
+        unsub=tryConnect(null);
+      } else { setDot('off'); }
+    });
+  };
+  unsub=tryConnect('createdAt');
   applyLang();
 }
 
@@ -942,7 +982,6 @@ function rHome(){
   const ok=lCfg.items.filter(it=>{const s=iSpent(it.name);return s>0&&s<it.budget*.8;}).length;
   const cnt=lPx.filter(p=>isTM(p.date)&&p.type!=='income').length;
   let h='<div class="page">';
-  if(hhId)h+='<div class="hcode-card"><div><div class="hcode-lbl">&#128101; '+t.householdCode+'</div><div class="hcode-val">'+hhId+'</div></div><div class="hcode-acts"><button class="hc-btn" onclick="cpCode()">'+t.copyCode+'</button><button class="hc-btn hc-wa" onclick="waCode()">'+t.shareWA+'</button></div></div>';
   h+='<div class="mnav"><button class="mnbtn" onclick="prevM()">&#9664;</button><span class="mnlbl">&#128197; '+mName()+'</span><button class="mnbtn" onclick="nextM()" style="opacity:'+(isCurM()?'.3':'1')+'">&#9654;</button></div>';
   h+='<div class="hero"><div class="htop"><div class="donut"><svg viewBox="0 0 80 80"><circle class="dbg" cx="40" cy="40" r="32"/><circle class="dfg" cx="40" cy="40" r="32" stroke="'+stroke+'" stroke-dasharray="'+circ.toFixed(1)+'" stroke-dashoffset="'+off.toFixed(1)+'"/></svg><div class="dlbl"><b>'+Math.round(pct*100)+'%</b><span>'+t.spent+'</span></div></div><div class="hinfo"><div class="hrow"><div class="hlbl">'+t.cap+'</div><div class="hval">'+MKs(bg)+'</div></div><div class="hrow"><div class="hlbl">'+t.spent+'</div><div class="hval '+(pct>=1?'danger':'')+'">'+MKs(sp)+'</div></div><div class="hrow"><div class="hlbl">'+t.left+'</div><div class="hval '+(rem<0?'danger':'gold')+'">'+(rem<0?'- '+MKs(-rem):MKs(rem))+'</div></div></div></div></div>';
   h+='<div class="cf-row"><div class="cf-box inc"><div class="cf-lbl">&#128200; '+t.income+'</div><div class="cf-val">'+MKs(inc)+'</div></div><div class="cf-box exp"><div class="cf-lbl">&#128201; '+t.expense+'</div><div class="cf-val">'+MKs(sp)+'</div></div></div>';
