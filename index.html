@@ -8,7 +8,8 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Nyumba Budget">
 <title>Nyumba Budget</title>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/2.2.0/uicons-regular-rounded/css/uicons-regular-rounded.css">
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
@@ -40,8 +41,36 @@ db.enablePersistence({synchronizeTabs:true}).catch(()=>{});
   --cr:18px;--sh:0 3px 16px rgba(0,0,0,.09);
 }
 body.dark{--ink:#E0E0E0;--mid:#9E9E9E;--mist:#121212;--white:#1E1E1E;--border:#2C2C2C;--sh:0 3px 16px rgba(0,0,0,.35)}
+body.dark .auth-card{background:rgba(255,255,255,.08)}
+body.dark .card{background:#1E1E1E}
+body.dark .setup-card{background:rgba(255,255,255,.07)}
+body.dark .mb{background:#1E1E1E}
+body.dark .type-tog{background:#2C2C2C}
+body.dark .ic{background:#2A2A2A;border-color:#3A3A3A;color:#E0E0E0}
+body.dark .ic.on{background:linear-gradient(135deg,#3A1F5C,#2D1545);border-color:var(--p1)}
+body.dark .usb{background:#2A2A2A;border-color:#3A3A3A}
+body.dark .qsb{background:#2A2A2A;border-color:#3A3A3A;color:#E0E0E0}
+body.dark .fi,.dark .fs{background:#2A2A2A;border-color:#3A3A3A;color:#E0E0E0}
+body.dark .srch-wrap input{background:#2A2A2A;border-color:#3A3A3A;color:#E0E0E0}
+body.dark .goal-card{background:linear-gradient(135deg,#1E2035,#1A1E3A)}
+body.dark .goal-name{color:#B0BEC5}
+body.dark .goal-meta{color:#7986CB}
+body.dark .obra{background:linear-gradient(135deg,#1A1E30,#1E2240)}
+body.dark .hcode-card{background:linear-gradient(135deg,#1A1E30,#1E2240)}
+body.dark .hcode-val{color:#9FA8DA}
+body.dark .cat-hdr{background:linear-gradient(90deg,#2A1F40,#231A38)}
+body.dark .set-card{background:#1E1E1E}
+body.dark .set-hdr{background:#2A2A2A}
+body.dark .umc{background:#1E1E1E!important}
+body.dark .addform{background:linear-gradient(135deg,#2A1F40,#231A38)}
+body.dark .sort-bar{background:#1A1A1A}
+body.dark .sb{background:#2A2A2A;border-color:#3A3A3A;color:#9E9E9E}
+body.dark .pb{background:#2C2C2C}
+body.dark .bhint{background:linear-gradient(135deg,#2A2010,#231A08)}
+body.dark .bulk-bar{background:#1A1A1A}
+body.dark .bulk-inp{background:#2A2A2A;border-color:#3A3A3A;color:#E0E0E0}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html,body{height:100%;overflow:hidden;background:var(--mist);font-family:'Plus Jakarta Sans',sans-serif;color:var(--ink)}
+html,body{height:100%;overflow:hidden;background:var(--mist);font-family:'General Sans',sans-serif;color:var(--ink)}
 .hide{display:none!important}
 .screen{position:fixed;inset:0;z-index:900;overflow-y:auto;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 20px 32px}
 #scr-auth{background:linear-gradient(155deg,#4A148C,#7B1FA2 55%,#880E4F)}
@@ -58,7 +87,7 @@ html,body{height:100%;overflow:hidden;background:var(--mist);font-family:'Plus J
 .method-tab{flex:1;padding:9px;border:2px solid rgba(255,255,255,.25);border-radius:11px;background:none;font-family:'Syne',sans-serif;font-weight:700;font-size:.75rem;color:rgba(255,255,255,.6);cursor:pointer;transition:all .2s;text-align:center}
 .method-tab.on{background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.5);color:#fff}
 .a-label{display:block;font-size:.67rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,.6);margin-bottom:5px}
-.a-input{width:100%;padding:13px 14px;border:2px solid rgba(255,255,255,.22);border-radius:13px;background:rgba(255,255,255,.1);color:#fff;font-family:'Plus Jakarta Sans',sans-serif;font-size:.93rem;outline:none;transition:border-color .2s;margin-bottom:12px}
+.a-input{width:100%;padding:13px 14px;border:2px solid rgba(255,255,255,.22);border-radius:13px;background:rgba(255,255,255,.1);color:#fff;font-family:'General Sans',sans-serif;font-size:.93rem;outline:none;transition:border-color .2s;margin-bottom:12px}
 .a-input::placeholder{color:rgba(255,255,255,.35)}
 .a-input:focus{border-color:rgba(255,255,255,.5)}
 .pw-wrap{position:relative;margin-bottom:12px}
@@ -67,7 +96,7 @@ html,body{height:100%;overflow:hidden;background:var(--mist);font-family:'Plus J
 .a-btn{width:100%;padding:14px;border:none;border-radius:13px;cursor:pointer;font-family:'Syne',sans-serif;font-size:.95rem;font-weight:800;background:#fff;color:var(--p1);box-shadow:0 4px 16px rgba(0,0,0,.2);transition:transform .1s,opacity .2s}
 .a-btn:active{transform:scale(.98)}
 .a-btn:disabled{opacity:.55;cursor:not-allowed}
-.g-btn{width:100%;padding:13px;border:2px solid rgba(255,255,255,.28);border-radius:13px;background:rgba(255,255,255,.08);color:#fff;font-family:'Plus Jakarta Sans',sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:background .2s}
+.g-btn{width:100%;padding:13px;border:2px solid rgba(255,255,255,.28);border-radius:13px;background:rgba(255,255,255,.08);color:#fff;font-family:'General Sans',sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:background .2s}
 .g-btn:hover{background:rgba(255,255,255,.16)}
 .divider{display:flex;align-items:center;gap:10px;margin:14px 0}
 .divider::before,.divider::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.18)}
@@ -142,7 +171,7 @@ html,body{height:100%;overflow:hidden;background:var(--mist);font-family:'Plus J
 .ch h2{font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700}
 .cb{padding:11px 15px}
 .fl{font-size:.67rem;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--mid);margin-bottom:5px;display:block}
-.fi,.fs{width:100%;padding:12px 13px;border:2px solid var(--border);border-radius:12px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.9rem;color:var(--ink);background:var(--white);outline:none;transition:border-color .2s}
+.fi,.fs{width:100%;padding:12px 13px;border:2px solid var(--border);border-radius:12px;font-family:'General Sans',sans-serif;font-size:.9rem;color:var(--ink);background:var(--white);outline:none;transition:border-color .2s}
 .fi:focus,.fs:focus{border-color:var(--p1)}
 .frow{display:grid;grid-template-columns:1fr 1fr;gap:9px}
 .fsec{margin-bottom:11px}
@@ -226,7 +255,7 @@ html,body{height:100%;overflow:hidden;background:var(--mist);font-family:'Plus J
 .bhl{font-size:.57rem;font-weight:700;text-transform:uppercase;color:var(--mid);letter-spacing:.3px}
 .bhv{font-family:'Syne',sans-serif;font-weight:800;font-size:.82rem;color:var(--a1);margin-top:1px}
 .srch-wrap{position:relative;margin-bottom:10px}
-.srch-wrap input{width:100%;padding:11px 12px 11px 36px;border:2px solid var(--border);border-radius:12px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.86rem;color:var(--ink);background:var(--white);outline:none;transition:border-color .2s}
+.srch-wrap input{width:100%;padding:11px 12px 11px 36px;border:2px solid var(--border);border-radius:12px;font-family:'General Sans',sans-serif;font-size:.86rem;color:var(--ink);background:var(--white);outline:none;transition:border-color .2s}
 .srch-wrap input:focus{border-color:var(--p1)}
 .srch-wrap::before{content:'🔍';position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:.82rem;pointer-events:none}
 .ftags{display:flex;gap:6px;margin-bottom:9px;overflow-x:auto;padding-bottom:2px}
@@ -555,34 +584,34 @@ const TX = {
     cats:{Food:'Food',Household:'Household',Transport:'Transport',Personal:'Personal',Other:'Other'}
   },
   cw:{
-    appTitle:'Bajeti ya Nyumba',appSub:'Sunga Ndalama za Nyumba',
-    home:'Pakhomo',log:'Lemba',hist:'Mbiri',sum:'Chifukumiro',mgr:'Konzekera',stg:'Zoikika',
-    cap:'Bajeti Yonse',spent:'Zotuluka',left:'Zotsala',income:'Zolowa',expense:'Zotuluka',
-    recent:'Zatsopano',viewAll:'Onanso',noPurchases:'Palibe cholembedwa.',tapLog:'Dina + kwonjeza.',
-    logTitle:'Lemba Cholembedwa',selItem:'Sankhani Katundu',selUser:'Ndani?',
-    date:'Tsiku',time:'Nthawi',qty:'Kuchuluka',unit:'Gawo',amount:'Ndalama (MK)',notes:'Zilembo',
-    save:'Sunga',saved:'Yasungidwa',allEntries:'Zonse',all:'Zonse',editP:'Sinthani',del:'Chotsani',
-    confirmDel:'Muchotse izi?',deleted:'Chachotsedwa',updated:'Chasinthidwa',
-    sumTitle:'Chifukumiro',budget:'Bajeti',ok:'Chabwino',near:'Pafupi',over:'Yapitilira',none:'--',total:'WONSE',
-    overallCap:'Bajeti Yonse ya Mwezi (MK)',members:'Anthu a Nyumba',
-    editUser:'Sinthani Wanthu',addMember:'Onjezani Munthu',memberName:'Dzina',
-    itemsLbl:'Katundu & Bajeti',addItem:'Onjezani Katundu',
-    iname:'Dzina la katundu',ibudget:'Bajeti (MK)',add:'Onjeza',mbudget:'Bajeti ya Mwezi (MK)',cancel:'Lekani',
-    itemAdded:'Wonjezedwa',budgetUpdated:'Yasinthidwa',itemDeleted:'Wachotsedwa',nameUpdated:'Yasinthidwa',
-    confirmDelItem:'Muchotse izi?',confirmDelMember:'Muchotse munthuyu?',
-    switchUser:'Sinthani Wogwiritsa',householdCode:'Khodi ya Nyumba',
-    copyCode:'Kopya',shareWA:'WhatsApp',codeCopied:'Khodi yakopedwa!',
-    logout:'Choka',confirmLogout:'Muli otsimikiza kuchoka?',
-    sortCat:'Mitundu',sortAZ:'A-Z',sortOver:'Zapitilira',sortSpend:'Zazithu',
-    searchPurchases:'Fufuzani...',quickPick:'Sankhani Msanga',
-    goals:'Zolinga za Ndalama',addGoal:'Onjeza Cholinga',goalName:'Dzina la cholinga',
-    goalTarget:'Ndalama Yolengezedwa (MK)',goalSaved:'Ndalama Yosungidwa (MK)',topup:'Onjeza',noGoals:'Palibe zolinga.',
-    pinSetup:'Ikani nambala 4 zoteteza pulogalamu',pinChange:'Sinthani PIN',pinRemove:'Chotsani PIN',
-    pinOff:'PIN yachotsedwa',pinOn:'PIN yapangidwa',exportCSV:'Tumirani ku CSV',
-    recurring:'Wolembedwanso',recurrYes:'Lembani bwalo lililonse',
+    appTitle:'Bajeti ya Nyumba',appSub:'Sungani Ndalama za Panyumba',
+    home:'Pakhomo',log:'Kulowetsa',hist:'Zolemba',sum:'Mfundo',mgr:'Ulamuliro',stg:'Zokhonza',
+    cap:'Ndalama ya Mwezi',spent:'Zotuluka',left:'Zotsala',income:'Ndalama Zolowa',expense:'Ndalama Zotuluka',
+    recent:'Zochitika',viewAll:'Onanso Zonse',noPurchases:'Palibe cholemba chilichonse.',tapLog:'Dina + kuchita cholowetsa.',
+    logTitle:'Lowetsani Cholembedwa',selItem:'Sankhani Chinthu',selUser:'Ndani akugula?',
+    date:'Tsiku',time:'Nthawi',qty:'Kuchuluka',unit:'Kuyezera',amount:'Ndalama (MK)',notes:'Zilembo',
+    save:'Sunga',saved:'Yasungidwa',allEntries:'Zolemba Zonse',all:'Zonse',editP:'Sinthani',del:'Chotsani',
+    confirmDel:'Muchotse ichi cholembedwa?',deleted:'Chachotsedwa',updated:'Chasinthidwa',
+    sumTitle:'Mfundo ya Mwezi',budget:'Bajeti',ok:'Chabwino',near:'Pafupi Kumalizika',over:'Yapitilira',none:'--',total:'KACHIWERENGERO',
+    overallCap:'Bajeti Yonse ya Mwezi (MK)',members:'Anthu a Panyumba',
+    editUser:'Sinthani Dzina',addMember:'Onjezani Munthu',memberName:'Dzina',
+    itemsLbl:'Zinthu & Bajeti Zawo',addItem:'Onjezani Chinthu Chatsopano',
+    iname:'Dzina la chinthu',ibudget:'Bajeti (MK)',add:'Onjezani',mbudget:'Bajeti ya Mwezi (MK)',cancel:'Lekani',
+    itemAdded:'Chinthu chonjezedwa',budgetUpdated:'Bajeti yasinthidwa',itemDeleted:'Chinthu chachotsedwa',nameUpdated:'Dzina lasinthidwa',
+    confirmDelItem:'Muchotse chinthucho?',confirmDelMember:'Muchotse munthuyu ku nyumba?',
+    switchUser:'Sinthani Wogwiritsa Ntchito',householdCode:'Nambala ya Nyumba',
+    copyCode:'Kopya',shareWA:'WhatsApp',codeCopied:'Nambala yakopedwa!',
+    logout:'Tulukani',confirmLogout:'Muli otsimikiza kutuluka?',
+    sortCat:'Gawani pa Mitundu',sortAZ:'Dongosola A-Z',sortOver:'Zapitilira Bajeti',sortSpend:'Zazithu Kwambiri',
+    searchPurchases:'Fufuzani pa zolemba...',quickPick:'Sankhani Msanga',
+    goals:'Zolinga za Ndalama',addGoal:'Onjezani Cholinga',goalName:'Dzina la cholinga',
+    goalTarget:'Ndalama Yolinga (MK)',goalSaved:'Ndalama Yosungidwa (MK)',topup:'Onjezani Ndalama',noGoals:'Mulibe zolinga zolemba.',
+    pinSetup:'Ikani nambala 4 zoteteza pulogalamuyi',pinChange:'Sinthani PIN',pinRemove:'Chotsani PIN',
+    pinOff:'PIN yachotsedwa',pinOn:'PIN yapangidwa',exportCSV:'Tumizani pa CSV',
+    recurring:'Cholembedwanso',recurrYes:'Zalemba bwalo lililonse',
     units:['kg','g','malikita','ml','zobiriwira','mapaketi','magwirizana','mabegi','mabotolo','mabara'],
-    months:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
-    cats:{Food:'Chakudya',Household:'Zanyumba',Transport:'Mayendedwe',Personal:'Munthu Payekha',Other:'Zina'}
+    months:['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Aug','Sep','Oct','Nov','Des'],
+    cats:{Food:'Chakudya',Household:'Zanyumba',Transport:'Mayendedwe',Personal:'Munthu Payekha',Other:'Zina Zosiyana'}
   }
 };
 
@@ -599,7 +628,7 @@ const DEF_ITEMS = [
   {name:'Toilet Paper',budget:5000},{name:'Matches/Candles',budget:2000},
   {name:'Bathing Soap',budget:4000},{name:'Toothpaste',budget:3500},
   {name:'Airtime / Data',budget:15000},{name:'Transport',budget:20000},
-  {name:'Fuel',budget:25000},{name:'Other',budget:15000}
+  {name:'Fuel',budget:25000},{name:'Rent',budget:80000},{name:'Other',budget:15000}
 ];
 const DEF_USERS = [
   {id:'u1',name:'Husband',color:'#7B1FA2'},
@@ -614,14 +643,14 @@ const ITEM_ICONS = {
   'Chicken':'🍗','Fish (matemba)':'🐟','Bread':'🍞','Milk':'🥛',
   'Tea Leaves':'🍵','Charcoal':'🪨','Toilet Paper':'🧻','Matches/Candles':'🕯️',
   'Bathing Soap':'🧴','Toothpaste':'🦷','Airtime / Data':'📱',
-  'Transport':'🚌','Fuel':'⛽','Other':'📦',
+  'Transport':'🚌','Fuel':'⛽','Rent':'🏘️','Other':'📦',
   'Salary/Income':'💰','Business Income':'💼','Farm Income':'🌾','Other Income':'💵'
 };
 
 const ITEM_CATS = {
   Food:['Tomatoes','Onions','Maize Flour (ufa)','Cooking Oil','Sugar','Salt','Rice',
         'Beans (nandolo)','Potatoes','Cabbage','Chicken','Fish (matemba)','Bread','Milk','Tea Leaves'],
-  Household:['Soap (bar)','Washing Powder','Charcoal','Toilet Paper','Matches/Candles'],
+  Household:['Soap (bar)','Washing Powder','Charcoal','Toilet Paper','Matches/Candles','Rent'],
   Personal:['Bathing Soap','Toothpaste'],
   Transport:['Transport','Fuel'],
   Other:['Airtime / Data','Other']
@@ -629,7 +658,7 @@ const ITEM_CATS = {
 
 const CAT_COLORS = {Food:'#2E7D32',Household:'#1565C0',Personal:'#E91E63',Transport:'#E65100',Other:'#6D4C41'};
 const PIE_COLORS = ['#7B1FA2','#E91E63','#1565C0','#2E7D32','#E65100','#00838F','#F57F17','#4527A0','#558B2F','#795548'];
-const QUICK_PICKS = ['Tomatoes','Maize Flour (ufa)','Cooking Oil','Sugar','Soap (bar)','Rice','Charcoal','Bread','Transport','Airtime / Data'];
+const QUICK_PICKS = ['Tomatoes','Maize Flour (ufa)','Cooking Oil','Sugar','Soap (bar)','Rice','Charcoal','Bread','Transport','Fuel','Rent','Airtime / Data'];
 const MEMBER_COLORS = ['#7B1FA2','#E91E63','#1565C0','#2E7D32','#E65100','#00838F','#AD1457','#4527A0','#558B2F','#795548'];
 
 // ═══════════════════════════════════════════════
@@ -1010,7 +1039,9 @@ function rLog(){
   if(logType==='expense'){
     const picks=QUICK_PICKS.map(name=>{const i=lCfg.items.findIndex(it=>it.name===name);return i<0?'':'<div class="qsb'+(selItem===i?' on':'')+'" onclick="pickI('+i+')">'+ico(name)+' '+name+'</div>';}).join('');
     if(picks)h+='<div class="fsec"><label class="fl">&#9889; '+t.quickPick+'</label><div class="qsugg">'+picks+'</div></div>';
-    h+='<div class="fsec"><label class="fl">'+t.selItem+'</label><div class="igrid">'+lCfg.items.map((it,i)=>'<div class="ic'+(selItem===i?' on':'')+'" onclick="pickI('+i+')">'+ico(it.name)+'<br>'+it.name+'</div>').join('')+'</div></div>';
+    h+='<div class="fsec"><label class="fl">'+t.selItem+'</label>'
+      +'<input type="text" class="fi" id="log-srch" placeholder="🔍 Search items..." oninput="filterLogItems(this.value)" style="margin-bottom:8px;font-size:.84rem">'
+      +'<div class="igrid" id="log-igrid">'+lCfg.items.map((it,i)=>'<div class="ic'+(selItem===i?' on':'')+'" onclick="pickI('+i+')" data-name="'+it.name.toLowerCase()+'">'+ico(it.name)+'<br>'+it.name+'</div>').join('')+'</div></div>';
     if(hint){const sp=iSpent(hint.name);h+='<div class="bhint"><div class="bh"><div class="bhl">'+t.budget+'</div><div class="bhv">'+MK(hint.budget)+'</div></div><div class="bh"><div class="bhl">'+t.spent+'</div><div class="bhv">'+MK(sp)+'</div></div><div class="bh"><div class="bhl">'+t.left+'</div><div class="bhv" style="color:'+(hint.budget-sp<0?'#B71C1C':'inherit')+'">'+MK(hint.budget-sp)+'</div></div></div>';}
   } else {
     h+='<div class="fsec"><label class="fl">Source</label><select class="fs" id="inc-src"><option value="Salary/Income">&#128200; Salary / Income</option><option value="Business Income">&#128188; Business Income</option><option value="Farm Income">&#127807; Farm Income</option><option value="Other Income">&#128181; Other Income</option></select></div>';
@@ -1026,6 +1057,13 @@ function rLog(){
 function setLT(t){ logType=t; selItem=null; rLog(); }
 function setU(id){ localStorage.setItem('nb_uid',id); updatePill(); rLog(); }
 function pickI(i){ selItem=i; rLog(); }
+function filterLogItems(q){
+  const grid=document.getElementById('log-igrid'); if(!grid)return;
+  const term=q.toLowerCase().trim();
+  grid.querySelectorAll('.ic').forEach(el=>{
+    el.style.display=(term.length<2||el.dataset.name.includes(term))?'':'none';
+  });
+}
 function saveP(){
   const t=tx(), a=parseFloat(val('fa'));
   if(!a||a<=0){toast(t.amount,'e');return;}
