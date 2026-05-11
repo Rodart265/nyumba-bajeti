@@ -87,7 +87,7 @@ html,body{height:100%;overflow:hidden;background:var(--mist);font-family:'Genera
 .method-tab{flex:1;padding:9px;border:2px solid rgba(255,255,255,.25);border-radius:11px;background:none;font-family:'Syne',sans-serif;font-weight:700;font-size:.75rem;color:rgba(255,255,255,.6);cursor:pointer;transition:all .2s;text-align:center}
 .method-tab.on{background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.5);color:#fff}
 .a-label{display:block;font-size:.67rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,.6);margin-bottom:5px}
-.a-input{width:100%;padding:13px 14px;border:2px solid rgba(255,255,255,.22);border-radius:13px;background:rgba(255,255,255,.1);color:#fff;font-family:'General Sans',sans-serif;font-size:.93rem;outline:none;transition:border-color .2s;margin-bottom:12px;-webkit-user-select:text;user-select:text;}
+.a-input{width:100%;padding:13px 14px;border:2px solid rgba(255,255,255,.22);border-radius:13px;background:rgba(255,255,255,.1);color:#fff;font-family:'General Sans',sans-serif;font-size:.93rem;outline:none;transition:border-color .2s;margin-bottom:12px}
 .a-input::placeholder{color:rgba(255,255,255,.35)}
 .a-input:focus{border-color:rgba(255,255,255,.5)}
 .pw-wrap{position:relative;margin-bottom:12px}
@@ -344,18 +344,25 @@ html,body{height:100%;overflow:hidden;background:var(--mist);font-family:'Genera
 .export-btn:active{background:#F3E5F5}
 .logout-btn{width:100%;padding:12px;border:2px solid var(--r1);border-radius:12px;background:none;color:var(--r1);font-family:'Syne',sans-serif;font-weight:800;font-size:.88rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px}
 .logout-btn:active{background:#FFEBEE}
-.settings-hdr{background:linear-gradient(135deg,var(--p1),var(--p2));border-radius:var(--cr);padding:18px;margin-bottom:11px;display:flex;align-items:center;gap:13px;box-shadow:0 7px 26px rgba(123,31,162,.28)}
-.s-av{width:50px;height:50px;border-radius:50%;background:rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:1.3rem;font-weight:800;color:#fff;flex-shrink:0;border:3px solid rgba(255,255,255,.35)}
-.s-name{font-family:'Syne',sans-serif;font-size:.97rem;font-weight:800;color:#fff}
-.s-email{font-size:.7rem;color:rgba(255,255,255,.75);margin-top:2px}
-.set-card{background:var(--white);border-radius:var(--cr);box-shadow:var(--sh);margin-bottom:11px;overflow:hidden}
-.set-row{padding:13px 15px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:10px}
+.settings-hdr{background:linear-gradient(145deg,var(--p1),#6A1B9A 60%,#4A148C);border-radius:20px;padding:22px 18px;margin-bottom:14px;display:flex;align-items:center;gap:16px;box-shadow:0 10px 32px rgba(123,31,162,.3);position:relative;overflow:hidden}
+.settings-hdr::before{content:'';position:absolute;right:-30px;top:-30px;width:140px;height:140px;background:rgba(255,255,255,.07);border-radius:50%}
+.settings-hdr::after{content:'';position:absolute;left:-20px;bottom:-25px;width:90px;height:90px;background:rgba(255,255,255,.05);border-radius:50%}
+.s-av{width:68px;height:68px;border-radius:50%;background:rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:1.7rem;font-weight:800;color:#fff;flex-shrink:0;border:3px solid rgba(255,255,255,.5);box-shadow:0 4px 14px rgba(0,0,0,.22);overflow:hidden;position:relative;z-index:1}
+.s-av img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.s-info{position:relative;z-index:1;min-width:0}
+.s-name{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:800;color:#fff;line-height:1.2}
+.s-email{font-size:.7rem;color:rgba(255,255,255,.7);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.s-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);border-radius:20px;padding:3px 10px;font-size:.62rem;font-weight:700;color:#fff;margin-top:6px}
+.set-card{background:var(--white);border-radius:16px;box-shadow:0 2px 12px rgba(0,0,0,.07);margin-bottom:12px;overflow:hidden;border:1px solid var(--border)}
+.set-row{padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px}
 .set-row:last-child{border-bottom:none}
-.set-row.tap{cursor:pointer}
+.set-row.tap{cursor:pointer;transition:background .15s}
 .set-row.tap:active{background:var(--mist)}
+.set-ico-lbl{display:flex;align-items:center;gap:10px}
+.set-ico{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:.88rem;flex-shrink:0}
 .set-lbl{font-weight:700;font-size:.84rem}
-.set-sub{font-size:.7rem;color:var(--mid);margin-top:2px}
-.set-hdr{padding:8px 15px;background:var(--mist);font-family:'Syne',sans-serif;font-size:.7rem;font-weight:800;color:var(--mid);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border)}
+.set-sub{font-size:.68rem;color:var(--mid);margin-top:2px;margin-left:42px}
+.set-hdr{padding:9px 16px;background:var(--mist);font-size:.64rem;font-weight:800;color:var(--mid);text-transform:uppercase;letter-spacing:.7px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:6px}
 .toggle-sw{position:relative;width:42px;height:23px;cursor:pointer;flex-shrink:0}
 .toggle-sw input{opacity:0;width:0;height:0;position:absolute}
 .toggle-tr{position:absolute;inset:0;background:#CFD8DC;border-radius:23px;transition:.3s}
@@ -384,6 +391,38 @@ html,body{height:100%;overflow:hidden;background:var(--mist);font-family:'Genera
 @keyframes spin{to{transform:rotate(360deg)}}
 ::-webkit-scrollbar{width:3px}
 ::-webkit-scrollbar-thumb{background:#D1C4E9;border-radius:10px}
+
+.bell-btn{position:relative;background:rgba(255,255,255,.16);border:1.5px solid rgba(255,255,255,.28);color:#fff;font-size:1rem;width:34px;height:34px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:0}
+.bell-badge{position:absolute;top:-2px;right:-2px;width:9px;height:9px;background:#FF5252;border-radius:50%;border:2px solid var(--p1)}
+.notif-item{display:flex;align-items:flex-start;gap:10px;padding:11px 0;border-bottom:1px solid var(--border)}
+.notif-item:last-child{border-bottom:none}
+.notif-ico{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+.notif-txt{flex:1;font-size:.8rem;line-height:1.45}
+.notif-txt b{font-weight:700;display:block;margin-bottom:1px}
+.notif-time{font-size:.65rem;color:var(--mid);margin-top:2px}
+.daily-banner{background:linear-gradient(135deg,var(--p1),#6A1B9A);border-radius:16px;padding:14px 16px;margin-bottom:11px;display:flex;align-items:center;gap:12px;box-shadow:0 6px 20px rgba(123,31,162,.28);cursor:pointer;position:relative;overflow:hidden}
+.daily-banner::after{content:'';position:absolute;right:-20px;top:-20px;width:90px;height:90px;background:rgba(255,255,255,.06);border-radius:50%}
+.db-ico{font-size:1.6rem;flex-shrink:0;position:relative;z-index:1}
+.db-main{flex:1;position:relative;z-index:1}
+.db-lbl{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,.65);margin-bottom:2px}
+.db-val{font-family:'Syne',sans-serif;font-size:1.25rem;font-weight:800;color:#fff;line-height:1.1}
+.db-sub{font-size:.65rem;color:rgba(255,255,255,.6);margin-top:2px}
+.mood-banner{border-radius:14px;padding:11px 14px;margin-bottom:11px;display:flex;align-items:center;gap:10px}
+.mood-banner.great{background:linear-gradient(135deg,#E8F5E9,#C8E6C9)}
+.mood-banner.ok{background:linear-gradient(135deg,#FFF3E0,#FFE0B2)}
+.mood-banner.bad{background:linear-gradient(135deg,#FFEBEE,#FFCDD2)}
+.mood-ico{font-size:1.4rem;flex-shrink:0}
+.mood-txt{flex:1}
+.mood-ttl{font-weight:800;font-size:.82rem}
+.mood-banner.great .mood-ttl{color:#1B5E20}
+.mood-banner.ok .mood-ttl{color:#E65100}
+.mood-banner.bad .mood-ttl{color:#B71C1C}
+.mood-sub{font-size:.68rem;margin-top:1px;opacity:.75}
+.hist-filter{display:flex;gap:7px;margin-bottom:11px}
+.hf{flex:1;padding:8px 4px;border-radius:11px;border:2px solid var(--border);background:var(--white);font-family:'Syne',sans-serif;font-weight:700;font-size:.72rem;cursor:pointer;color:var(--mid);transition:all .15s;text-align:center}
+.hf.on{background:var(--p1);border-color:var(--p1);color:#fff}
+.hf.on-inc{background:var(--g1);border-color:var(--g1);color:#fff}
+.hf.on-exp{background:var(--r1);border-color:var(--r1);color:#fff}
 </style>
 </head>
 <body>
@@ -392,7 +431,7 @@ html,body{height:100%;overflow:hidden;background:var(--mist);font-family:'Genera
 <div id="scr-auth" class="screen hide">
   <div class="auth-logo">🏠</div>
   <div class="auth-title">Nyumba Budget</div>
-  <div class="auth-sub">Household Finance Tracker</div>
+  <div class="auth-sub" id="auth-sub">Know where every kwacha goes</div>
   <div class="auth-card">
     <div class="auth-tabs">
       <button class="auth-tab on" id="at-login" onclick="aTab('login')">Sign In</button>
@@ -559,7 +598,7 @@ html,body{height:100%;overflow:hidden;background:var(--mist);font-family:'Genera
 
 const TX = {
   en:{
-    appTitle:'Nyumba Budget',appSub:'Household Tracker',
+    appTitle:'Nyumba Budget',appSub:'Know where every kwacha goes',
     home:'Home',log:'Log',hist:'History',sum:'Summary',mgr:'Manage',stg:'Settings',
     cap:'Monthly Cap',spent:'Spent',left:'Left',income:'Income',expense:'Expense',
     recent:'Recent',viewAll:'View All',noPurchases:'No entries yet.',tapLog:'Tap + to add one.',
@@ -589,34 +628,34 @@ const TX = {
     cats:{Food:'Food',Household:'Household',Transport:'Transport',Personal:'Personal',Other:'Other'}
   },
   cw:{
-    appTitle:'Bajeti ya Nyumba',appSub:'Sungani Ndalama za Panyumba',
-    home:'Pakhomo',log:'Kulowetsa',hist:'Zolemba',sum:'Mfundo',mgr:'Ulamuliro',stg:'Zokhonza',
-    cap:'Ndalama ya Mwezi',spent:'Zotuluka',left:'Zotsala',income:'Ndalama Zolowa',expense:'Ndalama Zotuluka',
-    recent:'Zochitika',viewAll:'Onanso Zonse',noPurchases:'Palibe cholemba chilichonse.',tapLog:'Dina + kuchita cholowetsa.',
-    logTitle:'Lowetsani Cholembedwa',selItem:'Sankhani Chinthu',selUser:'Ndani akugula?',
+    appTitle:'Nyumba Budget',appSub:'Dziwani komwe ndalama zanu zimapita',
+    home:'Pakhomo',log:'Lowetsani',hist:'Mbiri',sum:'Chidule',mgr:'Sinthani',stg:'Zikhazikiko',
+    cap:'Ndalama ya Mwezi',spent:'Zogwiritsa',left:'Zotsalazo',income:'Ndalama Zolowa',expense:'Zotumizidwa',
+    recent:'Zomalizika',viewAll:'Onani Zonse',noPurchases:'Palibe cholemba chilichonse.',tapLog:'Dina + kuchita cholowetsa.',
+    logTitle:'Lemba Zomwe Mwagula',selItem:'Sankhani Chinthu',selUser:'Ndani akugula?',
     date:'Tsiku',time:'Nthawi',qty:'Kuchuluka',unit:'Kuyezera',amount:'Ndalama (MK)',notes:'Zilembo',
-    save:'Sunga',saved:'Yasungidwa',allEntries:'Zolemba Zonse',all:'Zonse',editP:'Sinthani',del:'Chotsani',
-    confirmDel:'Muchotse ichi cholembedwa?',deleted:'Chachotsedwa',updated:'Chasinthidwa',
-    sumTitle:'Mfundo ya Mwezi',budget:'Bajeti',ok:'Chabwino',near:'Pafupi Kumalizika',over:'Yapitilira',none:'--',total:'KACHIWERENGERO',
-    overallCap:'Bajeti Yonse ya Mwezi (MK)',members:'Anthu a Panyumba',
-    editUser:'Sinthani Dzina',addMember:'Onjezani Munthu',memberName:'Dzina',
-    itemsLbl:'Zinthu & Bajeti Zawo',addItem:'Onjezani Chinthu Chatsopano',
-    iname:'Dzina la chinthu',ibudget:'Bajeti (MK)',add:'Onjezani',mbudget:'Bajeti ya Mwezi (MK)',cancel:'Lekani',
-    itemAdded:'Chinthu chonjezedwa',budgetUpdated:'Bajeti yasinthidwa',itemDeleted:'Chinthu chachotsedwa',nameUpdated:'Dzina lasinthidwa',
-    confirmDelItem:'Muchotse chinthucho?',confirmDelMember:'Muchotse munthuyu ku nyumba?',
-    switchUser:'Sinthani Wogwiritsa Ntchito',householdCode:'Nambala ya Nyumba',
-    copyCode:'Kopya',shareWA:'WhatsApp',codeCopied:'Nambala yakopedwa!',
-    logout:'Tulukani',confirmLogout:'Muli otsimikiza kutuluka?',
-    sortCat:'Gawani pa Mitundu',sortAZ:'Dongosola A-Z',sortOver:'Zapitilira Bajeti',sortSpend:'Zazithu Kwambiri',
+    save:'Sungani',saved:'Yasungidwa Bwino',allEntries:'Zolemba Zonse',all:'Zonse',editP:'Sinthani',del:'Chotsani',
+    confirmDel:'Mukufuna kuchotsa ichi?',deleted:'Chachotsedwa',updated:'Chasinthidwa Bwino',
+    sumTitle:'Chidule cha Mwezi',budget:'Bajeti',ok:'Chabwino',near:'Pafupi Kumalizika',over:'Yapitilira Bajeti',none:'--',total:'KACHIWERENGERO CHONSE',
+    overallCap:'Ndalama Yonse ya Mwezi (MK)',members:'Anthu Opanga Nyumbayi',
+    editUser:'Sinthani Zambiri za Munthuyu',addMember:'Onjezani Munthu Watsopano',memberName:'Dzina',
+    itemsLbl:'Zinthu ndi Bajeti Zawo',addItem:'Onjezani Chinthu Chatsopano',
+    iname:'Dzina la chinthu',ibudget:'Bajeti (MK)',add:'Onjezani',mbudget:'Bajeti ya Mwezi (MK)',cancel:'Siyani',
+    itemAdded:'Chinthu chaonjezedwa bwino',budgetUpdated:'Bajeti yasinthidwa bwino',itemDeleted:'Chinthu chachotsedwa',nameUpdated:'Dzinalo lasinthidwa',
+    confirmDelItem:'Mukufuna kuchotsa chinthucho?',confirmDelMember:'Mukufuna kuchotsa munthuyu?',
+    switchUser:'Sinthani Wogwiritsa',householdCode:'Kodi ya Nyumba',
+    copyCode:'Kopya',shareWA:'WhatsApp',codeCopied:'Kodi yakopedwa!',
+    logout:'Tulukani pa Pulogalamuyi',confirmLogout:'Mukufuna kutuluka?',
+    sortCat:'Mtundu wa Zinthu',sortAZ:'Dongosola A-Z',sortOver:'Zapitilira Bajeti',sortSpend:'Zogwiritsa Kwambiri',
     searchPurchases:'Fufuzani pa zolemba...',quickPick:'Sankhani Msanga',
-    goals:'Zolinga za Ndalama',addGoal:'Onjezani Cholinga',goalName:'Dzina la cholinga',
-    goalTarget:'Ndalama Yolinga (MK)',goalSaved:'Ndalama Yosungidwa (MK)',topup:'Onjezani Ndalama',noGoals:'Mulibe zolinga zolemba.',
-    pinSetup:'Ikani nambala 4 zoteteza pulogalamuyi',pinChange:'Sinthani PIN',pinRemove:'Chotsani PIN',
-    pinOff:'PIN yachotsedwa',pinOn:'PIN yapangidwa',exportCSV:'Tumizani pa CSV',
-    recurring:'Cholembedwanso',recurrYes:'Zalemba bwalo lililonse',
+    goals:'Ndalama Zosungidwa',addGoal:'Onjezani Cholinga Chatsopano',goalName:'Dzina la cholinga',
+    goalTarget:'Ndalama Yofuna Kusungira (MK)',goalSaved:'Ndalama Yosungidwa Kale (MK)',topup:'Onjezani',noGoals:'Mulibe zolinga zolemba.',
+    pinSetup:'Ikani PIN ya manambala 4 kuteteza pulogalamuyi',pinChange:'Sinthani PIN',pinRemove:'Chotsani PIN',
+    pinOff:'PIN yachotsedwa',pinOn:'PIN yapangidwa',exportCSV:'Tungulani pa CSV',
+    recurring:'Cholembedwa Nthawi Zonse',recurrYes:'Lemba nthawi zonse mwezi uliwonse',
     units:['kg','g','malikita','ml','zobiriwira','mapaketi','magwirizana','mabegi','mabotolo','mabara'],
     months:['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Aug','Sep','Oct','Nov','Des'],
-    cats:{Food:'Chakudya',Household:'Zanyumba',Transport:'Mayendedwe',Personal:'Munthu Payekha',Other:'Zina Zosiyana'}
+    cats:{Food:'Chakudya',Household:'Zanyumba',Transport:'Mayendedwe',Personal:'Zanu Wekha',Other:'Zina'},itemNames:{'Diapers':'Matewera','Fuel':'Mafuta','Money Sent':'Ndalama Zotumizidwa','School Fees':'Ndalama za Sukulu','Rent':'Lenti'}
   }
 };
 
@@ -633,11 +672,11 @@ const DEF_ITEMS = [
   {name:'Toilet Paper',budget:5000},{name:'Matches/Candles',budget:2000},
   {name:'Bathing Soap',budget:4000},{name:'Toothpaste',budget:3500},
   {name:'Airtime / Data',budget:15000},{name:'Transport',budget:20000},
-  {name:'Fuel',budget:25000},{name:'Rent',budget:80000},{name:'Other',budget:15000}
+  {name:'Fuel',budget:25000},{name:'Electricity',budget:18000},{name:'Rent',budget:80000},{name:'Diapers',budget:12000},{name:'Money Sent',budget:20000},{name:'School Fees',budget:35000},{name:'Other',budget:15000}
 ];
 const DEF_USERS = [
-  {id:'u1',name:'Husband',color:'#7B1FA2'},
-  {id:'u2',name:'Wife',color:'#E91E63'}
+  {id:'u1',name:'Person 1',color:'#7B1FA2'},
+  {id:'u2',name:'Person 2',color:'#E91E63'}
 ];
 const DEF_CFG = {items:DEF_ITEMS,users:DEF_USERS,overallBudget:400000,goals:[]};
 
@@ -648,22 +687,23 @@ const ITEM_ICONS = {
   'Chicken':'🍗','Fish (matemba)':'🐟','Bread':'🍞','Milk':'🥛',
   'Tea Leaves':'🍵','Charcoal':'🪨','Toilet Paper':'🧻','Matches/Candles':'🕯️',
   'Bathing Soap':'🧴','Toothpaste':'🦷','Airtime / Data':'📱',
-  'Transport':'🚌','Fuel':'⛽','Rent':'🏘️','Other':'📦',
+  'Transport':'🚌','Fuel':'⛽','Electricity':'💡','Rent':'🏘️','Diapers':'🧷','Money Sent':'💸','School Fees':'🎓','Other':'📦',
   'Salary/Income':'💰','Business Income':'💼','Farm Income':'🌾','Other Income':'💵'
 };
 
 const ITEM_CATS = {
   Food:['Tomatoes','Onions','Maize Flour (ufa)','Cooking Oil','Sugar','Salt','Rice',
         'Beans (nandolo)','Potatoes','Cabbage','Chicken','Fish (matemba)','Bread','Milk','Tea Leaves'],
-  Household:['Soap (bar)','Washing Powder','Charcoal','Toilet Paper','Matches/Candles','Rent'],
-  Personal:['Bathing Soap','Toothpaste'],
-  Transport:['Transport','Fuel'],
+  Household:['Soap (bar)','Washing Powder','Charcoal','Toilet Paper','Matches/Candles','Electricity','Rent'],
+  Personal:['Bathing Soap','Toothpaste','Diapers'],
+  Transport:['Transport','Fuel','Money Sent'],
   Other:['Airtime / Data','Other']
 };
 
 const CAT_COLORS = {Food:'#2E7D32',Household:'#1565C0',Personal:'#E91E63',Transport:'#E65100',Other:'#6D4C41'};
 const PIE_COLORS = ['#7B1FA2','#E91E63','#1565C0','#2E7D32','#E65100','#00838F','#F57F17','#4527A0','#558B2F','#795548'];
-const QUICK_PICKS = ['Tomatoes','Maize Flour (ufa)','Cooking Oil','Sugar','Soap (bar)','Rice','Charcoal','Bread','Transport','Fuel','Rent','Airtime / Data'];
+const QUICK_PICKS = ['Tomatoes','Maize Flour (ufa)','Cooking Oil','Sugar','Soap (bar)','Rice','Charcoal','Bread','Transport','Fuel','Rent','Diapers','Money Sent','Airtime / Data'];
+const NO_QTY_ITEMS=['Money Sent','Airtime / Data','Rent','School Fees','Transport','Electricity','Other'];
 const MEMBER_COLORS = ['#7B1FA2','#E91E63','#1565C0','#2E7D32','#E65100','#00838F','#AD1457','#4527A0','#558B2F','#795548'];
 
 // ═══════════════════════════════════════════════
@@ -675,7 +715,7 @@ let curUser = null, hhId = null, unsub = null, authReg = false;
 let lCfg = JSON.parse(JSON.stringify(DEF_CFG));
 let lPx = [];
 let tab = 'home', selItem = null, fUser = 'all';
-let sortMode = 'cat', srchQ = '', logType = 'expense';
+let sortMode = 'cat', srchQ = '', logType = 'expense', histFilter = 'all';
 let viewMonth = null;
 let pinEntry = '', pinMode = 'check', pinTmp = '';
 let confResult = null, rcapV = null;
@@ -707,7 +747,7 @@ function totIn()     { return lPx.filter(p=>p.type==='income'&&isTM(p.date)).red
 function actU()      { return lCfg.users.find(u=>u.id===localStorage.getItem('nb_uid'))||lCfg.users[0]; }
 function uById(id)   { return lCfg.users.find(u=>u.id===id)||lCfg.users[0]; }
 function statOf(sp,bg){ if(!sp)return'none'; const r=sp/bg; return r>=1?'over':r>=.8?'near':'ok'; }
-function randCode()  { const w=['nyumba','banja','tsamba','nkhokwe','manda','khomo']; return w[Math.floor(Math.random()*w.length)]+'-'+Math.floor(1000+Math.random()*9000); }
+function randCode()  { const w=['nyumba','banja','tsamba','nkhokwe','khomo','mudzi','chisomo','bwino','dalitso','pakhomo','mtendere','chifundo']; return w[Math.floor(Math.random()*w.length)]+'-'+Math.floor(1000+Math.random()*9000); }
 
 // ═══════════════════════════════════════════════
 // 4. DOM HELPERS
@@ -936,7 +976,7 @@ function joinHH(){
       if(!doc.exists){setDot('off');setupErr('Household not found. Check the code.');return;}
       const saves=[];
       if(curUser)saves.push(db.collection('users').doc(curUser.uid).set({householdId:code,displayName:curUser.displayName||curUser.email||'User'},{merge:true}));
-      return Promise.all(saves).then(()=>{ localStorage.setItem('nb_household',code); localStorage.setItem('nb_uid','u2'); hide('scr-setup'); g('app').classList.remove('hide'); connectHH(code); toast('Joined!'); });
+      return Promise.all(saves).then(()=>{ localStorage.setItem('nb_household',code); hide('scr-setup'); g('app').classList.remove('hide'); connectHH(code); toast('Joined!'); });
     })
     .catch(e=>{ setDot('off'); setupErr('Error: '+e.message); });
 }
@@ -944,7 +984,13 @@ function joinHH(){
 function connectHH(code){
   hhId=code; setDot('spin');
   db.collection('households').doc(code).onSnapshot(doc=>{
-    if(doc.exists){ const d=doc.data(); lCfg=d.config||JSON.parse(JSON.stringify(DEF_CFG)); if(!lCfg.goals)lCfg.goals=[]; setDot(''); updatePill(); render(); }
+    if(doc.exists){ const d=doc.data(); lCfg=d.config||JSON.parse(JSON.stringify(DEF_CFG)); if(!lCfg.goals)lCfg.goals=[];
+      let _mg=false;
+      DEF_ITEMS.filter(di=>di.name!=='Paraffin').forEach(di=>{if(!lCfg.items.find(it=>it.name===di.name)){lCfg.items.push(di);_mg=true;}});
+      const _pi=lCfg.items.findIndex(it=>it.name==='Paraffin');
+      if(_pi>-1){lCfg.items.splice(_pi,1);_mg=true;}
+      if(_mg)saveCfg(lCfg);
+      setDot(''); updatePill(); render(); }
   },()=>setDot('off'));
   if(unsub)unsub();
   // Try ordering by createdAt (works for all versions of data)
@@ -999,20 +1045,22 @@ function applyLang(){
   const t=tx();
   const apt=g('apt'); if(apt)apt.textContent=t.appTitle;
   const aps=g('aps'); if(aps)aps.textContent=t.appSub;
+  const _ab=g('auth-sub'); if(_ab)_ab.textContent=t.appSub;
   [['nl-h',t.home],['nl-l',t.log],['nl-hi',t.hist],['nl-s',t.sum],['nl-m',t.mgr],['nl-st',t.stg]].forEach(([id,v])=>{const el=g(id);if(el)el.textContent=v;});
   updatePill();
 }
 function updatePill(){
   const u=actU(); if(!u)return;
   const av=g('cur-av'),nm=g('cur-nm');
-  if(av){av.textContent=u.name[0];av.style.background=u.color;}
+  if(av){
+    const photo=curUser&&curUser.photoURL;
+    if(photo){av.style.background='none';av.innerHTML='<img src="'+photo+'" style="width:100%;height:100%;border-radius:50%;object-fit:cover" onerror="this.parentElement.innerHTML=actU().name[0];this.parentElement.style.background=actU().color">';}
+    else{av.innerHTML='';av.textContent=u.name[0];av.style.background=u.color;}
+  }
   if(nm)nm.textContent=u.name;
   const apt=g('apt'),aps=g('aps');
-  const gr=lang==='cw'?'Moni':'Hello';
-  const rawName=curUser?(curUser.displayName||curUser.email||curUser.phoneNumber||u.name):u.name;
-  const firstName=rawName.split(' ')[0].split('@')[0];
-  if(apt)apt.textContent=gr+', '+firstName+' ';
-  if(aps){const d=new Date();aps.textContent=TX[lang].months[d.getMonth()]+' '+d.getDate()+', '+d.getFullYear();}
+  if(apt)apt.textContent=tx().appTitle;
+  if(aps)aps.textContent=tx().appSub;
 }
 
 // ═══════════════════════════════════════════════
@@ -1062,6 +1110,7 @@ function rHome(){
   } else { h+='<div class="empty"><div class="ei">&#128722;</div><p>'+t.noPurchases+'<br>'+t.tapLog+'</p></div>'; }
   h+='</div></div></div>';
   g('view').innerHTML=h;
+  if(logType==='income'){const ot=document.getElementById('inc-t-ot');if(ot){ot.classList.add('on');}}
 }
 function cpCode(){ if(hhId){navigator.clipboard&&navigator.clipboard.writeText(hhId);toast(tx().codeCopied,'i');} }
 function waCode(){ if(hhId)window.open('https://wa.me/?text='+encodeURIComponent('Join my Nyumba Budget!\nCode: '+hhId+'\n\nOpen the app and tap Join Household.'),'_blank'); }
@@ -1083,11 +1132,12 @@ function rLog(){
       +'<div class="igrid" id="log-igrid">'+lCfg.items.map((it,i)=>'<div class="ic'+(selItem===i?' on':'')+'" onclick="pickI('+i+')" data-name="'+it.name.toLowerCase()+'">'+ico(it.name)+'<br>'+it.name+'</div>').join('')+'</div></div>';
     if(hint){const sp=iSpent(hint.name);h+='<div class="bhint"><div class="bh"><div class="bhl">'+t.budget+'</div><div class="bhv">'+MK(hint.budget)+'</div></div><div class="bh"><div class="bhl">'+t.spent+'</div><div class="bhv">'+MK(sp)+'</div></div><div class="bh"><div class="bhl">'+t.left+'</div><div class="bhv" style="color:'+(hint.budget-sp<0?'#B71C1C':'inherit')+'">'+MK(hint.budget-sp)+'</div></div></div>';}
   } else {
-    h+='<div class="fsec"><label class="fl">Source</label><select class="fs" id="inc-src"><option value="Salary/Income">&#128200; Salary / Income</option><option value="Business Income">&#128188; Business Income</option><option value="Farm Income">&#127807; Farm Income</option><option value="Other Income">&#128181; Other Income</option></select></div>';
+    h+='<div class="fsec"><label class="fl">'+(lang==='cw'?'Mtundu wa Ndalama':'Income Type')+'</label><div class="type-tog" style="margin-bottom:8px"><button class="tt inc" id="inc-t-ot" onclick="setIncType(this,0)">🔂 '+(lang==='cw'?'Kamodzi Basi':'One Time')+'</button><button class="tt inc" id="inc-t-rc" onclick="setIncType(this,1)">&#128257; '+(lang==='cw'?'Nthawi Zonse':'Recurring')+'</button></div></div>';
+    h+='<div class="fsec"><label class="fl">'+(lang==='cw'?'Gwero la Ndalama':'Source')+'</label><select class="fs" id="inc-src"><option value="Salary/Income">&#128200; Salary / Income</option><option value="Business Income">&#128188; Business Income</option><option value="Farm Income">&#127807; Farm Income</option><option value="Other Income">&#128181; Other Income</option></select></div>';
   }
   h+='<div class="fsec"><label class="fl">'+t.amount+'</label><input type="number" class="fi" id="fa" placeholder="0" inputmode="numeric"></div>';
   h+='<div class="frow"><div class="fsec"><label class="fl">'+t.date+'</label><input type="date" class="fi" id="fd" value="'+today()+'"></div><div class="fsec"><label class="fl">'+t.time+'</label><input type="time" class="fi" id="ft" value="'+nowTime()+'"></div></div>';
-  if(logType==='expense')h+='<div class="frow"><div class="fsec"><label class="fl">'+t.qty+'</label><input type="number" class="fi" id="fq" placeholder="1" inputmode="decimal"></div><div class="fsec"><label class="fl">'+t.unit+'</label><select class="fs" id="fu">'+t.units.map(u=>'<option>'+u+'</option>').join('')+'</select></div></div>';
+  if(logType==='expense'){const _hn=selItem!==null?(lCfg.items[selItem]||{}).name:'';if(!NO_QTY_ITEMS.includes(_hn))h+='<div class="frow"><div class="fsec"><label class="fl">'+t.qty+'</label><input type="number" class="fi" id="fq" placeholder="1" inputmode="decimal"></div><div class="fsec"><label class="fl">'+t.unit+'</label><select class="fs" id="fu">'+t.units.map(u=>'<option>'+u+'</option>').join('')+'</select></div></div>';}
   h+='<div class="fsec"><label class="fl">'+t.notes+'</label><input type="text" class="fi" id="fn" placeholder="e.g. Bought at Chipiku..."></div>';
   if(logType==='expense')h+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:11px"><input type="checkbox" id="frc" style="width:17px;height:17px;accent-color:var(--p1)"><label for="frc" style="font-size:.78rem;font-weight:600;color:var(--mid)">&#128257; '+t.recurrYes+'</label></div>';
   h+='<button class="btnM" onclick="saveP()" style="background:'+(logType==='income'?'linear-gradient(135deg,#1B5E20,#388E3C)':'')+'">&#128190; '+t.save+'</button></div></div></div>';
@@ -1105,7 +1155,8 @@ function filterLogItems(q){
 }
 function saveP(){
   const t=tx(), a=parseFloat(val('fa'));
-  if(!a||a<=0){toast(t.amount,'e');return;}
+  if(!a||isNaN(a)||a<=0){toast(lang==='cw'?'Lowetsani ndalama yabwino':'Enter a valid amount','e');return;}
+  if(a>99999999){toast(lang==='cw'?'Ndalama yakula kwambiri':'Amount is too large','e');return;}
   const dStr=val('fd')||today(), tStr=val('ft')||'12:00';
   const ts=new Date(dStr+'T'+tStr).getTime();
   if(logType==='expense'){
@@ -1123,7 +1174,15 @@ function saveP(){
 
 function rHist(){
   const t=tx();
+  // Filter tabs
+  const fTabs='<div class="hist-filter">'
+    +'<button class="hf'+(histFilter==='all'?' on':'')+'" onclick="setHF(this)" data-f="all">📋 '+(lang==='cw'?'Zonse':'All')+'</button>'
+    +'<button class="hf'+(histFilter==='inc'?' on-inc':'')+'" onclick="setHF(this)" data-f="inc">📈 '+(lang==='cw'?'Ndalama Zolowa':'Income')+'</button>'
+    +'<button class="hf'+(histFilter==='exp'?' on-exp':'')+'" onclick="setHF(this)" data-f="exp">📉 '+(lang==='cw'?'Zotumizidwa':'Expenses')+'</button>'
+    +'</div>';
   let list=[...lPx];
+  if(histFilter==='inc')list=list.filter(p=>p.type==='income');
+  else if(histFilter==='exp')list=list.filter(p=>p.type!=='income');
   if(fUser!=='all')list=list.filter(p=>p.userId===fUser);
   if(srchQ)list=list.filter(p=>(p.item+' '+(p.notes||'')).toLowerCase().includes(srchQ.toLowerCase()));
   let h='<div class="page"><div class="srch-wrap"><input type="text" placeholder="'+t.searchPurchases+'" value="'+srchQ.replace(/"/g,'&quot;')+'" oninput="doSrch(this.value)"></div>';
@@ -1177,13 +1236,36 @@ function rSum(){
   const cats=Object.entries(catSpend).sort((a,b)=>b[1]-a[1]);
   h+='<div class="card" style="overflow:hidden"><div class="ch"><h2>&#129693; Category Breakdown</h2></div><div style="padding:14px 16px">';
   if(cats.length&&tS>0){
-    let svg='',ang=0;
-    cats.forEach(([cat,val_],i)=>{const pct=val_/tS,angle=pct*2*Math.PI,x1=80+65*Math.sin(ang),y1=80-65*Math.cos(ang),x2=80+65*Math.sin(ang+angle),y2=80-65*Math.cos(ang+angle),lg=angle>Math.PI?1:0;svg+='<path d="M80,80 L'+x1.toFixed(1)+','+y1.toFixed(1)+' A65,65 0 '+lg+',1 '+x2.toFixed(1)+','+y2.toFixed(1)+' Z" fill="'+PIE_COLORS[i%PIE_COLORS.length]+'"/>';ang+=angle;});
-    h+='<div style="display:flex;flex-direction:column;align-items:center"><svg viewBox="0 0 160 160" width="160" height="160">'+svg+'<circle cx="80" cy="80" r="38" fill="white"/><text x="80" y="76" text-anchor="middle" font-family="Syne" font-weight="800" font-size="13" fill="var(--ink)">'+MKs(tS)+'</text><text x="80" y="91" text-anchor="middle" font-family="Plus Jakarta Sans" font-size="9" fill="var(--mid)">spent</text></svg>';
-    h+='<div style="width:100%;display:flex;flex-direction:column;gap:6px">';
-    cats.forEach(([cat,val_],i)=>{h+='<div style="display:flex;align-items:center;gap:8px"><div style="width:10px;height:10px;border-radius:50%;background:'+PIE_COLORS[i%PIE_COLORS.length]+';flex-shrink:0"></div><div style="flex:1;font-size:.78rem;font-weight:600">'+(t.cats[cat]||cat)+'</div><div style="font-family:Syne,sans-serif;font-weight:800;font-size:.78rem;color:var(--mid)">'+Math.round(val_/tS*100)+'%</div><div style="font-family:Syne,sans-serif;font-weight:800;font-size:.78rem">'+MK(val_)+'</div></div>';});
+    const PC={Food:'#7B1FA2',Household:'#1565C0',Personal:'#E91E63',Transport:'#E65100',Other:'#5D4037'};
+    let svg='',ang=-Math.PI/2,gap=0.035;
+    cats.forEach(([cat,val_],i)=>{
+      const pct=val_/tS,angle=Math.max(pct*2*Math.PI-gap,0);if(!angle)return;
+      const r=70,cx=90,cy=90;
+      const x1=cx+r*Math.cos(ang),y1=cy+r*Math.sin(ang),x2=cx+r*Math.cos(ang+angle),y2=cy+r*Math.sin(ang+angle);
+      const lg=angle>Math.PI?1:0,clr=PC[cat]||PIE_COLORS[i%PIE_COLORS.length];
+      svg+='<path d="M'+cx+','+cy+' L'+x1.toFixed(2)+','+y1.toFixed(2)+' A'+r+','+r+' 0 '+lg+',1 '+x2.toFixed(2)+','+y2.toFixed(2)+' Z" fill="'+clr+'"/>';
+      if(pct>0.07){const mx=cx+(r*.65)*Math.cos(ang+angle/2),my=cy+(r*.65)*Math.sin(ang+angle/2);svg+='<text x="'+mx.toFixed(1)+'" y="'+my.toFixed(1)+'" text-anchor="middle" dominant-baseline="middle" font-family="Syne" font-weight="800" font-size="9" fill="#fff">'+Math.round(pct*100)+'%</text>';}
+      ang+=angle+gap;
+    });
+    h+='<div style="display:flex;flex-direction:column;align-items:center">';
+    h+='<svg viewBox="0 0 180 180" width="180" height="180" style="filter:drop-shadow(0 4px 16px rgba(0,0,0,.15))">'+svg;
+    h+='<circle cx="90" cy="90" r="44" fill="var(--white)"/>';
+    h+='<text x="90" y="86" text-anchor="middle" font-family="Syne" font-weight="800" font-size="13" fill="var(--ink)">'+MKs(tS)+'</text>';
+    h+='<text x="90" y="101" text-anchor="middle" font-size="8" fill="var(--mid)">'+(lang==='cw'?'Zogwiritsa':'total spent')+'</text></svg>';
+    h+='<div style="width:100%;display:flex;flex-direction:column;gap:8px;margin-top:6px">';
+    cats.forEach(([cat,val_],i)=>{
+      const clr=PC[cat]||PIE_COLORS[i%PIE_COLORS.length],pct=Math.round(val_/tS*100);
+      h+='<div style="background:var(--mist);border-radius:12px;padding:10px 12px">';
+      h+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">';
+      h+='<div style="width:12px;height:12px;border-radius:3px;background:'+clr+';flex-shrink:0"></div>';
+      h+='<div style="flex:1;font-size:.8rem;font-weight:700">'+(t.cats[cat]||cat)+'</div>';
+      h+='<div style="font-family:Syne,sans-serif;font-weight:800;font-size:.8rem;color:'+clr+'">'+pct+'%</div>';
+      h+='<div style="font-family:Syne,sans-serif;font-weight:800;font-size:.8rem">'+MK(val_)+'</div>';
+      h+='</div><div style="height:5px;background:rgba(0,0,0,.08);border-radius:5px;overflow:hidden">';
+      h+='<div style="height:100%;width:'+pct+'%;background:'+clr+';border-radius:5px;transition:width .6s cubic-bezier(.4,0,.2,1)"></div></div></div>';
+    });
     h+='</div></div>';
-  } else { h+='<div class="empty" style="padding:10px"><div class="ei">&#129693;</div><p>No spending data yet.</p></div>'; }
+  } else { h+='<div class="empty" style="padding:10px"><div class="ei">&#129693;</div><p>'+(lang==='cw'?'Palibe zolemba.':'No spending data yet.')+'</p></div>'; }
   h+='</div></div>';
   // Budget bars
   h+='<div class="card" style="overflow:hidden"><div class="ch"><h2>&#128202; '+t.sumTitle+'</h2></div>';
@@ -1196,7 +1278,15 @@ function rSum(){
   h+='<div class="sumfoot"><div class="sfg"><div class="sfl">'+t.total+' '+t.budget+'</div><div class="sfv">'+MK(tB)+'</div></div><div class="sfg"><div class="sfl">'+t.total+' '+t.spent+'</div><div class="sfv">'+MK(tS)+'</div></div><div class="sfg"><div class="sfl">'+t.left+'</div><div class="sfv" style="color:'+(tS>tB?'#FF8A80':'#A5D6A7')+'">'+MK(tB-tS)+'</div></div></div></div>';
   if(lCfg.goals&&lCfg.goals.length){
     h+='<div class="card"><div class="ch"><h2>&#127919; '+t.goals+'</h2></div><div class="cb">';
-    lCfg.goals.forEach(gl=>{const pct=Math.min(gl.saved/gl.target,1);h+='<div class="goal-card"><div class="goal-top"><div class="goal-name">'+gl.name+'</div><div class="goal-pct">'+Math.round(pct*100)+'%</div></div><div class="goal-bar"><div class="goal-fill" style="width:'+Math.round(pct*100)+'%"></div></div><div class="goal-meta"><span>'+MK(gl.saved)+' saved</span><span>Target: '+MK(gl.target)+'</span></div></div>';});
+    lCfg.goals.forEach((gl,i)=>{
+      const pct=Math.min(gl.saved/gl.target,1),done=gl.saved>=gl.target,mn=goalMonthlyNeed(gl),ml=goalMonthsLeft(gl.deadline);
+      h+='<div class="goal-card" onclick="go(\'mgr\')" style="cursor:pointer'+(done?';background:linear-gradient(135deg,#E8F5E9,#C8E6C9)':'')+'">';
+      h+='<div class="goal-top"><div class="goal-name"'+(done?' style="color:#1B5E20"':'')+'>'+( done?'🎉 ':'')+gl.name+'</div><div class="goal-pct"'+(done?' style="color:#1B5E20"':'')+'>'+Math.round(pct*100)+'%</div></div>';
+      h+='<div class="goal-bar"><div class="goal-fill" style="width:'+Math.round(pct*100)+'%'+(done?';background:linear-gradient(90deg,#2E7D32,#43A047)':'')+'"></div></div>';
+      h+='<div class="goal-meta"><span>'+MK(gl.saved)+' '+(lang==='cw'?'yosungidwa':'saved')+'</span><span>'+(lang==='cw'?'Cholinga':'Target')+': '+MK(gl.target)+'</span></div>';
+      if(!done&&mn!==null)h+='<div style="margin-top:5px;font-size:.63rem;color:#E65100;font-weight:700">📅 '+MK(mn)+'/'+(lang==='cw'?'mwezi':'mo')+(ml?' · '+ml+(lang==='cw'?' miyezi':' mths'):'')+'</div>';
+      h+='</div>';
+    });
     h+='</div></div>';
   }
   h+='</div>';
@@ -1216,13 +1306,28 @@ function rMGI(it,i){
   return '<div class="mgi"><div class="mgi-ico" style="background:'+cc+'18">'+ico(it.name)+'</div><div class="mgi-info"><div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap"><span class="mgname">'+it.name+'</span><span class="sibadge '+bcls+'" style="font-size:.55rem">'+btxt+'</span></div><div class="mgrow2"><span class="mgbudget">'+MK(it.budget)+'</span><span class="mgspent">'+t.spent+': '+MK(sp)+'</span></div><div class="mg-pb"><div class="mg-pf '+pfcls+'" style="width:'+pct+'%"></div></div></div><div class="mgi-acts"><button class="bsm be" onclick="openEB('+i+')">&#9998;</button><button class="bsm bd" onclick="delIt('+i+')">&#128465;</button></div></div>';
 }
 
+function goalMonthsLeft(dl){ if(!dl)return null; const n=new Date(),d=new Date(dl+'T00:00:00'); const m=(d.getFullYear()-n.getFullYear())*12+(d.getMonth()-n.getMonth()); return Math.max(m,0); }
+function goalMonthlyNeed(gl){ const ml=goalMonthsLeft(gl.deadline); if(ml===null||ml===0)return null; const rem=gl.target-gl.saved; if(rem<=0)return 0; return Math.ceil(rem/ml); }
 function rMgr(){
   const t=tx();
   let h='<div class="page">';
   h+='<div class="card"><div class="ch"><h2>&#128101; '+t.members+'</h2><button class="bsm be" onclick="openAddM()">&#10133; '+t.addMember+'</button></div><div class="cb"><div class="umg">'+lCfg.users.map((u,i)=>'<div class="umc" style="background:'+u.color+'18">'+(lCfg.users.length>1?'<button class="umdel" onclick="delMember('+i+')">&#10005;</button>':'')+'<button class="umed" onclick="openEU('+i+')">&#9998;</button><div class="umav" style="background:'+u.color+'">'+u.name[0]+'</div><div class="umnm">'+u.name+'</div><div class="umct">'+lPx.filter(p=>p.userId===u.id&&isTM(p.date)).length+' this month</div></div>').join('')+'</div></div></div>';
   h+='<div class="obra"><label class="oblbl">&#127968; '+t.overallCap+'</label><input type="number" class="obinp" id="ob-v" value="'+lCfg.overallBudget+'" inputmode="numeric" onchange="updOB(this.value)"></div>';
   h+='<div class="card"><div class="ch"><h2>&#127919; '+t.goals+'</h2><button class="bsm be" onclick="openAddGoal()">&#10133; '+t.addGoal+'</button></div><div class="cb">';
-  if(lCfg.goals&&lCfg.goals.length){lCfg.goals.forEach((gl,i)=>{const pct=Math.min(gl.saved/gl.target,1);h+='<div class="goal-card" style="margin-bottom:7px"><div class="goal-top"><div class="goal-name">'+gl.name+'</div><div style="display:flex;gap:5px;align-items:center"><div class="goal-pct">'+Math.round(pct*100)+'%</div><button class="bsm be" style="padding:3px 7px;font-size:.63rem" onclick="topUpGoal('+i+')">+'+t.topup+'</button><button class="bsm bd" style="padding:3px 7px;font-size:.63rem" onclick="delGoal('+i+')">&#128465;</button></div></div><div class="goal-bar"><div class="goal-fill" style="width:'+Math.round(pct*100)+'%"></div></div><div class="goal-meta"><span>'+MK(gl.saved)+' saved</span><span>Target: '+MK(gl.target)+'</span></div></div>';});}
+  if(lCfg.goals&&lCfg.goals.length){lCfg.goals.forEach((gl,i)=>{
+    const pct=Math.min(gl.saved/gl.target,1),done=gl.saved>=gl.target;
+    const ml=goalMonthsLeft(gl.deadline),mn=goalMonthlyNeed(gl);
+    h+='<div class="goal-card" style="margin-bottom:9px'+(done?';background:linear-gradient(135deg,#E8F5E9,#C8E6C9)':'')+'">';
+    h+='<div class="goal-top"><div class="goal-name"'+(done?' style="color:#1B5E20"':'')+'>'+( done?'🎉 ':'')+gl.name+'</div>';
+    h+='<div style="display:flex;gap:5px;align-items:center"><div class="goal-pct"'+(done?' style="color:#1B5E20"':'')+'>'+Math.round(pct*100)+'%</div>';
+    if(!done)h+='<button class="bsm be" style="padding:3px 8px;font-size:.63rem" onclick="openTopUp('+i+')">&#8593; '+t.topup+'</button>';
+    h+='<button class="bsm bd" style="padding:3px 7px;font-size:.63rem" onclick="delGoal('+i+')">&#128465;</button></div></div>';
+    h+='<div class="goal-bar"><div class="goal-fill" style="width:'+Math.round(pct*100)+'%'+(done?';background:linear-gradient(90deg,#2E7D32,#43A047)':'')+'"></div></div>';
+    h+='<div class="goal-meta"><span>'+MK(gl.saved)+' '+(lang==='cw'?'yosungidwa':'saved')+'</span><span>'+(lang==='cw'?'Cholinga':'Target')+': '+MK(gl.target)+'</span></div>';
+    if(!done&&mn!==null)h+='<div style="margin-top:6px;font-size:.65rem;color:#E65100;font-weight:700;background:#FFF3E0;border-radius:7px;padding:5px 8px">📅 '+MK(mn)+'/'+(lang==='cw'?'mwezi':'month')+' needed'+(ml!==null?' · '+ml+(lang==='cw'?' miyezi':'mths left'):'')+'</div>';
+    else if(!done&&gl.deadline)h+='<div style="margin-top:5px;font-size:.63rem;color:var(--mid)">📅 '+(lang==='cw'?'Tsiku lofika':'Due')+': '+gl.deadline+'</div>';
+    h+='</div>';
+  });}
   else{h+='<div class="empty" style="padding:10px 0"><p>'+t.noGoals+'</p></div>';}
   h+='</div></div>';
   h+='<div class="card" style="overflow:hidden"><div class="ch"><h2>&#128722; '+t.itemsLbl+'</h2></div>';
@@ -1236,8 +1341,8 @@ function rMgr(){
 }
 
 function setSort(s){ sortMode=s; rMgr(); }
-function updOB(v){ saveCfg({...lCfg,overallBudget:parseFloat(v)||400000}); }
-function addIt(){ const t=tx(),n=val('ni-n').trim(),b=parseFloat(val('ni-b')); if(!n||!b||b<=0){toast('Fill name and budget','e');return;} const cfg=JSON.parse(JSON.stringify(lCfg)); cfg.items.push({name:n,budget:b}); saveCfg(cfg); toast(t.itemAdded); rMgr(); }
+function updOB(v){ const n=parseFloat(v); if(!n||isNaN(n)||n<=0||n>99999999){toast(lang==='cw'?'Lowetsani ndalama yabwino':'Enter a valid budget','e');return;} saveCfg({...lCfg,overallBudget:n}); }
+function addIt(){ const t=tx(),n=val('ni-n').trim(),b=parseFloat(val('ni-b')); if(!n){toast(lang==='cw'?'Lowetsani dzina':'Enter a name','e');return;} if(!b||isNaN(b)||b<=0||b>99999999){toast(lang==='cw'?'Lowetsani bajeti yabwino':'Enter a valid budget','e');return;} if(lCfg.items.find(it=>it.name.toLowerCase()===n.toLowerCase())){toast(lang==='cw'?'Chinthu chimenechi chilipo kale':'Item already exists','e');return;} const cfg=JSON.parse(JSON.stringify(lCfg)); cfg.items.push({name:n,budget:b}); saveCfg(cfg); toast(t.itemAdded); rMgr(); }
 function delIt(i){ if(!confirm(tx().confirmDelItem+' "'+lCfg.items[i].name+'"?'))return; const cfg=JSON.parse(JSON.stringify(lCfg)); cfg.items.splice(i,1); saveCfg(cfg); toast(tx().itemDeleted); rMgr(); }
 function openAddM(){
   const t=tx();
@@ -1250,10 +1355,18 @@ function openEU(i){ const u=lCfg.users[i],t=tx(); let h='<div class="dh"></div><
 function svEU(i){ const nm=val('eu-nm').trim(); if(!nm)return; const cfg=JSON.parse(JSON.stringify(lCfg)); cfg.users[i].name=nm; cfg.users[i].color=val('eu-col')||cfg.users[i].color; saveCfg(cfg); closeM('mv-e'); updatePill(); toast(tx().nameUpdated); rMgr(); }
 function delMember(i){ if(!confirm(tx().confirmDelMember))return; const cfg=JSON.parse(JSON.stringify(lCfg)); cfg.users.splice(i,1); saveCfg(cfg); toast(tx().deleted); rMgr(); }
 function openEB(i){ const it=lCfg.items[i],t=tx(); g('mb-e').innerHTML='<div class="dh"></div><h3>'+ico(it.name)+' '+it.name+'</h3><input type="hidden" id="eb-i" value="'+i+'"><div class="fsec"><label class="fl">'+t.mbudget+'</label><input type="number" class="fi" id="eb-v" value="'+it.budget+'" inputmode="numeric"></div><div style="display:flex;gap:8px"><button class="btnG" style="flex:1" onclick="closeM(\'mv-e\')">'+t.cancel+'</button><button class="btnM" style="flex:2" onclick="svEB()">&#128190; Save</button></div>'; openM('mv-e'); }
-function svEB(){ const i=parseInt(val('eb-i')),v=parseFloat(val('eb-v')); if(!v||v<=0){toast('Budget must be greater than zero','e');return;} const cfg=JSON.parse(JSON.stringify(lCfg));cfg.items[i].budget=v;saveCfg(cfg);toast(tx().budgetUpdated); closeM('mv-e'); rMgr(); }
+function svEB(){ const i=parseInt(val('eb-i')),v=parseFloat(val('eb-v')); if(!v||isNaN(v)||v<=0||v>99999999){toast(lang==='cw'?'Lowetsani bajeti yabwino':'Enter a valid budget','e');return;} const cfg=JSON.parse(JSON.stringify(lCfg));cfg.items[i].budget=v;saveCfg(cfg);toast(tx().budgetUpdated); closeM('mv-e'); rMgr(); }
 function openAddGoal(){ const t=tx(); g('mb-gl').innerHTML='<div class="dh"></div><h3>&#127919; '+t.addGoal+'</h3><div class="fsec"><label class="fl">'+t.goalName+'</label><input type="text" class="fi" id="g-nm" placeholder="e.g. New TV, School Fees..."></div><div class="fsec"><label class="fl">'+t.goalTarget+'</label><input type="number" class="fi" id="g-tg" inputmode="numeric" placeholder="e.g. 150000"></div><div class="fsec"><label class="fl">'+t.goalSaved+' (optional)</label><input type="number" class="fi" id="g-sv" inputmode="numeric" placeholder="0"></div><div style="display:flex;gap:8px"><button class="btnG" style="flex:1" onclick="closeM(\'mv-gl\')">'+t.cancel+'</button><button class="btnM" style="flex:2" onclick="saveGoal()">&#128190; '+t.add+'</button></div>'; openM('mv-gl'); }
-function saveGoal(){ const nm=val('g-nm').trim(),tg=parseFloat(val('g-tg')),sv=parseFloat(val('g-sv'))||0; if(!nm||!tg||tg<=0){toast('Fill name and target','e');return;} const cfg=JSON.parse(JSON.stringify(lCfg)); if(!cfg.goals)cfg.goals=[]; cfg.goals.push({name:nm,target:tg,saved:sv}); saveCfg(cfg); closeM('mv-gl'); toast('Goal added!'); rMgr(); }
-function topUpGoal(i){ const gl=lCfg.goals[i],amt=parseFloat(prompt('Add to "'+gl.name+'" ('+MK(gl.saved)+' / '+MK(gl.target)+'):\nAmount to add? (MK)')); if(!amt||amt<=0)return; const cfg=JSON.parse(JSON.stringify(lCfg)); cfg.goals[i].saved=Math.min(cfg.goals[i].saved+amt,cfg.goals[i].target); saveCfg(cfg); toast('Goal updated!'); rMgr(); }
+function saveGoal(){ const nm=val('g-nm').trim(),tg=parseFloat(val('g-tg')),sv=parseFloat(val('g-sv'))||0; if(!nm){toast(lang==='cw'?'Lowetsani dzina la cholinga':'Enter a goal name','e');return;} if(!tg||isNaN(tg)||tg<=0||tg>99999999){toast(lang==='cw'?'Lowetsani ndalama yabwino':'Enter a valid target amount','e');return;} if(sv<0||sv>tg){toast(lang==='cw'?'Ndalama yosungidwa yachuluka':'Saved amount cannot exceed target','e');return;} const cfg=JSON.parse(JSON.stringify(lCfg)); if(!cfg.goals)cfg.goals=[]; cfg.goals.push({name:nm,target:tg,saved:sv}); saveCfg(cfg); closeM('mv-gl'); toast('Goal added!'); rMgr(); }
+function openTopUp(i){ const gl=lCfg.goals[i],t=tx(); g('mb-gl').innerHTML='<div class="dh"></div><h3>&#8593; '+t.topup+': '+gl.name+'</h3><div class="fsec" style="margin-bottom:8px"><div style="display:flex;justify-content:space-between;font-size:.78rem;color:var(--mid);margin-bottom:6px"><span>'+(lang==='cw'?'Yosungidwa':'Saved')+': <strong>'+MK(gl.saved)+'</strong></span><span>'+(lang==='cw'?'Cholinga':'Target')+': <strong>'+MK(gl.target)+'</strong></span></div><label class="fl">'+(lang==='cw'?'Ndalama Yowonjezera (MK)':'Amount to Add (MK)')+'</label><input type="number" class="fi" id="tu-amt" inputmode="numeric" placeholder="0"></div><div style="display:flex;gap:8px"><button class="btnG" style="flex:1" onclick="closeM(\'mv-gl\')">'+(lang==='cw'?'Siyani':t.cancel)+'</button><button class="btnM" style="flex:2;background:linear-gradient(135deg,#1B5E20,#388E3C)" onclick="topUpGoal('+i+')">&#128190; '+t.topup+'</button></div>'; openM('mv-gl'); }
+function topUpGoal(i){ const amt=parseFloat(val('tu-amt')); if(!amt||amt<=0){toast(lang==='cw'?'Lowetsani ndalama':'Enter an amount','e');return;} const cfg=JSON.parse(JSON.stringify(lCfg)); cfg.goals[i].saved=Math.min(cfg.goals[i].saved+amt,cfg.goals[i].target); saveCfg(cfg); closeM('mv-gl'); toast('Goal updated!'); rMgr(); }
+function doWithdraw(i){
+  const amt=parseFloat(val('wd-amt')); if(!amt||amt<=0){toast(lang==='cw'?'Lowetsani ndalama':'Enter an amount','e');return;}
+  if(amt>lCfg.goals[i].saved){toast(lang==='cw'?'Yapitilira zomwe mwasungira':'Exceeds saved amount','e');return;}
+  const cfg=JSON.parse(JSON.stringify(lCfg));
+  cfg.goals[i].saved=Math.max(cfg.goals[i].saved-amt,0);
+  saveCfg(cfg); closeM('mv-gl'); toast(lang==='cw'?'Ndalama yachotsedwa':'Withdrawn'); rMgr();
+}
 function delGoal(i){ if(!confirm('Delete this goal?'))return; const cfg=JSON.parse(JSON.stringify(lCfg)); cfg.goals.splice(i,1); saveCfg(cfg); rMgr(); }
 
 // ═══════════════════════════════════════════════
@@ -1264,21 +1377,49 @@ function rStg(){
   const t=tx(), u=actU(), cu=curUser, isDark=document.body.classList.contains('dark');
   const displayName=cu?(cu.displayName||cu.email||u.name):u.name;
   const initials=displayName.split(' ').map(w=>w[0]||'').join('').toUpperCase().slice(0,2)||u.name[0];
+  const photo=cu&&cu.photoURL;
+  const provId=cu&&cu.providerData&&cu.providerData[0]?cu.providerData[0].providerId:'';
+  const provLabel={'google.com':'Google Account','phone':'Phone','password':'Email Account'}[provId]||'Account';
+  const provIcon={'google.com':'🔵','phone':'📱','password':'✉️'}[provId]||'👤';
   let h='<div class="page">';
-  h+='<div class="settings-hdr"><div class="s-av" style="background:'+u.color+'">'+initials+'</div><div><div class="s-name">'+displayName+'</div>'+(cu&&cu.email?'<div class="s-email">'+cu.email+'</div>':'')+(cu&&cu.phoneNumber&&!cu.email?'<div class="s-email">'+cu.phoneNumber+'</div>':'')+'</div></div>';
-  h+='<div class="set-card"><div class="set-hdr">&#127775; Appearance</div><div class="set-row"><div><div class="set-lbl">Language</div><div class="set-sub">Current: '+(lang==='en'?'English':'Chichewa')+'</div></div><button class="bsm be" onclick="toggleLang()">'+(lang==='en'?'Switch to Chichewa':'Switch to English')+'</button></div><div class="set-row"><div><div class="set-lbl">Dark Mode</div><div class="set-sub">Easier on eyes at night</div></div><label class="toggle-sw"><input type="checkbox" '+(isDark?'checked':'')+' onchange="tgDark(this.checked)"><div class="toggle-tr"></div></label></div></div>';
-  h+='<div class="set-card"><div class="set-hdr">&#128272; Security</div>';
-  if(hasPIN())h+='<div class="set-row"><div><div class="set-lbl">PIN Lock</div><div class="set-sub">Active — tap to change</div></div><div style="display:flex;gap:6px"><button class="bsm be" onclick="openSetPIN()">Change</button><button class="bsm bd" onclick="removePIN()">Remove</button></div></div>';
-  else h+='<div class="set-row tap" onclick="openSetPIN()"><div><div class="set-lbl">Set PIN</div><div class="set-sub">Protect app with 4-digit PIN</div></div><span style="color:var(--mid)">&#8250;</span></div>';
+  // Profile header
+  h+='<div class="settings-hdr">';
+  if(photo){h+='<div class="s-av"><img src="'+photo+'" alt="" onerror="this.parentElement.textContent=\''+initials+'\';this.parentElement.style.background=\''+u.color+'\'"></div>';}
+  else{h+='<div class="s-av" style="background:'+u.color+'">'+initials+'</div>';}
+  h+='<div class="s-info"><div class="s-name">'+displayName+'</div>';
+  if(cu&&cu.email)h+='<div class="s-email">'+cu.email+'</div>';
+  else if(cu&&cu.phoneNumber)h+='<div class="s-email">'+cu.phoneNumber+'</div>';
+  if(provId)h+='<div class="s-badge">'+provIcon+' '+provLabel+'</div>';
+  h+='</div></div>';
+  // Appearance
+  h+='<div class="set-card"><div class="set-hdr">🎨 '+(lang==='en'?'Appearance':'Kuonekera')+'</div>';
+  h+='<div class="set-row"><div class="set-ico-lbl"><div class="set-ico" style="background:#EDE7F6;color:var(--p1)">🌍</div><div><div class="set-lbl">'+(lang==='en'?'Language':'Chiyankhulo')+'</div><div class="set-sub">'+(lang==='en'?'English':'Chichewa')+'</div></div></div><button class="bsm be" onclick="toggleLang()">'+(lang==='en'?'Chichewa':'English')+'</button></div>';
+  h+='<div class="set-row"><div class="set-ico-lbl"><div class="set-ico" style="background:#E8EAF6;color:#3949AB">'+(isDark?'☀️':'🌙')+'</div><div><div class="set-lbl">'+(lang==='en'?'Dark Mode':'Mdima')+'</div><div class="set-sub">'+(lang==='en'?'Easier on eyes at night':'Kapepuka usiku')+'</div></div></div><label class="toggle-sw"><input type="checkbox" '+(isDark?'checked':'')+' onchange="tgDark(this.checked)"><div class="toggle-tr"></div></label></div>';
   h+='</div>';
-  h+='<div class="set-card"><div class="set-hdr">&#128100; Account</div>';
-  if(cu&&cu.email)h+='<div class="set-row tap" onclick="doPwReset()"><div><div class="set-lbl">Change Password</div><div class="set-sub">Send a reset link to '+cu.email+'</div></div><span style="color:var(--mid)">&#8250;</span></div>';
-  if(hhId)h+='<div class="set-row"><div><div class="set-lbl">'+t.householdCode+'</div><div class="set-sub">'+hhId+'</div></div><div style="display:flex;gap:5px"><button class="hc-btn" onclick="cpCode()">'+t.copyCode+'</button><button class="hc-btn hc-wa" onclick="waCode()">'+t.shareWA+'</button></div></div>';
+  // Security
+  h+='<div class="set-card"><div class="set-hdr">🔒 '+(lang==='en'?'Security':'Chitetezo')+'</div>';
+  if(hasPIN()){
+    h+='<div class="set-row"><div class="set-ico-lbl"><div class="set-ico" style="background:#E8F5E9;color:#1B5E20">🔐</div><div><div class="set-lbl">PIN Lock</div><div class="set-sub">'+(lang==='en'?'Active — tap to change':'Ikugwira ntchito')+'</div></div></div><div style="display:flex;gap:6px"><button class="bsm be" onclick="openSetPIN()">'+(lang==='en'?'Change':'Sinthani')+'</button><button class="bsm bd" onclick="removePIN()">'+(lang==='en'?'Remove':'Chotsani')+'</button></div></div>';
+  } else {
+    h+='<div class="set-row tap" onclick="openSetPIN()"><div class="set-ico-lbl"><div class="set-ico" style="background:#FFF3E0;color:#E65100">🔓</div><div><div class="set-lbl">'+(lang==='en'?'Set PIN Lock':'Ikani PIN')+'</div><div class="set-sub">'+(lang==='en'?'Protect app with a 4-digit PIN':'Tetezani pulogalamuyi ndi PIN ya manambala 4')+'</div></div></div><span style="color:var(--mid);font-size:1.1rem">›</span></div>';
+  }
   h+='</div>';
-  h+='<div class="set-card"><div class="set-hdr">&#127911; Help & Support</div><div class="set-row"><a href="https://wa.me/265888029029" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:8px;background:#25D366;color:#fff;border-radius:10px;padding:9px 14px;text-decoration:none;font-weight:700;font-size:.8rem;width:100%">&#128172; WhatsApp Support</a></div><div class="set-row"><a href="mailto:kabangorodrick6@gmail.com" style="display:flex;align-items:center;justify-content:center;gap:8px;background:var(--p1);color:#fff;border-radius:10px;padding:9px 14px;text-decoration:none;font-weight:700;font-size:.8rem;width:100%">&#9993; Email Us</a></div></div>';
-  h+='<div class="set-card"><div class="set-hdr">&#8505;&#65039; About</div><div class="set-row" style="cursor:default"><div><div class="set-lbl">Nyumba Budget</div><div class="set-sub">Version 9.0 &mdash; &copy; Rodart Creatives</div></div></div></div>';
-  h+='<button class="export-btn" onclick="doExport()">&#128196; '+t.exportCSV+'</button>';
-  h+='<button class="logout-btn" onclick="logout()">&#128682; '+t.logout+'</button>';
+  // Account
+  h+='<div class="set-card"><div class="set-hdr">👤 '+(lang==='en'?'Account':'Akaunti')+'</div>';
+  if(cu&&cu.email)h+='<div class="set-row tap" onclick="doPwReset()"><div class="set-ico-lbl"><div class="set-ico" style="background:#EDE7F6;color:var(--p1)">🔑</div><div><div class="set-lbl">'+(lang==='en'?'Change Password':'Sinthani Chinsinsi')+'</div><div class="set-sub">'+(lang==='en'?'Send reset link to '+cu.email:'Tumizani link ku '+cu.email)+'</div></div></div><span style="color:var(--mid);font-size:1.1rem">›</span></div>';
+  if(hhId)h+='<div class="set-row"><div class="set-ico-lbl"><div class="set-ico" style="background:#E3F2FD;color:#1565C0">🏠</div><div><div class="set-lbl">'+t.householdCode+'</div><div class="set-sub" style="font-family:monospace;letter-spacing:1px;font-size:.75rem">'+hhId+'</div></div></div><div style="display:flex;gap:5px;flex-shrink:0"><button class="hc-btn" onclick="cpCode()">📋 '+t.copyCode+'</button><button class="hc-btn hc-wa" onclick="waCode()">📤 '+t.shareWA+'</button></div></div>';
+  h+='</div>';
+  // Help
+  h+='<div class="set-card"><div class="set-hdr">💬 '+(lang==='en'?'Help & Support':'Thandizo')+'</div>';
+  h+='<div class="set-row tap"><a href="https://wa.me/265888029029" target="_blank" style="display:flex;align-items:center;gap:10px;color:inherit;text-decoration:none;flex:1"><div class="set-ico" style="background:#E8F5E9;color:#1B5E20">💬</div><div><div class="set-lbl">WhatsApp Support</div><div class="set-sub">+265 888 029 029</div></div></a><span style="color:#25D366;font-size:1.1rem">›</span></div>';
+  h+='<div class="set-row tap"><a href="mailto:kabangorodrick6@gmail.com" style="display:flex;align-items:center;gap:10px;color:inherit;text-decoration:none;flex:1"><div class="set-ico" style="background:#EDE7F6;color:var(--p1)">✉️</div><div><div class="set-lbl">Email Us</div><div class="set-sub">kabangorodrick6@gmail.com</div></div></a><span style="color:var(--mid);font-size:1.1rem">›</span></div>';
+  h+='</div>';
+  // About
+  h+='<div class="set-card"><div class="set-hdr">ℹ️ '+(lang==='en'?'About':'Za Pulogalamuyi')+'</div>';
+  h+='<div class="set-row" style="cursor:default"><div class="set-ico-lbl"><div class="set-ico" style="background:#F3E5F5;color:var(--p1)">🏠</div><div><div class="set-lbl">Nyumba Budget</div><div class="set-sub">Version 3.1.0 — © Rodart Creatives</div></div></div></div>';
+  h+='</div>';
+  h+='<button class="export-btn" onclick="doExport()">📄 '+t.exportCSV+'</button>';
+  h+='<button class="logout-btn" onclick="logout()">🚪 '+t.logout+'</button>';
   h+='</div>';
   g('view').innerHTML=h;
 }
@@ -1296,6 +1437,24 @@ function doExport(){
 // 15. USER SWITCH + MODALS
 // ═══════════════════════════════════════════════
 
+
+function buildNotifs(){
+  const notifs=[]; const t=tx(); const sp=totSp(), bg=lCfg.overallBudget, rem=bg-sp, pct=sp/bg;
+  if(pct>=1) notifs.push({ico:'⚠️',bg:'#FFEBEE',title:t.over,msg:'You have exceeded your monthly budget.'});
+  else if(pct>=.8) notifs.push({ico:'😬',bg:'#FFF3E0',title:t.near,msg:'You have used '+Math.round(pct*100)+'% of your budget.'});
+  lCfg.items.forEach(it=>{const s=iSpent(it.name),r=s/it.budget;if(r>=1) notifs.push({ico:'🔴',bg:'#FFEBEE',title:it.name+' over budget',msg:MK(s)+' spent of '+MK(it.budget)});else if(r>=.85) notifs.push({ico:'🟡',bg:'#FFF3E0',title:it.name+' near limit',msg:Math.round(r*100)+'% used'});});
+  lCfg.goals&&lCfg.goals.forEach(gl=>{const ml=goalMonthsLeft(gl.deadline),mn=goalMonthlyNeed(gl);if(ml!==null&&ml<=2&&gl.saved<gl.target) notifs.push({ico:'📅',bg:'#E3F2FD',title:'Goal deadline: '+gl.name,msg:ml===0?'Due this month!':'Only '+ml+' month(s) left — need '+MK(mn)+'/mo'});});
+  return notifs;
+}
+function openNotifs(){
+  const notifs=buildNotifs(), t=tx();
+  let h='<div class="dh"></div><h3>🔔 Notifications</h3>';
+  if(!notifs.length){h+='<div class="empty" style="padding:14px 0"><div class="ei">✅</div><p>'+(lang==='cw'?'Palibe zachenjezo':'All clear — nothing needs your attention!')+'</p></div>';}
+  else{notifs.forEach(n=>{h+='<div class="notif-item"><div class="notif-ico" style="background:'+n.bg+'">'+n.ico+'</div><div class="notif-txt"><b>'+n.title+'</b>'+n.msg+'</div></div>';});}
+  g('mb-u').innerHTML=h; openM('mv-u');
+}
+function setIncType(el,idx){const wrap=el.closest('.type-tog');if(!wrap)return;wrap.querySelectorAll('button').forEach((b,i)=>{b.classList.toggle('on',i===idx);});wrap.setAttribute('data-inc',idx===1?'recurring':'once');}
+function setHF(el){histFilter=el.dataset.f||'all';rHist();}
 function openSwitch(){
   const t=tx();
   g('mb-u').innerHTML='<div class="dh"></div><h3>&#128257; '+t.switchUser+'</h3><div style="display:flex;flex-direction:column;gap:8px">'+lCfg.users.map(u=>'<div style="display:flex;align-items:center;gap:11px;padding:12px;border-radius:13px;border:2.5px solid '+(actU().id===u.id?u.color:'var(--border)')+';background:'+(actU().id===u.id?u.color+'18':'var(--white)')+';cursor:pointer" onclick="swU(\''+u.id+'\')">'+'<div style="width:42px;height:42px;border-radius:50%;background:'+u.color+';display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.05rem;color:#fff">'+u.name[0]+'</div><div style="flex:1"><div style="font-weight:800;font-size:.9rem">'+u.name+'</div><div style="font-size:.68rem;color:var(--mid)">'+lPx.filter(p=>p.userId===u.id&&isTM(p.date)).length+' entries this month</div></div>'+(actU().id===u.id?'<span style="color:'+u.color+';font-size:1.05rem">&#10003;</span>':'')+'</div>').join('')+'</div>';
@@ -1316,11 +1475,11 @@ if(!localStorage.getItem('nb_uid')) localStorage.setItem('nb_uid','u1');
 
 // ── PWA ──
 (function(){
-  var mf={name:'Nyumba Budget',short_name:'Nyumba',description:'Household Finance Tracker for Malawi',start_url:'./',scope:'./',display:'standalone',orientation:'portrait',background_color:'#F0EBF8',theme_color:'#7B1FA2',categories:['finance','utilities'],icons:[{src:'data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="100" fill="%237B1FA2"/><text y="420" x="56" font-size="380">&#127968;</text></svg>',sizes:'512x512',type:'image/svg+xml',purpose:'any maskable'},{src:'data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="100" fill="%237B1FA2"/><text y="420" x="56" font-size="380">&#127968;</text></svg>',sizes:'192x192',type:'image/svg+xml',purpose:'any'}]};
+  var mf={name:'Nyumba Budget',short_name:'Nyumba',description:'Household Finance Tracker for Malawi',start_url:'/nyumba-bajeti/',scope:'/nyumba-bajeti/',display:'standalone',orientation:'portrait',background_color:'#F0EBF8',theme_color:'#7B1FA2',categories:['finance','utilities'],icons:[{src:'data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="100" fill="%237B1FA2"/><text y="420" x="56" font-size="380">&#127968;</text></svg>',sizes:'512x512',type:'image/svg+xml',purpose:'any maskable'},{src:'data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="100" fill="%237B1FA2"/><text y="420" x="56" font-size="380">&#127968;</text></svg>',sizes:'192x192',type:'image/svg+xml',purpose:'any'}]};
   try{var b=new Blob([JSON.stringify(mf)],{type:'application/json'}),u=URL.createObjectURL(b),l=document.createElement('link');l.rel='manifest';l.href=u;document.head.appendChild(l);}catch(e){}
   if('serviceWorker' in navigator){
-    var sw='const V="nyumba-v9";self.addEventListener("install",e=>{self.skipWaiting();e.waitUntil(caches.open(V).then(c=>c.addAll(["./"]).catch(()=>{})))});self.addEventListener("activate",e=>{e.waitUntil(clients.claim())});self.addEventListener("fetch",e=>{if(e.request.method!=="GET")return;e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request).then(nr=>{var c=nr.clone();caches.open(V).then(cc=>cc.put(e.request,c));return nr;}).catch(()=>caches.match("./"))))});';
-    try{var sb=new Blob([sw],{type:'application/javascript'});navigator.serviceWorker.register(URL.createObjectURL(sb),{scope:'./'}).catch(()=>{});}catch(e){}
+    var sw='const V="nyumba-v310";self.addEventListener("install",e=>{self.skipWaiting();e.waitUntil(caches.open(V).then(c=>c.addAll(["./"]).catch(()=>{})))});self.addEventListener("activate",e=>{e.waitUntil(clients.claim())});self.addEventListener("fetch",e=>{if(e.request.method!=="GET")return;e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request).then(nr=>{var c=nr.clone();caches.open(V).then(cc=>cc.put(e.request,c));return nr;}).catch(()=>caches.match("./"))))});';
+    try{var sb=new Blob([sw],{type:'application/javascript'});navigator.serviceWorker.register(URL.createObjectURL(sb),{scope:'/nyumba-bajeti/'}).catch(()=>{});}catch(e){}
   }
 })();
 
