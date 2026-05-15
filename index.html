@@ -159,8 +159,9 @@ html,body{height:100%;overflow:hidden;background:var(--mist);font-family:'Genera
 .lbtn{background:rgba(255,255,255,.16);border:1.5px solid rgba(255,255,255,.28);color:#fff;font-family:'Syne',sans-serif;font-weight:800;font-size:.66rem;padding:5px 9px;border-radius:17px;cursor:pointer}
 #view{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;background:var(--mist)}
 .page{padding:13px 13px 80px}
-#nav{display:flex;background:var(--white);border-top:1px solid var(--border);flex-shrink:0;box-shadow:0 -3px 14px rgba(123,31,162,.1);padding-bottom:env(safe-area-inset-bottom,0)}
-.nb{flex:1;padding:8px 2px 7px;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;position:relative}
+#nav{display:flex;background:var(--white);border-top:1px solid var(--border);flex-shrink:0;box-shadow:0 -3px 14px rgba(123,31,162,.1);padding-bottom:env(safe-area-inset-bottom,0);}
+#nav::-webkit-scrollbar{display:none}
+.nb{flex:1;min-width:0;padding:8px 2px 7px;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;position:relative}
 .nb .ni{font-size:1.25rem;color:var(--mid);transition:transform .2s,color .2s}
 .nb .nl{font-size:.56rem;font-weight:700;color:#9E9E9E;letter-spacing:.2px;text-transform:uppercase}
 .nb.on .nl{color:var(--p1)}
@@ -423,6 +424,43 @@ html,body{height:100%;overflow:hidden;background:var(--mist);font-family:'Genera
 .hf.on{background:var(--p1);border-color:var(--p1);color:#fff}
 .hf.on-inc{background:var(--g1);border-color:var(--g1);color:#fff}
 .hf.on-exp{background:var(--r1);border-color:var(--r1);color:#fff}
+
+/* ── Chat ── */
+.chat-wrap{display:flex;flex-direction:column;height:100%;padding:0}
+.chat-msgs{flex:1;overflow-y:auto;padding:14px 14px 8px;display:flex;flex-direction:column;gap:10px}
+.chat-msgs::-webkit-scrollbar{display:none}
+.bubble{max-width:82%;padding:11px 14px;border-radius:18px;font-size:.87rem;line-height:1.55;word-break:break-word;animation:bubbleIn .18s ease}
+@keyframes bubbleIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.bubble.user{align-self:flex-end;background:linear-gradient(135deg,var(--p1),#9C27B0);color:#fff;border-bottom-right-radius:5px}
+.bubble.ai{align-self:flex-start;background:var(--white);color:var(--ink);border:1.5px solid var(--border);border-bottom-left-radius:5px;box-shadow:var(--sh)}
+.bubble.typing{opacity:.65}
+.bubble.typing span{display:inline-block;animation:dot 1.2s infinite}
+.bubble.typing span:nth-child(2){animation-delay:.2s}
+.bubble.typing span:nth-child(3){animation-delay:.4s}
+@keyframes dot{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
+.bubble.ai strong{font-weight:700;color:var(--p1)}
+.bubble.ai ul{padding-left:16px;margin:4px 0}
+.bubble.ai li{margin-bottom:3px}
+.chat-footer{display:flex;align-items:flex-end;gap:8px;padding:10px 14px 12px;border-top:1.5px solid var(--border);background:var(--white)}
+.chat-input{flex:1;padding:11px 14px;border:1.5px solid var(--border);border-radius:22px;font-family:'General Sans',sans-serif;font-size:.88rem;color:var(--ink);background:var(--mist);outline:none;resize:none;max-height:110px;overflow-y:auto;transition:border-color .2s}
+.chat-input:focus{border-color:var(--p1)}
+.chat-send{width:42px;height:42px;border-radius:50%;border:none;background:linear-gradient(135deg,var(--p1),#9C27B0);color:#fff;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .1s,opacity .2s}
+.chat-send:active{transform:scale(.93)}
+.chat-send:disabled{opacity:.45;cursor:not-allowed}
+.chat-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;gap:10px;color:var(--mid);padding:30px 20px;text-align:center}
+.chat-empty-ico{font-size:2.6rem;opacity:.55}
+.chat-empty-ttl{font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;color:var(--ink)}
+.chat-empty-sub{font-size:.78rem;line-height:1.55}
+.chat-suggest{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin-top:6px}
+.chat-chip{padding:7px 13px;border-radius:20px;border:1.5px solid var(--border);background:var(--white);font-size:.75rem;font-weight:600;color:var(--p1);cursor:pointer;transition:all .15s}
+.chat-chip:active{background:var(--p1);color:#fff;border-color:var(--p1)}
+body.dark .chat-footer{background:var(--white);border-color:var(--border)}
+body.dark .chat-input{background:#2A2A2A;border-color:#3A3A3A;color:#E0E0E0}
+body.dark .bubble.ai{background:#1E1E1E;border-color:#2C2C2C;color:#E0E0E0}
+body.dark .chat-chip{background:#1E1E1E;border-color:#2C2C2C}
+.magic-btn{background:linear-gradient(135deg,#FFF9C4,#FFF176);color:#F57F17;border:1px solid #FBC02D;padding:10px 15px;border-radius:12px;font-family:'Syne',sans-serif;font-weight:800;font-size:.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:12px;width:100%;box-shadow:0 4px 12px rgba(245,127,23,.15)}
+.magic-btn:active{transform:scale(.98)}
+.ai-summary-box{background:linear-gradient(135deg,#F3E5F5,#EDE7F6);border:1px solid #CE93D8;border-radius:14px;padding:14px;margin-bottom:12px;font-size:.82rem;line-height:1.5;color:var(--p1)}
 </style>
 </head>
 <body>
@@ -589,6 +627,7 @@ html,body{height:100%;overflow:hidden;background:var(--mist);font-family:'Genera
 <div class="ov" id="mv-e"><div class="mb" id="mb-e"></div></div>
 <div class="ov" id="mv-ep"><div class="mb" id="mb-ep"></div></div>
 <div class="ov" id="mv-gl"><div class="mb" id="mb-gl"></div></div>
+<div class="ov" id="mv-magic"><div class="mb" id="mb-magic"></div></div>
 <div class="toast" id="toast"></div>
 
 <script>
@@ -1039,7 +1078,7 @@ function logout(){
 // ═══════════════════════════════════════════════
 
 function go(t){ tab=t; srchQ=''; logType='expense'; document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on')); const nb=g('nb-'+t); if(nb)nb.classList.add('on'); render(); const v=g('view'); if(v)v.scrollTop=0; }
-function render(){ ({home:rHome,log:rLog,hist:rHist,sum:rSum,mgr:rMgr,stg:rStg})[tab](); }
+function render(){ ({home:rHome,log:rLog,hist:rHist,sum:rSum,mgr:rMgr,stg:rStg,chat:rChat})[tab](); }
 function toggleLang(){ lang=lang==='en'?'cw':'en'; localStorage.setItem('nb_lang',lang); const btn=g('lbtn'); if(btn)btn.textContent=lang==='en'?'CW':'EN'; applyLang(); render(); }
 function applyLang(){
   const t=tx();
@@ -1122,6 +1161,7 @@ function waCode(){ if(hhId)window.open('https://wa.me/?text='+encodeURIComponent
 function rLog(){
   const t=tx(), hint=selItem!==null?lCfg.items[selItem]:null;
   let h='<div class="page"><div class="card"><div class="ch"><h2>&#128722; '+t.logTitle+'</h2></div><div class="cb">';
+  h+='<button class="magic-btn" onclick="openMagicLog()">✨ '+(lang==='cw'?'Koperani SMS (Airtel/Mpamba) kapena Lembani':'Magic Log (Paste SMS or Type)')+'</button>';
   h+='<div class="type-tog"><button class="tt exp'+(logType==='expense'?' on':'')+'" onclick="setLT(\'expense\')">&#128201; '+t.expense+'</button><button class="tt inc'+(logType==='income'?' on':'')+'" onclick="setLT(\'income\')">&#128200; '+t.income+'</button></div>';
   h+='<div class="fsec"><label class="fl">'+t.selUser+'</label><div class="usel">'+lCfg.users.map(u=>'<div class="usb'+(actU().id===u.id?' on':'')+'" onclick="setU(\''+u.id+'\')">'+'<div class="usav" style="background:'+u.color+'">'+u.name[0]+'</div><div class="usnm">'+u.name+'</div></div>').join('')+'</div></div>';
   if(logType==='expense'){
@@ -1230,6 +1270,10 @@ function saveEP(isI){
 function rSum(){
   const t=tx(), tB=lCfg.items.reduce((s,it)=>s+it.budget,0), tS=totSp();
   let h='<div class="page"><div class="mnav"><button class="mnbtn" onclick="prevM()">&#9664;</button><span class="mnlbl">&#128202; '+mName()+'</span><button class="mnbtn" onclick="nextM()" style="opacity:'+(isCurM()?'.3':'1')+'">&#9654;</button></div>';
+  
+  h+='<button class="magic-btn" id="ai-sum-btn" onclick="generateAiSummary()" style="background:linear-gradient(135deg,var(--p1),var(--p2));color:white;border:none;">✨ '+(lang==='cw'?'Chidule cha AI':'Get AI Financial Review')+'</button>';
+  h+='<div id="ai-sum-box" class="hide"></div>';
+  
   // Pie
   const catSpend={};
   lCfg.items.forEach(it=>{const sp=iSpent(it.name);if(sp>0){const c=catOf(it.name);catSpend[c]=(catSpend[c]||0)+sp;}});
@@ -1409,6 +1453,10 @@ function rStg(){
   if(cu&&cu.email)h+='<div class="set-row tap" onclick="doPwReset()"><div class="set-ico-lbl"><div class="set-ico" style="background:#EDE7F6;color:var(--p1)">🔑</div><div><div class="set-lbl">'+(lang==='en'?'Change Password':'Sinthani Chinsinsi')+'</div><div class="set-sub">'+(lang==='en'?'Send reset link to '+cu.email:'Tumizani link ku '+cu.email)+'</div></div></div><span style="color:var(--mid);font-size:1.1rem">›</span></div>';
   if(hhId)h+='<div class="set-row"><div class="set-ico-lbl"><div class="set-ico" style="background:#E3F2FD;color:#1565C0">🏠</div><div><div class="set-lbl">'+t.householdCode+'</div><div class="set-sub" style="font-family:monospace;letter-spacing:1px;font-size:.75rem">'+hhId+'</div></div></div><div style="display:flex;gap:5px;flex-shrink:0"><button class="hc-btn" onclick="cpCode()">📋 '+t.copyCode+'</button><button class="hc-btn hc-wa" onclick="waCode()">📤 '+t.shareWA+'</button></div></div>';
   h+='</div>';
+  // AI Chat
+  h+='<div class="set-card"><div class="set-hdr">🤖 '+(lang==='en'?'AI Assistant':'Mchitidwe wa AI')+'</div>';
+  h+='<div class="set-row tap" onclick="go(\'chat\')"><div class="set-ico-lbl"><div class="set-ico" style="background:linear-gradient(135deg,#EDE7F6,#E8EAF6);color:var(--p1)">💬</div><div><div class="set-lbl">'+(lang==='en'?'Nyumba AI Chat':'Kukambirana ndi AI')+'</div><div class="set-sub">'+(lang==='en'?'Ask about your spending, budgets & goals':'Fumizani mafunso pa ndalama zanu')+'</div></div></div><span style="color:var(--p1);font-size:1.1rem">›</span></div>';
+  h+='</div>';
   // Help
   h+='<div class="set-card"><div class="set-hdr">💬 '+(lang==='en'?'Help & Support':'Thandizo')+'</div>';
   h+='<div class="set-row tap"><a href="https://wa.me/265888029029" target="_blank" style="display:flex;align-items:center;gap:10px;color:inherit;text-decoration:none;flex:1"><div class="set-ico" style="background:#E8F5E9;color:#1B5E20">💬</div><div><div class="set-lbl">WhatsApp Support</div><div class="set-sub">+265 888 029 029</div></div></a><span style="color:#25D366;font-size:1.1rem">›</span></div>';
@@ -1484,6 +1532,278 @@ if(!localStorage.getItem('nb_uid')) localStorage.setItem('nb_uid','u1');
 })();
 
 bootApp();
+
+// ═══════════════════════════════════════════════
+// CHAT — AI Budget Assistant (Using Gemini API)
+// ═══════════════════════════════════════════════
+
+// ── Chat state ──
+let chatHistory = JSON.parse(sessionStorage.getItem('nb_chat')||'[]');
+let chatBusy = false;
+
+const CHAT_SUGGESTIONS    = ['How am I doing this month?','Where am I overspending?','Can I afford my savings goals?','Give me tips to cut costs'];
+const CHAT_SUGGESTIONS_CW = ['Ndikuyenda bwanji mwezi uno?','Ndikulipira chiani koposa?','Ndingakwanitse zolinga zanga?','Ndipatseni malingaliro osaonjezerako'];
+
+function rChat(){
+  const isCW=lang==='cw';
+  g('view').innerHTML='<div class="page" style="display:flex;flex-direction:column;height:calc(100vh - 116px);padding:0"><div class="chat-wrap"><div class="chat-msgs" id="chat-msgs"></div><div class="chat-footer"><textarea class="chat-input" id="chat-inp" rows="1" placeholder="'+(isCW?'Fumizani funso...':'Ask anything about your budget...')+'" onkeydown="chatKey(event)" oninput="autoResize(this)"></textarea><button class="chat-send" id="chat-send" onclick="sendChat()">&#9658;</button></div></div></div>';
+  renderBubbles();
+}
+
+function renderBubbles(){
+  const el=g('chat-msgs'); if(!el)return;
+  if(!chatHistory.length){
+    const suggs=lang==='cw'?CHAT_SUGGESTIONS_CW:CHAT_SUGGESTIONS;
+    const u=actU();
+    el.innerHTML='<div class="chat-empty"><div class="chat-empty-ico">💬</div><div class="chat-empty-ttl">'+(lang==='cw'?'Moni, '+u.name+'!':'Hey, '+u.name+'! 👋')+'</div><div class="chat-empty-sub">'+(lang==='cw'?'Ndine Nyumba AI. Fumizani mafunso onse pa ndalama zanu.':'I\'m Nyumba AI. Ask me anything about your household budget.')+'</div><div class="chat-suggest">'+suggs.map(s=>'<div class="chat-chip" onclick="chipSend(this)">'+s+'</div>').join('')+'</div></div>';
+    return;
+  }
+  el.innerHTML=chatHistory.map(m=>{
+    const safe=m.text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+      .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+      .replace(/^[-•] (.+)/gm,'<li>$1</li>')
+      .replace(/\n/g,'<br>');
+    return '<div class="bubble '+(m.role==='user'?'user':'ai')+'">'+safe+'</div>';
+  }).join('');
+  setTimeout(()=>{el.scrollTop=el.scrollHeight;},30);
+}
+
+function chipSend(el){ const inp=g('chat-inp'); if(!inp)return; inp.value=el.textContent; autoResize(inp); sendChat(); }
+function chatKey(e){ if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendChat();} }
+function autoResize(el){ el.style.height='auto'; el.style.height=Math.min(el.scrollHeight,110)+'px'; }
+function clearChat(){ chatHistory=[]; sessionStorage.removeItem('nb_chat'); renderBubbles(); }
+
+function buildCtx(){
+  const now=new Date();
+  const mo=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
+  const moPx=lPx.filter(p=>p.date&&p.date.startsWith(mo));
+  const spent=moPx.filter(p=>p.type!=='income').reduce((s,p)=>s+p.amount,0);
+  const income=moPx.filter(p=>p.type==='income').reduce((s,p)=>s+p.amount,0);
+  const byItem={};
+  moPx.filter(p=>p.type!=='income').forEach(p=>{byItem[p.item]=(byItem[p.item]||0)+p.amount;});
+  const items=lCfg.items.map(it=>({item:it.name,budget:it.budget,spent:byItem[it.name]||0,status:(byItem[it.name]||0)>it.budget?'OVER BUDGET':(byItem[it.name]||0)>(it.budget*.8)?'Near limit':'OK'})).filter(it=>it.spent>0||it.budget>0).slice(0,20);
+  const byMember={};
+  lCfg.users.forEach(u=>{byMember[u.name]=moPx.filter(p=>p.userId===u.id&&p.type!=='income').reduce((s,p)=>s+p.amount,0);});
+  const recent=lPx.slice(0,10).map(p=>({item:p.item,amount:p.amount,date:p.date,by:uById(p.userId).name,type:p.type}));
+  const me=actU();
+  const authName=curUser&&(curUser.displayName||curUser.email)||me.name;
+  
+  return `You are Nyumba AI, a warm, personal household budget assistant for a Malawian family using the Nyumba Budget app.
+You are talking to ${authName} (household member name: ${me.name}).
+The household has ${lCfg.users.length} member(s): ${lCfg.users.map(u=>u.name).join(', ')}.
+Always address the user by their first name (${me.name.split(' ')[0]}) naturally in conversation.
+Respond in ${lang==='cw'?'Chichewa':'English'}. Be warm, encouraging, and specific — reference their actual numbers and names.
+Use MK (Malawian Kwacha). Use bullet points for lists. Bold key numbers with **like this**.
+Keep replies concise (3-5 sentences or a short list). Never give generic advice — always tie it to their real data.
+
+=== Household data — ${now.toDateString()} ===
+Monthly budget cap: MK ${lCfg.overallBudget.toLocaleString()}
+Spent this month: MK ${spent.toLocaleString()} (${Math.round(spent/lCfg.overallBudget*100)}% of cap)
+Income logged: MK ${income.toLocaleString()}
+Remaining: MK ${Math.max(0,lCfg.overallBudget-spent).toLocaleString()}
+
+Spending by member: ${JSON.stringify(byMember)}
+Item budgets & spending: ${JSON.stringify(items)}
+Savings goals: ${JSON.stringify((lCfg.goals||[]).map(gl=>({name:gl.name,target:gl.target,saved:gl.saved,pct:Math.round(gl.saved/gl.target*100)+'%'})))}
+Last 10 transactions: ${JSON.stringify(recent)}`;
+}
+
+async function sendChat(){
+  if(chatBusy)return;
+  const inp=g('chat-inp'), sendBtn=g('chat-send');
+  const msg=(inp?inp.value.trim():''); if(!msg)return;
+  
+  chatBusy=true;
+  if(inp){inp.value='';inp.style.height='auto';inp.disabled=true;}
+  if(sendBtn)sendBtn.disabled=true;
+  
+  chatHistory.push({role:'user',text:msg});
+  sessionStorage.setItem('nb_chat',JSON.stringify(chatHistory.slice(-30)));
+  renderBubbles();
+  
+  const msgsEl=g('chat-msgs');
+  if(msgsEl){const t=document.createElement('div');t.className='bubble ai typing';t.id='typing-ind';t.innerHTML='<span>●</span><span>●</span><span>●</span>';msgsEl.appendChild(t);msgsEl.scrollTop=msgsEl.scrollHeight;}
+  
+  try {
+    // ---- API KEY CONFIGURATION ----
+    const apiKey = 'AIzaSyBZiy10K0iGsVBEW2fNkHkLp684S8Dxu_4';
+    
+    // gemini-2.5-flash: current stable free-tier model (1500 RPD, 15 RPM)
+    const modelName = "gemini-2.5-flash";
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
+
+    // Map history to Gemini format (user/model)
+    const geminiMessages = chatHistory.map(m => ({
+      role: m.role === 'assistant' ? 'model' : 'user',
+      parts: [{ text: m.text }]
+    }));
+
+    const payload = {
+      contents: geminiMessages,
+      systemInstruction: { parts: [{ text: buildCtx() }] }
+    };
+
+    // Implemented exponential backoff for reliability
+    const delays = [1000, 2000, 4000, 8000, 16000];
+    let data = null;
+    let lastErr = null;
+
+    for (let i = 0; i <= delays.length; i++) {
+      try {
+        const res = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const resData = await res.json();
+        
+        if (!res.ok) {
+           lastErr = new Error(resData?.error?.message || 'API Error');
+           if (i === delays.length) throw lastErr;
+        } else {
+           data = resData;
+           break;
+        }
+      } catch (err) {
+        lastErr = err;
+        if (i === delays.length) throw lastErr;
+      }
+      if (i < delays.length) await new Promise(r => setTimeout(r, delays[i]));
+    }
+
+    const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text || (lang==='cw'?'Pepani, kuna vuto. Yesaninso.':'Sorry, something went wrong. Please try again.');
+    
+    chatHistory.push({role:'assistant',text:reply});
+    sessionStorage.setItem('nb_chat',JSON.stringify(chatHistory.slice(-30)));
+    
+  } catch(err) {
+    let errorMsg = lang==='cw'?'Pepani, kuna vuto la intaneti. Yesaninso.':'Sorry, there was a connection error. Please try again.';
+    
+    // Helper message specifically for local downloads missing the key
+    if (err.message && (err.message.includes("unregistered callers") || err.message.includes("API key not valid"))) {
+        errorMsg = "⚠️ API Key Missing! Please edit the downloaded HTML file and paste your API key inside the sendChat() function at the bottom.";
+    } else if (err.message) {
+        errorMsg = '⚠️ ' + err.message;
+    }
+    
+    chatHistory.push({role:'assistant',text:errorMsg});
+  }
+  
+  const td=g('typing-ind'); if(td)td.remove();
+  chatBusy=false;
+  // Re-fetch these since user may have navigated away during async call
+  const inpNow=g('chat-inp'), sendBtnNow=g('chat-send');
+  if(inpNow)inpNow.disabled=false;
+  if(sendBtnNow)sendBtnNow.disabled=false;
+  if(g('chat-msgs'))renderBubbles();
+  if(inpNow)inpNow.focus();
+}
+
+// ── Magic Log (Extract Transactions) ──
+function openMagicLog() {
+  const t = tx();
+  let h = '<div class="dh"></div><h3>✨ '+(lang==='cw'?'Koperani SMS kapena Lembani':'Magic Log')+'</h3>';
+  h += '<p style="font-size:0.75rem; color:var(--mid); margin-bottom:10px;">'+(lang==='cw'?'Ikani SMS ya Mpamba/Airtel Money kapena lembani mwachidule zomwe mwagula (m.m. "Ndagula phwetekere wa 2000 ndi mafuta a 5000").':'Paste an Airtel Money/Mpamba SMS or type what you bought (e.g. "Spent 5k on transport and 15k on maize").')+'</p>';
+  h += '<textarea class="fi" id="magic-input" rows="4" placeholder="..." style="resize:none;margin-bottom:10px;"></textarea>';
+  h += '<div id="magic-results" style="margin-bottom:10px;"></div>';
+  h += '<div style="display:flex;gap:8px"><button class="btnG" style="flex:1" onclick="closeM(\'mv-magic\')">'+t.cancel+'</button><button class="btnM" id="magic-btn-process" style="flex:2;background:linear-gradient(135deg,#F57F17,#F9A825);" onclick="processMagicLog()">✨ Extract</button></div>';
+  g('mb-magic').innerHTML = h;
+  openM('mv-magic');
+}
+
+let pendingMagicTxs = [];
+async function processMagicLog() {
+  const input = val('magic-input').trim();
+  if (!input) { toast('Please enter some text', 'e'); return; }
+  const btn = g('magic-btn-process');
+  btn.disabled = true; btn.innerHTML = '<span>⏳</span>...';
+  
+  const prompt = `Extract transactions from this text. 
+  Respond ONLY with a valid JSON array of objects. Do not include markdown formatting like \`\`\`json.
+  Properties needed for each object:
+  - item: string (try to match these categories if possible: ${lCfg.items.map(i=>i.name).join(', ')})
+  - amount: number (extract the exact numeric amount)
+  - type: string (either "expense" or "income")
+  
+  Text: "${input}"`;
+  
+  try {
+    const apiKey = "AIzaSyBZiy10K0iGsVBEW2fNkHkLp684S8Dxu_4";
+    const modelName = "gemini-2.5-flash";
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
+    const payload = { contents: [{ parts: [{ text: prompt }] }], generationConfig: { responseMimeType: "application/json" } };
+    
+    const res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+    const data = await res.json();
+    if (data.error) throw new Error(data.error.message);
+    
+    const resultText = data.candidates?.[0]?.content?.parts?.[0]?.text;
+    pendingMagicTxs = JSON.parse(resultText);
+    
+    if (!Array.isArray(pendingMagicTxs) || pendingMagicTxs.length === 0) throw new Error("No transactions found");
+    
+    let resHtml = '<div style="background:var(--mist); padding:10px; border-radius:10px;">';
+    pendingMagicTxs.forEach((tx) => {
+       resHtml += '<div style="display:flex; justify-content:space-between; font-size:0.8rem; margin-bottom:5px; border-bottom:1px solid var(--border); padding-bottom:5px;"><span><b>'+tx.item+'</b> ('+tx.type+')</span><span style="color:'+(tx.type==='income'?'var(--g1)':'var(--r1)')+'">MK '+tx.amount+'</span></div>';
+    });
+    resHtml += '</div>';
+    g('magic-results').innerHTML = resHtml;
+    btn.innerHTML = '💾 Save All';
+    btn.setAttribute('onclick', 'saveMagicTxs()');
+    btn.disabled = false;
+  } catch (err) {
+    toast('Extraction failed. Try rephrasing.', 'e');
+    btn.disabled = false; btn.innerHTML = '✨ Extract Again';
+  }
+}
+
+function saveMagicTxs() {
+  const dStr = today();
+  let ts = new Date().getTime();
+  pendingMagicTxs.forEach(tx => {
+     addPx({
+       item: tx.item || 'Other',
+       date: dStr,
+       timestamp: ts++, // increment ts to keep sort order
+       amount: Number(tx.amount) || 0,
+       notes: 'Added via Magic Log ✨',
+       userId: actU().id,
+       type: tx.type === 'income' ? 'income' : 'expense'
+     });
+  });
+  closeM('mv-magic');
+  toast('Transactions Saved!', 's');
+  go('hist');
+}
+
+// ── AI Smart Summary ──
+async function generateAiSummary() {
+  const btn = g('ai-sum-btn');
+  const box = g('ai-sum-box');
+  btn.disabled = true; btn.innerHTML = '<span>⏳</span> Analyzing...';
+  
+  try {
+    const apiKey = "AIzaSyBZiy10K0iGsVBEW2fNkHkLp684S8Dxu_4";
+    const modelName = "gemini-2.5-flash";
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
+    
+    const prompt = `Based on the following budget data, provide a very brief (2-3 sentences) personalized financial review. Focus on their biggest expense this month and whether they are on track. Language must be ${lang === 'cw' ? 'Chichewa' : 'English'}. Data: ${buildCtx()}`;
+    
+    const payload = { contents: [{ parts: [{ text: prompt }] }] };
+    const res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+    const data = await res.json();
+    if (data.error) throw new Error(data.error.message);
+    
+    const reply = data.candidates?.[0]?.content?.parts?.[0]?.text;
+    
+    box.innerHTML = '<div class="ai-summary-box"><b>✨ AI Insight:</b><br>'+reply+'</div>';
+    box.classList.remove('hide');
+    btn.style.display = 'none'; // hide button after success
+  } catch (err) {
+    toast('AI Analysis failed', 'e');
+    btn.disabled = false; btn.innerHTML = '✨ Try Again';
+  }
+}
 </script>
 </body>
 </html>
