@@ -172,19 +172,32 @@ html,body{height:100%;overflow:hidden;background:var(--mist);font-family:'Genera
 .forgot-link{text-align:right;margin-top:-6px;margin-bottom:12px}
 .forgot-link button{background:none;border:none;color:rgba(255,255,255,.6);font-size:.72rem;font-weight:600;cursor:pointer;text-decoration:underline}
 .auth-copy{font-size:.62rem;color:rgba(255,255,255,.2);text-align:center;margin-top:22px}
-.setup-icon{font-size:4rem;margin-bottom:12px}
-.setup-title{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;color:#fff;margin-bottom:6px;text-align:center}
-.setup-sub{font-size:.82rem;color:rgba(255,255,255,.72);margin-bottom:22px;text-align:center;line-height:1.55}
-.setup-card{background:rgba(255,255,255,.11);border:1.5px solid rgba(255,255,255,.2);border-radius:18px;padding:18px;width:100%;max-width:360px;margin-bottom:12px}
-.setup-card h3{font-family:'Syne',sans-serif;font-size:.9rem;font-weight:800;color:#fff;margin-bottom:8px}
-.setup-card p{font-size:.75rem;color:rgba(255,255,255,.7);margin-bottom:12px;line-height:1.5}
-.setup-in{width:100%;padding:12px 14px;border:2px solid rgba(255,255,255,.3);border-radius:12px;background:rgba(255,255,255,.12);color:#fff;font-family:'Syne',sans-serif;font-weight:700;font-size:.95rem;text-align:center;outline:none;letter-spacing:.5px}
-.setup-in::placeholder{color:rgba(255,255,255,.38);font-weight:400;letter-spacing:0}
-.setup-btn{width:100%;padding:13px;border:none;border-radius:12px;cursor:pointer;font-family:'Syne',sans-serif;font-size:.92rem;font-weight:800;background:#fff;color:var(--p1);box-shadow:0 4px 14px rgba(0,0,0,.18);margin-top:10px;transition:transform .1s}
-.setup-btn:active{transform:scale(.98)}
-.setup-or{color:rgba(255,255,255,.4);font-size:.78rem;margin:4px 0;font-weight:600}
+/* ── Setup Screen v2 (glassmorphism from code2.html) ── */
+.setup-icon{font-size:0;margin-bottom:0}
+.setup-logo-wrap{width:80px;height:80px;background:rgba(255,255,255,.15);backdrop-filter:blur(16px);border:1.5px solid rgba(255,255,255,.25);border-radius:22px;display:flex;align-items:center;justify-content:center;font-size:2.2rem;margin-bottom:16px;box-shadow:0 8px 24px rgba(0,0,0,.18)}
+.setup-title{font-family:'Syne',sans-serif;font-size:1.65rem;font-weight:800;color:#fff;margin-bottom:8px;text-align:center}
+.setup-sub{font-size:.82rem;color:rgba(255,255,255,.72);margin-bottom:24px;text-align:center;line-height:1.6;max-width:300px}
+.setup-card{background:rgba(255,255,255,.1);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1.5px solid rgba(255,255,255,.18);border-radius:22px;padding:20px 18px;width:100%;max-width:360px;margin-bottom:12px;box-shadow:0 8px 32px rgba(0,0,0,.15);position:relative;overflow:hidden;transition:border-color .2s}
+.setup-card::before{content:'';position:absolute;inset:0;background:rgba(255,255,255,.03);border-radius:22px;pointer-events:none}
+.setup-card-hdr{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.setup-card-hdr-ico{font-size:1.2rem}
+.setup-card h3{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:800;color:#fff;margin-bottom:0}
+.setup-card p{font-size:.76rem;color:rgba(255,255,255,.68);margin-bottom:14px;line-height:1.55}
+.setup-in{width:100%;padding:13px 14px;border:1.5px solid rgba(255,255,255,.22);border-radius:13px;background:rgba(255,255,255,.1);color:#fff;font-family:'General Sans',sans-serif;font-size:.92rem;text-align:center;outline:none;letter-spacing:.5px;transition:border-color .2s,background .2s;backdrop-filter:blur(8px)}
+.setup-in:focus{border-color:rgba(255,255,255,.55);background:rgba(255,255,255,.16)}
+.setup-in::placeholder{color:rgba(255,255,255,.35);letter-spacing:0}
+.setup-btn{width:100%;padding:14px;border:none;border-radius:14px;cursor:pointer;font-family:'Syne',sans-serif;font-size:.93rem;font-weight:800;background:#fff;color:var(--p1);box-shadow:0 4px 18px rgba(0,0,0,.2);margin-top:12px;transition:transform .1s,opacity .15s}
+.setup-btn:active{transform:scale(.97)}
+.setup-btn.outline{background:transparent;border:1.5px solid rgba(255,255,255,.35);color:#fff;box-shadow:none}
+.setup-btn.outline:active{background:rgba(255,255,255,.1)}
+.setup-or{display:flex;align-items:center;gap:10px;width:100%;max-width:360px;margin:4px 0}
+.setup-or::before,.setup-or::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.2)}
+.setup-or span{color:rgba(255,255,255,.38);font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
 .setup-err{background:rgba(183,28,28,.3);border:1px solid rgba(239,83,80,.4);border-radius:10px;padding:9px 13px;font-size:.78rem;color:#FFCDD2;margin-top:10px;display:none;text-align:center}
 .setup-err.on{display:block}
+/* Setup blur orb decoration */
+#scr-setup::before{content:'';position:absolute;top:-20%;left:-15%;width:130%;height:65%;background:radial-gradient(ellipse,rgba(206,147,216,.22) 0%,transparent 70%);pointer-events:none;z-index:0}
+#scr-setup>*{position:relative;z-index:1}
 .pin-icon{font-size:2.6rem;margin-bottom:8px}
 .pin-title{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800;color:#fff;margin-bottom:5px}
 .pin-sub{font-size:.8rem;color:rgba(255,255,255,.65);margin-bottom:26px}
@@ -482,14 +495,20 @@ html,body{height:100%;overflow:hidden;background:var(--mist);font-family:'Genera
 .hf.on-inc{background:var(--g1);border-color:var(--g1);color:#fff}
 .hf.on-exp{background:var(--r1);border-color:var(--r1);color:#fff}
 
-/* ── Chat ── */
-.chat-wrap{display:flex;flex-direction:column;height:100%;padding:0}
-.chat-msgs{flex:1;overflow-y:auto;padding:14px 14px 8px;display:flex;flex-direction:column;gap:10px}
+/* ── Chat v2 (modern design) ── */
+.chat-wrap{display:flex;flex-direction:column;height:100%;padding:0;position:relative}
+.chat-msgs{flex:1;overflow-y:auto;padding:16px 14px 100px;display:flex;flex-direction:column;gap:12px}
 .chat-msgs::-webkit-scrollbar{display:none}
-.bubble{max-width:82%;padding:11px 14px;border-radius:18px;font-size:.87rem;line-height:1.55;word-break:break-word;animation:bubbleIn .18s ease}
-@keyframes bubbleIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
-.bubble.user{align-self:flex-end;background:linear-gradient(135deg,var(--p1),#9C27B0);color:#fff;border-bottom-right-radius:5px}
-.bubble.ai{align-self:flex-start;background:var(--white);color:var(--ink);border:1.5px solid var(--border);border-bottom-left-radius:5px;box-shadow:var(--sh)}
+
+/* Bubble animation from code.html */
+@keyframes bubbleIn{from{opacity:0;transform:scale(.92) translateY(6px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.bubble{max-width:84%;padding:12px 15px;font-size:.875rem;line-height:1.58;word-break:break-word;animation:bubbleIn .28s cubic-bezier(0.175,0.885,0.32,1.275) forwards}
+.bubble-wrap{display:flex;flex-direction:column;gap:3px}
+.bubble-wrap.user{align-items:flex-end}
+.bubble-wrap.ai{align-items:flex-start}
+.bubble-ts{font-size:.62rem;color:var(--mid);padding:0 4px;opacity:.75}
+.bubble.user{border-radius:18px;border-bottom-right-radius:4px;background:linear-gradient(135deg,var(--p1),#9C27B0);color:#fff;align-self:flex-end}
+.bubble.ai{border-radius:18px;border-bottom-left-radius:4px;background:var(--white);color:var(--ink);border:1.5px solid var(--border);align-self:flex-start;box-shadow:0 2px 12px rgba(123,31,162,.07)}
 .bubble.typing{opacity:.65}
 .bubble.typing span{display:inline-block;animation:dot 1.2s infinite}
 .bubble.typing span:nth-child(2){animation-delay:.2s}
@@ -498,27 +517,51 @@ html,body{height:100%;overflow:hidden;background:var(--mist);font-family:'Genera
 .bubble.ai strong{font-weight:700;color:var(--p1)}
 .bubble.ai ul{padding-left:16px;margin:4px 0}
 .bubble.ai li{margin-bottom:3px}
-.chat-footer{display:flex;align-items:flex-end;gap:8px;padding:10px 14px 12px;border-top:1.5px solid var(--border);background:var(--white)}
-.chat-input{flex:1;padding:11px 14px;border:1.5px solid var(--border);border-radius:22px;font-family:'General Sans',sans-serif;font-size:.88rem;color:var(--ink);background:var(--mist);outline:none;resize:none;max-height:110px;overflow-y:auto;transition:border-color .2s}
-.chat-input:focus{border-color:var(--p1)}
-.chat-send{width:42px;height:42px;border-radius:50%;border:none;background:linear-gradient(135deg,var(--p1),#9C27B0);color:#fff;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .1s,opacity .2s}
-.chat-send:active{transform:scale(.93)}
-.chat-send:disabled{opacity:.45;cursor:not-allowed}
-.chat-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;gap:10px;color:var(--mid);padding:30px 20px;text-align:center}
-.chat-empty-ico{font-size:2.6rem;opacity:.55}
-.chat-empty-ttl{font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;color:var(--ink)}
-.chat-empty-sub{font-size:.78rem;line-height:1.55}
-.chat-suggest{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin-top:6px}
-.chat-chip{padding:7px 13px;border-radius:20px;border:1.5px solid var(--border);background:var(--white);font-size:.75rem;font-weight:600;color:var(--p1);cursor:pointer;transition:all .15s}
-.chat-chip:active{background:var(--p1);color:#fff;border-color:var(--p1)}
-body.dark .chat-footer{background:var(--white);border-color:var(--border)}
-body.dark .chat-input{background:#2A2A2A;border-color:#3A3A3A;color:#E0E0E0}
+
+/* Chat hero / empty state */
+.chat-hero{display:flex;flex-direction:column;align-items:center;text-align:center;padding:28px 16px 18px;gap:10px}
+.chat-hero-ico{width:68px;height:68px;background:linear-gradient(135deg,rgba(123,31,162,.1),rgba(156,39,176,.06));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:2rem;margin-bottom:4px}
+.chat-hero-ttl{font-family:'Syne',sans-serif;font-weight:800;font-size:1.25rem;color:var(--ink)}
+.chat-hero-sub{font-size:.8rem;color:var(--mid);line-height:1.55;max-width:240px}
+
+/* Suggestion chips - 2-col grid from code.html */
+.chat-chips-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 2px 10px}
+.chat-chip{padding:12px 13px;border:1.5px solid rgba(123,31,162,.18);border-radius:14px;background:var(--white);font-size:.77rem;font-weight:600;color:var(--p1);cursor:pointer;transition:all .15s;text-align:left;box-shadow:0 2px 10px rgba(123,31,162,.05);line-height:1.4}
+.chat-chip:active{background:var(--p1);color:#fff;border-color:var(--p1);transform:scale(.97)}
+
+/* Glassmorphism input bar from code.html */
+.chat-footer{position:absolute;bottom:0;left:0;right:0;padding:8px 12px 12px;background:rgba(240,235,248,.85);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-top:1px solid rgba(123,31,162,.12);display:flex;align-items:flex-end;gap:8px;box-shadow:0 -4px 20px rgba(123,31,162,.07);border-radius:16px 16px 0 0}
+.chat-attach-btn{width:36px;height:36px;border-radius:50%;border:none;background:none;color:var(--mid);font-size:1.3rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:color .15s;padding:0;margin-bottom:3px}
+.chat-attach-btn:active{color:var(--p1)}
+.chat-input{flex:1;padding:10px 14px;border:1.5px solid rgba(123,31,162,.2);border-radius:22px;font-family:'General Sans',sans-serif;font-size:.88rem;color:var(--ink);background:rgba(255,255,255,.75);outline:none;resize:none;max-height:110px;overflow-y:auto;transition:border-color .2s;backdrop-filter:blur(8px)}
+.chat-input:focus{border-color:var(--p1);background:rgba(255,255,255,.95)}
+.chat-input::placeholder{color:var(--mid);opacity:.65}
+.chat-send{width:40px;height:40px;border-radius:50%;border:none;background:linear-gradient(135deg,var(--p1),#9C27B0);color:#fff;font-size:1.05rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .1s,opacity .2s;box-shadow:0 4px 14px rgba(123,31,162,.35);margin-bottom:2px}
+.chat-send:active{transform:scale(.9)}
+.chat-send:disabled{opacity:.4;cursor:not-allowed;box-shadow:none}
+
+/* Dark mode chat */
+body.dark .chat-footer{background:rgba(18,18,18,.85);border-color:rgba(255,255,255,.08)}
+body.dark .chat-input{background:rgba(42,42,42,.8);border-color:#3A3A3A;color:#E0E0E0}
+body.dark .chat-input:focus{background:rgba(50,50,50,.95)}
 body.dark .bubble.ai{background:#1E1E1E;border-color:#2C2C2C;color:#E0E0E0}
-body.dark .chat-chip{background:#1E1E1E;border-color:#2C2C2C}
+body.dark .chat-chip{background:#1E1E1E;border-color:#3A3A3A;color:#CE93D8}
+body.dark .chat-hero-ico{background:rgba(206,147,216,.1)}
 .magic-btn{background:linear-gradient(135deg,#FFF9C4,#FFF176);color:#F57F17;border:1px solid #FBC02D;padding:10px 15px;border-radius:12px;font-family:'Syne',sans-serif;font-weight:800;font-size:.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:12px;width:100%;box-shadow:0 4px 12px rgba(245,127,23,.15)}
 .magic-btn:active{transform:scale(.98)}
 .ai-summary-box{background:linear-gradient(135deg,#F3E5F5,#EDE7F6);border:1px solid #CE93D8;border-radius:14px;padding:14px;margin-bottom:12px;font-size:.82rem;line-height:1.5;color:var(--p1)}
 
+
+/* ── Premium Page ── */
+.prem-feat{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)}
+.prem-feat:last-child{border-bottom:none}
+.prem-feat-ico{width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,#F3E5F5,#EDE7F6);display:flex;align-items:center;justify-content:center;font-size:.88rem;flex-shrink:0}
+.prem-plan{flex:1;background:var(--white);border:2px solid var(--border);border-radius:14px;padding:12px;text-align:center;cursor:pointer;transition:all .15s}
+.prem-plan.selected,.prem-plan:hover{border-color:var(--p1);background:#F3E5F5}
+.pay-method{background:var(--white);border:1.5px solid var(--border);border-radius:12px;padding:12px;margin-bottom:8px}
+.pay-method-hdr{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.pay-method-logo{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.72rem;color:#fff;flex-shrink:0}
+.pay-steps{background:var(--mist);border-radius:9px;padding:9px 11px;font-size:.76rem;line-height:1.7}
 /* ── Profile / Settings v4.1 ── */
 .prof-hdr{background:var(--white);border-radius:var(--cr);box-shadow:var(--sh);padding:14px 16px;margin-bottom:8px;display:flex;align-items:center;gap:12px}
 .prof-av{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;color:#fff;flex-shrink:0;overflow:hidden}
@@ -645,20 +688,26 @@ body.dark .chat-chip{background:#1E1E1E;border-color:#2C2C2C}
 
 <!-- SETUP -->
 <div id="scr-setup" class="screen hide">
-  <div class="setup-icon">🏠</div>
+  <div class="setup-logo-wrap">🏠</div>
   <div class="setup-title">Bajeti Yanga</div>
   <div class="setup-sub">Track household spending together.<br>Create or join a household to get started.</div>
   <div class="setup-card">
-    <h3>&#10133; Create New Household</h3>
+    <div class="setup-card-hdr">
+      <span class="setup-card-hdr-ico">➕</span>
+      <h3>Create New Household</h3>
+    </div>
     <p>Start fresh. Share the code with your partner so they can join on their device.</p>
     <button class="setup-btn" onclick="createHH()">Create Household</button>
   </div>
-  <div class="setup-or">&#8212; or &#8212;</div>
+  <div class="setup-or"><span>or</span></div>
   <div class="setup-card">
-    <h3>&#128101; Join Existing Household</h3>
+    <div class="setup-card-hdr">
+      <span class="setup-card-hdr-ico">👥</span>
+      <h3>Join Existing Household</h3>
+    </div>
     <p>Enter the household code shared by your partner.</p>
     <input class="setup-in" id="join-code" placeholder="e.g. nyumba-4829" maxlength="20">
-    <button class="setup-btn" onclick="joinHH()">Join Household</button>
+    <button class="setup-btn outline" onclick="joinHH()">Join Household</button>
   </div>
   <div id="setup-err" class="setup-err"></div>
   <p class="auth-copy" style="margin-top:20px">&#169; Rodart Creatives. All Rights Reserved.</p>
@@ -721,7 +770,7 @@ body.dark .chat-chip{background:#1E1E1E;border-color:#2C2C2C}
       <label for="pp-agree" style="font-size:.8rem;color:#444;line-height:1.5;cursor:pointer">I have read and agree to the <strong>Privacy Policy</strong> and consent to my household financial data being stored securely on Firebase.</label>
     </div>
     <button onclick="agreePrivacy()" id="pp-agree-btn" style="width:100%;padding:15px;background:linear-gradient(135deg,#7B1FA2,#4A148C);color:#fff;border:none;border-radius:14px;font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;cursor:pointer;box-shadow:0 4px 18px rgba(123,31,162,.35)">Continue to App →</button>
-    <p style="text-align:center;font-size:.7rem;color:#999;margin-top:12px">Bajeti Yanga v4.0 · © 2026 Rodart Creatives · Malawi 🇲🇼</p>
+    <p style="text-align:center;font-size:.7rem;color:#999;margin-top:12px">Bajeti Yanga v7.0 · © 2026 Rodart Creatives · Malawi 🇲🇼</p>
   </div>
 </div>
 
@@ -939,14 +988,19 @@ function tgPW(id,btn){ const el=g(id); if(!el)return; const sh=el.type==='text';
 function hasPIN()  { return !!localStorage.getItem('nb_pin'); }
 function showPIN() {
   pinEntry='';
-  setTimeout(()=>{const bb=g('bio-unlock-btn');if(bb)bb.style.display=hasBio()&&pinMode==='check'?'inline-block':'none';},50);
   if(pinMode!=='confirm') pinTmp='';
   show('scr-pin'); hide('scr-auth'); hide('scr-setup'); g('app').classList.add('hide');
   const sub=g('pin-sub');
   if(sub) sub.textContent=pinMode==='set'?tx().pinSetup:pinMode==='confirm'?'Confirm your PIN':'Enter your PIN';
   const hint=g('pin-hint');
   if(hint) hint.style.display=pinMode==='check'?'block':'none';
+  const bb=g('bio-unlock-btn');
+  if(bb) bb.style.display=hasBio()&&pinMode==='check'?'inline-block':'none';
   updDots();
+  // Auto-trigger biometric challenge when checking PIN on app open
+  if(pinMode==='check' && hasBio()){
+    setTimeout(triggerBio, 300); // slight delay so screen is visible first
+  }
 }
 function hidePIN() { hide('scr-pin'); }
 function updDots() { for(let i=0;i<4;i++){const el=g('pd'+i);if(el)el.classList.toggle('on',i<pinEntry.length);} }
@@ -1430,7 +1484,7 @@ function saveP(){
 function rHist(){
   var t=tx();
   var sqEsc=srchQ.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  var list=lPx.slice();
+  var list=lPx.filter(function(p){return !p.deleted;});
   if(histFilter==='inc') list=list.filter(function(p){return p.type==='income';});
   else if(histFilter==='exp') list=list.filter(function(p){return p.type!=='income';});
   if(fUser!=='all') list=list.filter(function(p){return p.userId===fUser;});
@@ -1842,11 +1896,11 @@ function rStg(){
   h+='<span class="stg-sec-lbl">Premium</span>';
   h+='<div class="stg-grp">';
   if(pStatus.isPremium && pStatus.isTrial){
-    h+='<div class="stg-row no-tap"><div class="stg-row-ico" style="background:#F3E5F5">✨</div><div class="stg-row-body"><div class="stg-row-lbl">Free Trial Active</div><div class="stg-row-sub">'+pStatus.daysLeft+' days remaining</div></div><div class="stg-row-right"><button class="bsm be" onclick="openUpgrade()" style="font-size:.65rem;padding:4px 9px">Upgrade</button></div></div>';
+    h+='<div class="stg-row no-tap"><div class="stg-row-ico" style="background:#F3E5F5">✨</div><div class="stg-row-body"><div class="stg-row-lbl">Free Trial Active</div><div class="stg-row-sub">'+pStatus.daysLeft+' days remaining</div></div><div class="stg-row-right"><button class="bsm be" onclick="showPremiumPage()" style="font-size:.65rem;padding:4px 9px">Upgrade &#128142;</button></div></div>';
   } else if(pStatus.isPremium){
     h+='<div class="stg-row no-tap"><div class="stg-row-ico" style="background:#E8F5E9">&#128142;</div><div class="stg-row-body"><div class="stg-row-lbl">Premium Active</div><div class="stg-row-sub">Thank you for supporting Bajeti Yanga!</div></div></div>';
   } else {
-    h+='<div class="stg-row" onclick="openUpgrade()"><div class="stg-row-ico" style="background:#F3E5F5">&#128142;</div><div class="stg-row-body"><div class="stg-row-lbl" style="color:var(--p1)">Upgrade to Premium</div><div class="stg-row-sub">MK 2,500/month -- Charts, PDF, AI & more</div></div><div class="stg-row-right"><span class="stg-chev">›</span></div></div>';
+    h+='<div class="stg-row" onclick="showPremiumPage()"><div class="stg-row-ico" style="background:#F3E5F5">&#128142;</div><div class="stg-row-body"><div class="stg-row-lbl" style="color:var(--p1)">Upgrade to Premium</div><div class="stg-row-sub">MK 2,500/month -- Charts, PDF, AI & more</div></div><div class="stg-row-right"><span class="stg-chev">›</span></div></div>';
   }
   h+='</div>';
 
@@ -1932,10 +1986,29 @@ function doExportPDF(){
   premiumGate('export_pdf', function(){
     const sp=totSp(), inc=totIn(), bg=lCfg.overallBudget;
     const rows=lPx.slice(0,50).map(p=>{ const u=uById(p.userId); return '<tr><td>'+p.date+'</td><td>'+p.item+'</td><td>'+(p.type==='income'?'Income':'Expense')+'</td><td style="text-align:right;font-weight:700;color:'+(p.type==='income'?'#1B5E20':'#B71C1C')+'">MK '+Number(p.amount).toLocaleString()+'</td><td>'+u.name+'</td></tr>'; }).join('');
-    const html='<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Bajeti Yanga Report</title><style>body{font-family:Arial,sans-serif;padding:24px;color:#1A1A2E}h1{color:#7B1FA2;margin-bottom:4px}table{width:100%;border-collapse:collapse;margin-top:16px}th{background:#7B1FA2;color:#fff;padding:8px 10px;text-align:left;font-size:.8rem}td{padding:7px 10px;border-bottom:1px solid #EDE7F6;font-size:.78rem}.summary{display:flex;gap:16px;margin:16px 0}.sum-box{flex:1;background:#F3E5F5;border-radius:10px;padding:12px;text-align:center}.sum-val{font-size:1.2rem;font-weight:800;color:#7B1FA2}.sum-lbl{font-size:.65rem;color:#607D8B;margin-top:2px}footer{margin-top:20px;font-size:.65rem;color:#9E9E9E;text-align:center}</style></head><body><h1>&#128156; Bajeti Yanga</h1><p style="color:#607D8B;font-size:.8rem">Report generated: '+new Date().toLocaleDateString()+'<br>Household: '+hhId+'</p><div class="summary"><div class="sum-box"><div class="sum-val">MK '+Number(sp).toLocaleString()+'</div><div class="sum-lbl">SPENT</div></div><div class="sum-box"><div class="sum-val">MK '+Number(inc).toLocaleString()+'</div><div class="sum-lbl">INCOME</div></div><div class="sum-box"><div class="sum-val">MK '+Number(Math.max(0,bg-sp)).toLocaleString()+'</div><div class="sum-lbl">REMAINING</div></div></div><table><thead><tr><th>Date</th><th>Item</th><th>Type</th><th>Amount</th><th>Member</th></tr></thead><tbody>'+rows+'</tbody></table><footer>Bajeti Yanga v5.0 -- © Rodart Creatives</footer></body></html>';
+    
+    // Category breakdown for PDF
+    const catSpendPDF={};
+    lCfg.items.forEach(function(it){const s=iSpent(it.name);if(s>0){const c=catOf(it.name);catSpendPDF[c]=(catSpendPDF[c]||0)+s;}});
+    const rows_count = lPx.slice(0,100).length;
+    const catRows=Object.entries(catSpendPDF).sort(function(a,b){return b[1]-a[1];}).map(function(e){
+      return '<div style="display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid #EDE7F6;font-size:12px"><span>'+e[0]+'</span><span style="font-weight:700;color:#7B1FA2">MK '+Number(e[1]).toLocaleString()+'</span></div>';
+    }).join('');
+    const memberRows=lCfg.users.map(function(u){
+      const ms=lPx.filter(function(p){return p.userId===u.id&&p.type!=='income';}).reduce(function(s,p){return s+p.amount;},0);
+      return '<div style="display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid #EDE7F6;font-size:12px"><div style="display:flex;align-items:center;gap:8px"><div style="width:20px;height:20px;border-radius:50%;background:'+u.color+';display:flex;align-items:center;justify-content:center;color:#fff;font-size:9px;font-weight:800">'+u.name[0]+'</div>'+u.name+'</div><span style="font-weight:700">MK '+Number(ms).toLocaleString()+'</span></div>';
+    }).join('');
+    const html='<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Bajeti Yanga -- '+mName()+' Report</title><style>@import url(\'https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap\');*{box-sizing:border-box;margin:0;padding:0}body{font-family:Manrope,Arial,sans-serif;background:#F8F0FF;color:#1A1A2E;padding:32px 24px;max-width:680px;margin:0 auto}.header{background:linear-gradient(135deg,#7B1FA2,#4A148C);border-radius:20px;padding:24px 28px;color:#fff;margin-bottom:24px;display:flex;align-items:center;gap:20px}.logo{width:56px;height:56px;background:rgba(255,255,255,.2);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0}.header-info h1{font-size:24px;font-weight:800;margin-bottom:4px}.header-info p{font-size:12px;opacity:.75}.summary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px}.sum-card{background:#fff;border-radius:14px;padding:16px;text-align:center;box-shadow:0 2px 12px rgba(123,31,162,.1)}.sum-val{font-size:20px;font-weight:800;color:#7B1FA2;margin-bottom:4px}.sum-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#607D8B}.sum-card.spent .sum-val{color:#B71C1C}.sum-card.income .sum-val{color:#1B5E20}.section{background:#fff;border-radius:14px;padding:18px 20px;margin-bottom:16px;box-shadow:0 2px 12px rgba(0,0,0,.06)}.section h2{font-size:14px;font-weight:800;color:#7B1FA2;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid #EDE7F6}.tx-table{width:100%;border-collapse:collapse}.tx-table th{background:#F3E5F5;color:#4A148C;padding:8px 10px;text-align:left;font-size:11px;font-weight:700;border-radius:4px}.tx-table td{padding:7px 10px;border-bottom:1px solid #F3E5F5;font-size:12px}.tx-table tr:last-child td{border-bottom:none}.badge{display:inline-block;padding:2px 8px;border-radius:6px;font-size:10px;font-weight:700}.badge-exp{background:#FFEBEE;color:#B71C1C}.badge-inc{background:#E8F5E9;color:#1B5E20}.footer{text-align:center;font-size:10px;color:#9E9E9E;margin-top:24px;padding-top:16px;border-top:1px solid #EDE7F6}@media print{body{background:#fff;padding:16px}.header{-webkit-print-color-adjust:exact;print-color-adjust:exact}.section{box-shadow:none;border:1px solid #EDE7F6}}</style></head><body>';
+    const h2 = '<!DOCTYPE html>';
+    const fullHtml = html + '<div class="header"><div class="logo">&#127968;</div><div class="header-info"><h1>Bajeti Yanga</h1><p>Monthly Financial Report &bull; '+mName()+'<br>Household: '+hhId+' &bull; Generated: '+new Date().toLocaleDateString()+'</p></div></div>'
+    + '<div class="summary-grid"><div class="sum-card spent"><div class="sum-val">MK '+Number(sp).toLocaleString()+'</div><div class="sum-lbl">Total Spent</div></div><div class="sum-card income"><div class="sum-val">MK '+Number(inc).toLocaleString()+'</div><div class="sum-lbl">Income</div></div><div class="sum-card"><div class="sum-val">MK '+Number(Math.max(0,bg-sp)).toLocaleString()+'</div><div class="sum-lbl">Remaining</div></div></div>'
+    + '<div class="section"><h2>&#127922; Spending by Category</h2>'+catRows+'</div>'
+    + '<div class="section"><h2>&#128100; Spending by Member</h2>'+memberRows+'</div>'
+    + '<div class="section"><h2>&#128203; All Transactions ('+rows_count+')</h2><table class="tx-table"><thead><tr><th>Date</th><th>Item</th><th>Type</th><th>Amount</th><th>Member</th></tr></thead><tbody>'+rows+'</tbody></table></div>'
+    + '<div class="footer">Bajeti Yanga v7.0 &mdash; &copy; 2026 Rodart Creatives &bull; Made in Malawi &#127474;&#127484;</div></body></html>';
     const w=window.open('','_blank'); if(!w){toast('Allow popups to export PDF','e');return;}
-    w.document.write(html); w.document.close();
-    setTimeout(function(){w.print(); w.close();},400);
+    w.document.write(fullHtml); w.document.close();
+    setTimeout(function(){w.print(); w.close();},600);
     toast('PDF ready -- tap Print to save');
   });
 }
@@ -2021,8 +2094,16 @@ function toggleFullPolicy(){
       ctx.lineTo(0,r);ctx.quadraticCurveTo(0,0,r,0);ctx.closePath();
       var g2=ctx.createLinearGradient(0,0,size,size);g2.addColorStop(0,'#7B1FA2');g2.addColorStop(1,'#4A148C');
       ctx.fillStyle=g2;ctx.fill();
-      ctx.font='bold '+(size*0.55)+'px serif';ctx.textAlign='center';ctx.textBaseline='middle';
-      ctx.fillText('&#127968;',size/2,size*0.54);
+      // Draw 'BY' text as icon (cleaner than emoji on homescreen)
+      ctx.fillStyle='rgba(255,255,255,0.15)';
+      ctx.beginPath();ctx.arc(size/2,size*0.52,size*0.3,0,Math.PI*2);ctx.fill();
+      ctx.font='bold '+(size*0.32)+'px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
+      ctx.fillStyle='#fff';
+      ctx.fillText('BY',size/2,size*0.5);
+      // Small tagline
+      ctx.font=(size*0.1)+'px sans-serif';
+      ctx.fillStyle='rgba(255,255,255,0.7)';
+      ctx.fillText('BAJETI',size/2,size*0.76);
       return c.toDataURL('image/png');
     }catch(e){return null;}
   }
@@ -2033,7 +2114,7 @@ function toggleFullPolicy(){
   if(ic96)icons.push({src:ic96,sizes:'96x96',type:'image/png',purpose:'any'});
 
   var mf={
-    name:'Bajeti Yanga',short_name:'Bajeti',
+    name:'Bajeti Yanga',short_name:'Bajeti Yanga',
     description:'Household Finance Tracker for Malawi',
     start_url:'https://rodart265.github.io/nyumba-bajeti/',
     scope:'https://rodart265.github.io/nyumba-bajeti/',
@@ -2088,12 +2169,23 @@ function triggerInstall(){
 // ===============================================
 // PREMIUM / TRIAL SYSTEM
 // ===============================================
-const TRIAL_DAYS = 30;
+const TRIAL_DAYS = 14;
 const PREMIUM_FEATURES = ['charts','export_pdf','bill_tracker','copy_month','unlimited_ai','trash'];
 
+// Admin households are always premium (add your household ID after creating it)
+const ADMIN_HOUSEHOLDS = ['Banja-8092'];
+
 function getPremiumStatus(){
+  if(hhId && ADMIN_HOUSEHOLDS.includes(hhId)) return {isPremium:true, isTrial:false, isAdmin:true, daysLeft:null};
   const cfg = lCfg;
-  if(cfg.isPremium) return {isPremium:true, isTrial:false, daysLeft:null};
+  if(cfg.isPremium){
+    // Check expiry date if set
+    if(cfg.premiumExpiry){
+      const expired = new Date(cfg.premiumExpiry) < new Date();
+      if(expired) return {isPremium:false, isTrial:false, daysLeft:0};
+    }
+    return {isPremium:true, isTrial:false, daysLeft:null};
+  }
   const started = cfg.trialStarted || null;
   if(!started) return {isPremium:false, isTrial:false, daysLeft:0};
   const daysUsed = Math.floor((Date.now() - new Date(started).getTime()) / 86400000);
@@ -2138,14 +2230,96 @@ function showUpgradePrompt(feature, status){
 
 function openUpgrade(){
   closeM('mv-u');
-  toast('Upgrade coming soon -- contact us on WhatsApp!', 'i');
-  setTimeout(()=>{ window.open('https://wa.me/265888029029?text=I want to upgrade Bajeti Yanga to Premium','_blank'); }, 800);
+  showPremiumPage();
+}
+
+function showPremiumPage(){
+  const status = getPremiumStatus();
+  let h = '<div class="dh"></div>';
+  h += '<div style="text-align:center;padding:4px 0 12px">';
+  h += '<div style="font-size:2.8rem;margin-bottom:6px">&#128142;</div>';
+  h += '<div style="font-family:Syne,sans-serif;font-weight:800;font-size:1.25rem;color:var(--ink);margin-bottom:4px">Bajeti Yanga Premium</div>';
+  h += '<div style="font-size:.78rem;color:var(--mid)">Unlock the full budgeting experience</div>';
+  h += '</div>';
+
+  // Feature list
+  const feats = [
+    ['&#128202;','Visual Charts','Pie + bar charts showing spending by category'],
+    ['&#128209;','PDF Export','Printable branded financial reports'],
+    ['&#9200;','Bill Tracker','Track ESCOM, water, rent due dates'],
+    ['&#128172;','Unlimited Bajeti AI','No daily message limit'],
+    ['&#128465;','30-Day Trash','Recover accidentally deleted entries'],
+    ['&#128203;','Copy Previous Month','One tap to repeat last month expenses'],
+    ['&#128247;','Receipt Scanner','Scan receipts with camera (coming soon)']
+  ];
+  h += '<div style="background:var(--mist);border-radius:14px;padding:12px;margin-bottom:14px">';
+  feats.forEach(function(f){
+    h += '<div style="display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)">';
+    h += '<div style="width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,#F3E5F5,#EDE7F6);display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0">'+f[0]+'</div>';
+    h += '<div><div style="font-weight:700;font-size:.82rem">'+f[1]+'</div><div style="font-size:.68rem;color:var(--mid);margin-top:1px">'+f[2]+'</div></div>';
+    h += '</div>';
+  });
+  h += '</div>';
+
+  // Pricing cards
+  h += '<div style="font-family:Syne,sans-serif;font-weight:800;font-size:.78rem;text-transform:uppercase;letter-spacing:.5px;color:var(--mid);margin-bottom:8px">Choose a plan</div>';
+  h += '<div style="display:flex;gap:8px;margin-bottom:14px">';
+  h += '<div style="flex:1;background:var(--white);border:2px solid var(--border);border-radius:14px;padding:12px;text-align:center">';
+  h += '<div style="font-size:.68rem;font-weight:700;color:var(--mid);text-transform:uppercase;letter-spacing:.3px">Monthly</div>';
+  h += '<div style="font-family:Syne,sans-serif;font-weight:800;font-size:1.3rem;color:var(--p1);margin:4px 0">MK 2,500</div>';
+  h += '<div style="font-size:.65rem;color:var(--mid)">per month</div></div>';
+  h += '<div style="flex:1;background:linear-gradient(135deg,#F3E5F5,#EDE7F6);border:2px solid var(--p1);border-radius:14px;padding:12px;text-align:center;position:relative">';
+  h += '<div style="position:absolute;top:-8px;left:50%;transform:translateX(-50%);background:var(--p1);color:#fff;font-size:.58rem;font-weight:800;padding:2px 8px;border-radius:10px;white-space:nowrap">BEST VALUE</div>';
+  h += '<div style="font-size:.68rem;font-weight:700;color:var(--p1);text-transform:uppercase;letter-spacing:.3px">Yearly</div>';
+  h += '<div style="font-family:Syne,sans-serif;font-weight:800;font-size:1.3rem;color:var(--p1);margin:4px 0">MK 20,000</div>';
+  h += '<div style="font-size:.65rem;color:var(--mid)">save 2 months free</div></div>';
+  h += '</div>';
+
+  // Why pay section
+  h += '<div style="background:linear-gradient(135deg,#E8F5E9,#C8E6C9);border-radius:12px;padding:11px 13px;margin-bottom:14px;font-size:.76rem;color:#1B5E20;line-height:1.5">';
+  h += '&#128154; <strong>Why pay?</strong> Bajeti Yanga is built in Malawi, for Malawian families. Your subscription keeps the app running, ad-free and private forever. No data selling, ever.';
+  h += '</div>';
+
+  // Payment methods
+  h += '<div style="font-family:Syne,sans-serif;font-weight:800;font-size:.78rem;text-transform:uppercase;letter-spacing:.5px;color:var(--mid);margin-bottom:8px">How to pay</div>';
+  h += '<div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px">';
+
+  // Airtel Money
+  h += '<div style="background:var(--white);border:1.5px solid var(--border);border-radius:12px;padding:12px">';
+  h += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">';
+  h += '<div style="width:36px;height:36px;border-radius:9px;background:#FF0000;display:flex;align-items:center;justify-content:center;font-size:1.1rem;color:#fff;font-weight:800;font-size:.75rem">AM</div>';
+  h += '<div><div style="font-weight:700;font-size:.84rem">Airtel Money</div><div style="font-size:.67rem;color:var(--mid)">Send to merchant number</div></div></div>';
+  h += '<div style="background:var(--mist);border-radius:9px;padding:9px 11px;font-size:.76rem">';
+  h += '1. Open Airtel Money<br>2. Tap <strong>Send Money</strong><br>3. Number: <strong style="color:var(--p1)">0991864753</strong> (Rodart Creatives)<br>4. Amount: MK 2,500 or MK 20,000<br>5. Reference: <strong>your household code ('+hhId+')</strong><br>6. Send screenshot to WhatsApp below</div>';
+  h += '</div>';
+
+  // TNM Mpamba
+  h += '<div style="background:var(--white);border:1.5px solid var(--border);border-radius:12px;padding:12px">';
+  h += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">';
+  h += '<div style="width:36px;height:36px;border-radius:9px;background:#FFD700;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.7rem;color:#333">TNM</div>';
+  h += '<div><div style="font-weight:700;font-size:.84rem">TNM Mpamba</div><div style="font-size:.67rem;color:var(--mid)">Send to merchant number</div></div></div>';
+  h += '<div style="background:var(--mist);border-radius:9px;padding:9px 11px;font-size:.76rem">';
+  h += '1. Open Mpamba<br>2. Tap <strong>Send Money</strong><br>3. Number: <strong style="color:var(--p1)">0888 029 029</strong> (Rodart Creatives)<br>4. Amount: MK 2,500 or MK 20,000<br>5. Reference: <strong>your household code ('+hhId+')</strong><br>6. Send screenshot to WhatsApp below</div>';
+  h += '</div>';
+  h += '</div>';
+
+  // WhatsApp confirm button
+  h += '<button onclick="confirmPaymentWA()" style="width:100%;padding:13px;background:#25D366;color:#fff;border:none;border-radius:12px;font-family:Syne,sans-serif;font-weight:800;font-size:.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:8px">&#128172; Confirm Payment on WhatsApp</button>';
+  h += '<button onclick="closeM(&quot;mv-u&quot;)" style="width:100%;padding:10px;background:none;border:1.5px solid var(--border);border-radius:12px;font-family:Syne,sans-serif;font-weight:700;font-size:.82rem;color:var(--mid);cursor:pointer">Maybe Later</button>';
+
+  g('mb-u').innerHTML = h;
+  openM('mv-u');
+}
+
+function confirmPaymentWA(){
+  const msg = encodeURIComponent('Hi Rodart Creatives! I just paid for Bajeti Yanga Premium.\n\nHousehold code: ' + hhId + '\n\n[Please attach your payment screenshot]');
+  window.open('https://wa.me/265888029029?text=' + msg, '_blank');
 }
 
 function getTrialBanner(){
   const status = getPremiumStatus();
   if(!status.isTrial) return '';
-  if(status.daysLeft > 7) return ''; // Only show when 7 days left
+  if(status.daysLeft > 10) return ''; // Show when 10 days or less remain
   if(status.daysLeft === 0) return '<div style="background:linear-gradient(90deg,#B71C1C,#E53935);color:#fff;padding:8px 14px;border-radius:12px;margin-bottom:10px;font-size:.76rem;font-weight:700;display:flex;justify-content:space-between;align-items:center">⚠️ Trial expired -- some features locked <button onclick="openUpgrade()" style="background:#fff;color:#B71C1C;border:none;border-radius:8px;padding:4px 10px;font-size:.7rem;font-weight:800;cursor:pointer">Upgrade</button></div>';
   return '<div style="background:linear-gradient(90deg,var(--p1),var(--p2));color:#fff;padding:8px 14px;border-radius:12px;margin-bottom:10px;font-size:.76rem;font-weight:700;display:flex;justify-content:space-between;align-items:center">✨ Premium Trial -- '+status.daysLeft+' day'+(status.daysLeft===1?'':'s')+' left <button onclick="openUpgrade()" style="background:#fff;color:var(--p1);border:none;border-radius:8px;padding:4px 10px;font-size:.7rem;font-weight:800;cursor:pointer">Upgrade</button></div>';
 }
@@ -2234,13 +2408,11 @@ const CHAT_SUGGESTIONS    = ['How am I doing this month?','Where am I overspendi
 const CHAT_SUGGESTIONS_CW = ['Ndikuyenda bwanji mwezi uno?','Ndikulipira chiani koposa?','Ndingakwanitse zolinga zanga?','Ndipatseni malingaliro osaonjezerako'];
 
 function rChat(){
-  const status=getPremiumStatus();
-  const aiLimit = status.isPremium ? null : 10; // free: 10/day
-  const aiUsed = parseInt(sessionStorage.getItem('nb_ai_today')||'0');
   const aiKey = 'nb_ai_date_'+today();
   if(sessionStorage.getItem(aiKey)!=='1'){ sessionStorage.setItem('nb_ai_today','0'); sessionStorage.setItem(aiKey,'1'); }
   const isCW=lang==='cw';
-  g('view').innerHTML='<div class="page" style="display:flex;flex-direction:column;height:calc(100vh - 116px);padding:0"><div class="chat-wrap"><div class="chat-msgs" id="chat-msgs"></div><div class="chat-footer"><textarea class="chat-input" id="chat-inp" rows="1" placeholder="'+(isCW?'Fumizani funso...':'Ask anything about your budget...')+'" onkeydown="chatKey(event)" oninput="autoResize(this)"></textarea><button class="chat-send" id="chat-send" onclick="sendChat()">&#9658;</button></div></div></div>';
+  const placeholder=isCW?'Fumizani funso pa bajeti yanu...':'Ask anything about your budget...';
+  g('view').innerHTML='<div style="display:flex;flex-direction:column;height:calc(100dvh - 116px);padding:0;overflow:hidden"><div class="chat-wrap"><div class="chat-msgs" id="chat-msgs"></div><div class="chat-footer"><button class="chat-attach-btn" onclick="openMagicLog()" title="Magic Log / Scan">&#10133;</button><textarea class="chat-input" id="chat-inp" rows="1" placeholder="'+placeholder+'" onkeydown="chatKey(event)" oninput="autoResize(this)"></textarea><button class="chat-send" id="chat-send" onclick="sendChat()">&#9658;</button></div></div></div>';
   renderBubbles();
 }
 
@@ -2249,15 +2421,28 @@ function renderBubbles(){
   if(!chatHistory.length){
     const suggs=lang==='cw'?CHAT_SUGGESTIONS_CW:CHAT_SUGGESTIONS;
     const u=actU();
-    el.innerHTML='<div class="chat-empty"><div class="chat-empty-ico">&#128172;</div><div class="chat-empty-ttl">'+(lang==='cw'?'Moni, '+u.name+'!':'Hey, '+u.name+'! &#128075;')+'</div><div class="chat-empty-sub">'+(lang==='cw'?'Ndine Bajeti AI. Fumizani mafunso onse pa ndalama zanu.':'I\'m Bajeti AI. Ask me anything about your household budget.')+'</div><div class="chat-suggest">'+suggs.map(s=>'<div class="chat-chip" onclick="chipSend(this)">'+s+'</div>').join('')+'</div></div>';
+    // Hero section + 2-column chip grid (from code.html design)
+    el.innerHTML=
+      '<div class="chat-hero">'
+        +'<div class="chat-hero-ico">&#128172;</div>'
+        +'<div class="chat-hero-ttl">'+(lang==='cw'?'Moni, '+u.name+'!':'Hey, '+u.name+'! &#128075;')+'</div>'
+        +'<div class="chat-hero-sub">'+(lang==='cw'?'Ndine Bajeti AI. Fumizani mafunso onse pa ndalama zanu.':'I\'m Bajeti AI — your personal budget partner. Ask me anything!')+'</div>'
+      +'</div>'
+      +'<div class="chat-chips-grid">'+suggs.map(s=>'<div class="chat-chip" onclick="chipSend(this)">'+s+'</div>').join('')+'</div>';
     return;
   }
+  // Render bubbles with wrap + timestamp (from code.html)
   el.innerHTML=chatHistory.map(m=>{
+    const isU=m.role==='user';
     const safe=m.text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
       .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
       .replace(/^[-•] (.+)/gm,'<li>$1</li>')
       .replace(/\n/g,'<br>');
-    return '<div class="bubble '+(m.role==='user'?'user':'ai')+'">'+safe+'</div>';
+    const ts=isU?'You':'Bajeti AI';
+    return '<div class="bubble-wrap '+(isU?'user':'ai')+'">'
+      +'<div class="bubble '+(isU?'user':'ai')+'">'+safe+'</div>'
+      +'<span class="bubble-ts">'+ts+' • just now</span>'
+    +'</div>';
   }).join('');
   setTimeout(()=>{el.scrollTop=el.scrollHeight;},30);
 }
@@ -2327,7 +2512,7 @@ async function sendChat(){
   renderBubbles();
   
   const msgsEl=g('chat-msgs');
-  if(msgsEl){const t=document.createElement('div');t.className='bubble ai typing';t.id='typing-ind';t.innerHTML='<span>●</span><span>●</span><span>●</span>';msgsEl.appendChild(t);msgsEl.scrollTop=msgsEl.scrollHeight;}
+  if(msgsEl){const w=document.createElement('div');w.className='bubble-wrap ai';w.id='typing-ind';w.innerHTML='<div class="bubble ai typing"><span>●</span><span>●</span><span>●</span></div>';msgsEl.appendChild(w);msgsEl.scrollTop=msgsEl.scrollHeight;}
   
   try {
     // -- Cloudflare Worker proxy -- API key never exposed in browser --
@@ -2403,14 +2588,68 @@ async function sendChat(){
 // -- Magic Log (Extract Transactions) --
 function openMagicLog() {
   const t = tx();
-  let h = '<div class="dh"></div><h3>✨ '+(lang==='cw'?'Koperani SMS kapena Lembani':'Magic Log')+'</h3>';
-  h += '<p style="font-size:0.75rem; color:var(--mid); margin-bottom:10px;">'+(lang==='cw'?'Ikani SMS ya Mpamba/Airtel Money kapena lembani mwachidule zomwe mwagula (m.m. "Ndagula tomato wa 2000 ndi mafuta a 5000").':'Paste an Airtel Money/Mpamba SMS or type what you bought (e.g. "Spent 5k on transport and 15k on maize").')+'</p>';
-  h += '<textarea class="fi" id="magic-input" rows="4" placeholder="..." style="resize:none;margin-bottom:10px;"></textarea>';
+  const isPrem = hasPremiumFeature('receipt_scan');
+  let h = '<div class="dh"></div><h3>&#10024; '+(lang==='cw'?'Koperani SMS kapena Lembani':'Magic Log')+'</h3>';
+  h += '<p style="font-size:0.75rem; color:var(--mid); margin-bottom:10px;">'+(lang==='cw'?'Ikani SMS ya Mpamba/Airtel Money kapena lembani mwachidule zomwe mwagula.':'Paste an Airtel Money/Mpamba SMS or type what you bought (e.g. "Spent 5k on transport and 15k on maize").')+'</p>';
+
+  // Camera scan row (Premium)
+  h += '<div style="display:flex;gap:8px;margin-bottom:10px">';
+  if(isPrem){
+    h += '<label style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:10px;background:linear-gradient(135deg,#E8F5E9,#C8E6C9);border:1.5px solid #43A047;border-radius:12px;cursor:pointer;font-family:Syne,sans-serif;font-weight:700;font-size:.78rem;color:#1B5E20">&#128247; Scan Receipt<input type="file" accept="image/*" capture="camera" id="receipt-cam" style="display:none" onchange="scanReceipt(this)"></label>';
+    h += '<label style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:10px;background:linear-gradient(135deg,#E3F2FD,#BBDEFB);border:1.5px solid #1976D2;border-radius:12px;cursor:pointer;font-family:Syne,sans-serif;font-weight:700;font-size:.78rem;color:#0D47A1">&#128444;&#65039; Gallery<input type="file" accept="image/*" id="receipt-gal" style="display:none" onchange="scanReceipt(this)"></label>';
+  } else {
+    h += '<button onclick="showPremiumPage();closeM(&quot;mv-magic&quot;)" style="width:100%;padding:10px;background:linear-gradient(135deg,#F3E5F5,#EDE7F6);border:1.5px solid var(--p1);border-radius:12px;font-family:Syne,sans-serif;font-weight:700;font-size:.78rem;color:var(--p1);cursor:pointer">&#128247; Scan Receipt &#128142; (Premium)</button>';
+  }
+  h += '</div>';
+
+  h += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><div style="flex:1;height:1px;background:var(--border)"></div><span style="font-size:.68rem;color:var(--mid);font-weight:600">or type</span><div style="flex:1;height:1px;background:var(--border)"></div></div>';
+  h += '<textarea class="fi" id="magic-input" rows="4" placeholder="e.g. Spent 5k on maize and 2k on transport..." style="resize:none;margin-bottom:10px;"></textarea>';
   h += '<div id="magic-results" style="margin-bottom:10px;"></div>';
-  h += '<div style="display:flex;gap:8px"><button class="btnG" style="flex:1" onclick="closeM(\'mv-magic\')">'+t.cancel+'</button><button class="btnM" id="magic-btn-process" style="flex:2;background:linear-gradient(135deg,#F57F17,#F9A825);" onclick="processMagicLog()">✨ Extract</button></div>';
+  h += '<div style="display:flex;gap:8px"><button class="btnG" style="flex:1" onclick="closeM(&quot;mv-magic&quot;)">'+t.cancel+'</button><button class="btnM" id="magic-btn-process" style="flex:2;background:linear-gradient(135deg,#F57F17,#F9A825);" onclick="processMagicLog()">&#10024; Extract</button></div>';
   g('mb-magic').innerHTML = h;
   openM('mv-magic');
 }
+
+async function scanReceipt(input){
+  if(!input.files||!input.files[0])return;
+  const file=input.files[0];
+  const resultsEl=g('magic-results');
+  if(resultsEl)resultsEl.innerHTML='<div style="text-align:center;padding:12px;color:var(--mid);font-size:.8rem">&#128247; Reading receipt with AI...</div>';
+  const btn=g('magic-btn-process'); if(btn){btn.disabled=true;btn.innerHTML='&#10003; Scanning...';}
+
+  const reader=new FileReader();
+  reader.onload=async function(e){
+    const base64=e.target.result.split(',')[1];
+    const mime=file.type||'image/jpeg';
+    const prompt='This is a receipt from Malawi. Extract ALL line items as a JSON array. Each object needs: {item: string, amount: number, type: "expense"}. Match items to these categories where possible: '+lCfg.items.map(function(i){return i.name;}).join(', ')+'. Return ONLY valid JSON array, no markdown, no explanation.';
+    try{
+      const url='https://nyumba-ai.kabangorodrick6.workers.dev/chat';
+      const payload={contents:[{parts:[{text:prompt},{inline_data:{mime_type:mime,data:base64}}]}]};
+      const res=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+      const data=await res.json();
+      if(data.error)throw new Error(data.error.message);
+      const resultText=data.candidates?.[0]?.content?.parts?.[0]?.text||'[]';
+      const clean=resultText.replace(/```json|```/g,'').trim();
+      pendingMagicTxs=JSON.parse(clean);
+      if(!Array.isArray(pendingMagicTxs)||!pendingMagicTxs.length)throw new Error('No items found');
+      let resHtml='<div style="background:var(--mist);padding:10px;border-radius:10px">';
+      resHtml+='<div style="font-size:.72rem;font-weight:700;color:var(--p1);margin-bottom:6px">&#10024; Found '+pendingMagicTxs.length+' item(s):</div>';
+      pendingMagicTxs.forEach(function(tx){
+        resHtml+='<div style="display:flex;justify-content:space-between;font-size:.8rem;margin-bottom:5px;border-bottom:1px solid var(--border);padding-bottom:5px"><span><b>'+tx.item+'</b></span><span style="color:var(--r1);font-weight:700">MK '+Number(tx.amount).toLocaleString()+'</span></div>';
+      });
+      resHtml+='</div>';
+      if(resultsEl)resultsEl.innerHTML=resHtml;
+      if(btn){btn.disabled=false;btn.innerHTML='&#128190; Save All '+pendingMagicTxs.length+' Items';btn.setAttribute('onclick','saveMagicTxs()');}
+      toast('Receipt scanned!','s');
+    }catch(err){
+      if(resultsEl)resultsEl.innerHTML='';
+      if(btn){btn.disabled=false;btn.innerHTML='&#10024; Extract';}
+      toast('Could not read receipt. Try typing it manually.','e');
+    }
+  };
+  reader.readAsDataURL(file);
+}
+
 
 let pendingMagicTxs = [];
 async function processMagicLog() {
@@ -2501,6 +2740,26 @@ async function generateAiSummary() {
     btn.disabled = false; btn.innerHTML = '✨ Try Again';
   }
 }
+
+// ===============================================
+// DATA-ATTR HELPER FUNCTIONS (click delegates)
+// ===============================================
+function openEPd(el){ openEP(el.dataset.pid); }
+function doDelD(el){ doDel(el.dataset.pid); }
+function restoreTrashD(el){ restoreTrash(el.dataset.pid); }
+function pickID(el){ pickI(parseInt(el.dataset.i)); }
+function dismissNameNotif(){ var n=document.querySelector('.name-notif'); if(n)n.remove(); }
+function delBillD(el){ delBill(parseInt(el.dataset.bi)); }
+function swUD(el){ swU(el.dataset.uid); }
+function openPxMD(el){ openPxM(el.dataset.pid); }
+function viewItemD(el){ viewItem(el.dataset.iid); }
+function openEUd(el){ openEU(parseInt(el.dataset.i)); }
+function delItd(el){ delIt(parseInt(el.dataset.i)); }
+function delMemberd(el){ delMember(parseInt(el.dataset.i)); }
+function openEBd(el){ openEB(parseInt(el.dataset.i)); }
+function topUpGoald(el){ openTopUp(parseInt(el.dataset.i)); }
+function delGoald(el){ delGoal(parseInt(el.dataset.i)); }
+
 </script>
 </body>
 </html>
