@@ -7,7 +7,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Bajeti Yanga">
-<title>Bajeti Yanga</title>
+<title>Bajeti Yanga v9.1.1</title>
 <link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&display=swap" rel="stylesheet">
 <!-- Flaticon removed: using Lucide exclusively for consistent icon style -->
@@ -16,6 +16,10 @@
 /* Lucide icon helper — mirrors fi spacing patterns */
 .li{display:inline-flex;align-items:center;justify-content:center;vertical-align:middle}
 .li svg{stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+/* appConfirm modal */
+#mv-confirm .mb { max-width: 340px; margin: 0 auto; }
+
 </style>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
@@ -138,6 +142,7 @@ html,body{height:100%;overflow:hidden;background:var(--mist);font-family:'Genera
 .screen{position:fixed;inset:0;z-index:900;overflow-y:auto;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 20px 32px}
 #scr-auth{background:linear-gradient(155deg,#4A148C,#7B1FA2 55%,#880E4F)}
 #scr-setup{background:linear-gradient(155deg,#4A148C,#7B1FA2 55%,#880E4F)}
+#scr-welcome{background:linear-gradient(155deg,#4A148C,#7B1FA2 55%,#880E4F)}
 #scr-pin{background:linear-gradient(155deg,#4A148C,#7B1FA2);z-index:1000}
 .auth-logo{font-size:3.2rem;margin-bottom:8px}
 .auth-title{font-family:'Syne',sans-serif;font-size:1.75rem;font-weight:800;color:#fff;margin-bottom:4px;text-align:center}
@@ -668,7 +673,7 @@ body.dark .chat-action-row:active{background:#2A2A2A}
       <p style="color:rgba(255,255,255,.78);font-size:.82rem;margin-bottom:14px;line-height:1.5">Enter your email and we will send a reset link.</p>
       <label class="a-label">Email</label>
       <input class="a-input" id="fgt-em" type="email" placeholder="you@example.com">
-      <button class="a-btn" id="fgt-btn" onclick="doFgt()"><i data-lucide="send" style="margin-right:4px"></i> Send Reset Link</button>
+      <button class="a-btn" id="fgt-btn" onclick="doFgt()"><i data-lucide="send" style="width:14px;height:14px;margin-right:4px;vertical-align:middle"></i> Send Reset Link</button>
       <div id="fgt-ok" class="a-ok">&#9989; Reset email sent! Check your inbox.</div>
     </div>
     <!-- Main -->
@@ -714,7 +719,7 @@ body.dark .chat-action-row:active{background:#2A2A2A}
             <input class="a-input" id="a-ph" type="tel" placeholder="888 123 456" style="flex:1;margin-bottom:0">
           </div>
           <div id="recaptcha-container"></div>
-          <button class="a-btn" id="a-otp-btn" onclick="sendOTP()" style="margin-top:12px"><i data-lucide="smartphone" style="margin-right:4px"></i> Send OTP</button>
+          <button class="a-btn" id="a-otp-btn" onclick="sendOTP()" style="margin-top:12px"><i data-lucide="smartphone" style="width:14px;height:14px;margin-right:4px;vertical-align:middle"></i> Send OTP</button>
           <div class="divider"><span>or</span></div>
           <button class="g-btn" onclick="doGoogle()" type="button">
             <svg width="19" height="19" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
@@ -743,45 +748,91 @@ body.dark .chat-action-row:active{background:#2A2A2A}
 
 <!-- SETUP -->
 <div id="scr-setup" class="screen hide">
-  <div class="setup-logo-wrap">
-    <svg width="48" height="48" viewBox="0 0 52 52" fill="none">
+  <div class="setup-logo-wrap" style="width:72px;height:72px;border-radius:24px;margin-bottom:20px">
+    <svg width="40" height="40" viewBox="0 0 52 52" fill="none">
       <rect x="8" y="34" width="9" height="10" rx="2.5" fill="rgba(255,255,255,0.45)"/>
       <rect x="21" y="24" width="9" height="20" rx="2.5" fill="rgba(255,255,255,0.7)"/>
       <rect x="34" y="14" width="9" height="30" rx="2.5" fill="#fff"/>
       <polygon points="34,18 38.5,9 43,18" fill="#00E5FF"/>
     </svg>
   </div>
-  <div class="setup-title">Bajeti Yanga</div>
-  <div class="setup-sub">Your money, your rules. Set up your household to start tracking every kwacha.</div>
-  <div class="setup-card">
-    <div class="setup-card-hdr">
-      <span class="setup-card-hdr-ico"><i data-lucide="user"></i></span>
-      <h3>Just Me (Solo)</h3>
+  <div class="setup-title" style="font-size:1.8rem;margin-bottom:6px">Set Up Bajeti Yanga</div>
+  <div class="setup-sub" style="margin-bottom:28px">Your money, your rules. Choose how you want to get started.</div>
+
+  <!-- Solo option -->
+  <div class="setup-card" style="cursor:pointer" onclick="createHHSolo()">
+    <div style="display:flex;align-items:center;gap:14px">
+      <div style="width:44px;height:44px;background:rgba(255,255,255,.18);border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <i data-lucide="user" style="color:#fff;width:22px;height:22px"></i>
+      </div>
+      <div style="flex:1">
+        <div style="font-family:Syne,sans-serif;font-weight:800;font-size:.95rem;color:#fff;margin-bottom:2px">Just Me</div>
+        <div style="font-size:.73rem;color:rgba(255,255,255,.65);line-height:1.4">Track your own spending solo. Add family later anytime.</div>
+      </div>
+      <i data-lucide="chevron-right" style="color:rgba(255,255,255,.5);flex-shrink:0"></i>
     </div>
-    <p>Track your personal spending solo — no partner needed. You can always add members later.</p>
-    <button class="setup-btn" onclick="createHHSolo()">Start Solo</button>
   </div>
-  <div class="setup-or"><span>or</span></div>
-  <div class="setup-card">
-    <div class="setup-card-hdr">
-      <span class="setup-card-hdr-ico"><i data-lucide="users"></i></span>
-      <h3>Create Household</h3>
+
+  <!-- Create or Join — combined -->
+  <div class="setup-card" style="margin-top:10px">
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px">
+      <div style="width:44px;height:44px;background:rgba(255,255,255,.18);border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <i data-lucide="users" style="color:#fff;width:22px;height:22px"></i>
+      </div>
+      <div style="flex:1">
+        <div style="font-family:Syne,sans-serif;font-weight:800;font-size:.95rem;color:#fff;margin-bottom:2px">With Family / Partner</div>
+        <div style="font-size:.73rem;color:rgba(255,255,255,.65);line-height:1.4">Create a new household or join one that was shared with you.</div>
+      </div>
     </div>
-    <p>Start fresh with your partner or family. Share the code so they can join on their device.</p>
-    <button class="setup-btn" onclick="createHH()">Create Household</button>
-  </div>
-  <div class="setup-or"><span>or</span></div>
-  <div class="setup-card">
-    <div class="setup-card-hdr">
-      <span class="setup-card-hdr-ico"><i data-lucide="log-in"></i></span>
-      <h3>Join Existing Household</h3>
+    <div style="display:flex;gap:8px;margin-bottom:12px">
+      <button class="setup-btn" style="flex:1;margin-top:0;padding:11px 8px;font-size:.82rem" onclick="createHH()">
+        <i data-lucide="plus-circle" style="width:14px;height:14px;margin-right:5px;vertical-align:middle"></i>Create New
+      </button>
+      <button class="setup-btn outline" style="flex:1;margin-top:0;padding:11px 8px;font-size:.82rem" onclick="document.getElementById('join-code').focus()">
+        <i data-lucide="log-in" style="width:14px;height:14px;margin-right:5px;vertical-align:middle"></i>Join Existing
+      </button>
     </div>
-    <p>Enter the household code shared by your partner.</p>
-    <input class="setup-in" id="join-code" placeholder="e.g. nyumba-4829" maxlength="20">
-    <button class="setup-btn outline" onclick="joinHH()">Join Household</button>
+    <input class="setup-in" id="join-code" placeholder="Paste household code to join…" maxlength="20" style="margin-bottom:8px">
+    <button class="setup-btn outline" style="margin-top:0;font-size:.82rem" onclick="joinHH()">
+      <i data-lucide="arrow-right-circle" style="width:14px;height:14px;margin-right:5px;vertical-align:middle"></i>Join This Household
+    </button>
   </div>
+
   <div id="setup-err" class="setup-err"></div>
-  <p class="auth-copy" style="margin-top:20px">&#169; Rodart Creatives. All Rights Reserved.</p>
+  <p class="auth-copy" style="margin-top:20px;color:rgba(255,255,255,.4)">&#169; Rodart Creatives. All Rights Reserved.</p>
+</div>
+
+
+<!-- WELCOME BACK -->
+<div id="scr-welcome" class="screen hide">
+  <!-- Avatar circle -->
+  <div id="welcome-avatar" style="width:76px;height:76px;border-radius:50%;background:rgba(255,255,255,.2);border:3px solid rgba(255,255,255,.35);display:flex;align-items:center;justify-content:center;font-family:Syne,sans-serif;font-weight:800;font-size:1.9rem;color:#fff;margin-bottom:18px;box-shadow:0 8px 28px rgba(0,0,0,.2)">?</div>
+  <div class="setup-title" id="welcome-title" style="font-size:1.75rem;margin-bottom:6px">Welcome back</div>
+  <div class="setup-sub" id="welcome-sub" style="margin-bottom:28px">Good to see you again.</div>
+
+  <!-- Household card -->
+  <div class="setup-card" style="width:100%">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
+      <div style="width:40px;height:40px;background:rgba(255,255,255,.18);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <i data-lucide="home" style="color:#fff;width:20px;height:20px"></i>
+      </div>
+      <div style="flex:1">
+        <div id="welcome-hh-name" style="font-family:Syne,sans-serif;font-weight:800;font-size:.92rem;color:#fff">Your Household</div>
+        <div id="welcome-hh-sub" style="font-size:.71rem;color:rgba(255,255,255,.6);margin-top:2px">Tap to continue</div>
+      </div>
+      <div style="width:8px;height:8px;background:#69F0AE;border-radius:50%;flex-shrink:0;box-shadow:0 0 8px #69F0AE"></div>
+    </div>
+    <button class="setup-btn" id="welcome-continue-btn" onclick="welcomeContinue()" style="margin-top:0">
+      <i data-lucide="arrow-right-circle" style="width:16px;height:16px;margin-right:6px;vertical-align:middle"></i>
+      <span id="welcome-btn-label">Continue</span>
+    </button>
+  </div>
+
+  <div class="setup-or" style="margin:16px 0 12px"><span>not you?</span></div>
+  <button class="setup-btn outline" style="width:100%" onclick="welcomeSwitch()">
+    <i data-lucide="refresh-cw" style="width:14px;height:14px;margin-right:6px;vertical-align:middle"></i>Switch Household
+  </button>
+  <p class="auth-copy" style="margin-top:24px;color:rgba(255,255,255,.4)">&#169; Rodart Creatives. All Rights Reserved.</p>
 </div>
 
 <!-- PIN -->
@@ -881,6 +932,10 @@ body.dark .chat-action-row:active{background:#2A2A2A}
 </div>
 
 <!-- MODALS -->
+
+<!-- CONFIRM MODAL -->
+<div class="ov" id="mv-confirm"><div class="mb" id="mb-confirm"></div></div>
+
 <div class="ov" id="mv-u"><div class="mb" id="mb-u"></div></div>
 <div class="ov" id="mv-e"><div class="mb" id="mb-e"></div></div>
 <div class="ov" id="mv-ep"><div class="mb" id="mb-ep"></div></div>
@@ -1208,13 +1263,32 @@ function removeBio(){ localStorage.removeItem('nb_bio_cred'); toast('Biometrics 
 
 // -- Delete Account --
 function openDeleteAccount(){
-  const conf=prompt('To delete your account, type DELETE below:\n\nYour data will be kept for 30 days. Log back in within 30 days to restore it.');
-  if(conf===null)return;
-  if(conf.trim()!=='DELETE'){toast('Type DELETE exactly to confirm','e');return;}
   if(!curUser){toast('Not signed in','e');return;}
-  // Mark household as pending deletion
-  const uid=curUser.uid;
-  const promises=[];
+  const firstName = curUser.displayName ? curUser.displayName.split(' ')[0] : 'your account';
+  // Step 1 — warning modal
+  const box = g('mb-confirm');
+  box.innerHTML = ''
+    +'<div style="text-align:center;padding:10px 0 6px">'
+    +'<div style="width:56px;height:56px;border-radius:18px;background:#FFEBEE;display:flex;align-items:center;justify-content:center;margin:0 auto 12px">'
+    +'<i data-lucide="trash-2" style="width:28px;height:28px;color:#C62828"></i></div>'
+    +'<div style="font-family:Syne,sans-serif;font-weight:800;font-size:1.05rem;color:#C62828;margin-bottom:8px">Delete Account?</div>'
+    +'<div style="font-size:.82rem;color:var(--mid);line-height:1.6;margin-bottom:4px">You are about to delete <strong style=\"color:var(--ink)\">'+firstName+' account</strong> and all household data.</div>'
+    +'<div style="background:#FFF3E0;border:1.5px solid #FFB74D;border-radius:10px;padding:9px 12px;margin:10px 0;font-size:.76rem;color:#E65100;line-height:1.6;text-align:left">'
+    +'<i data-lucide="alert-triangle" style="width:13px;height:13px;vertical-align:middle;margin-right:4px"></i>'
+    +'Your data is kept for <strong>30 days</strong>. Log back in within 30 days to restore it. After that, it is gone permanently.'
+    +'</div></div>'
+    +'<div style="display:flex;gap:10px;margin-top:4px">'
+    +'<button class="btnG" style="flex:1" onclick="closeM(\'mv-confirm\')">Cancel</button>'
+    +'<button style="flex:1;background:linear-gradient(135deg,#C62828,#E53935);color:#fff;border:none;border-radius:12px;padding:12px;font-family:Syne,sans-serif;font-weight:800;font-size:.85rem;cursor:pointer;box-shadow:0 4px 12px rgba(198,40,40,.3)" onclick="closeM(\'mv-confirm\');_confirmDeleteAccount()">Delete Account</button>'
+    +'</div>';
+  if(window.lucide) lucide.createIcons({nodes:[box]});
+  openM('mv-confirm');
+}
+
+function _confirmDeleteAccount(){
+  if(!curUser){toast('Not signed in','e');return;}
+  const uid = curUser.uid;
+  const promises = [];
   if(hhId){
     promises.push(db.collection('households').doc(hhId).update({
       deletedAt:firebase.firestore.FieldValue.serverTimestamp(),
@@ -1227,11 +1301,10 @@ function openDeleteAccount(){
     pendingDeletion:true
   }).catch(()=>{}));
   Promise.all(promises).then(()=>{
-    toast('Account marked for deletion. You have 30 days to restore it.','i');
+    toast('Account scheduled for deletion. You have 30 days to restore it.','i');
     setTimeout(()=>{
-      curUser.delete().catch(()=>{
-        auth.signOut().catch(()=>{});
-      });
+      chatHistory=[];
+      curUser.delete().catch(()=>{ auth.signOut().catch(()=>{}); });
       localStorage.removeItem('nb_household');
       localStorage.removeItem('nb_uid');
       localStorage.removeItem('nb_pin');
@@ -1325,8 +1398,8 @@ function doFgt(){
   const btn=g('fgt-btn'); if(btn){btn.disabled=true;btn.textContent='Sending...';}
   showAErr('');
   auth.sendPasswordResetEmail(em)
-    .then(()=>{ const ok=g('fgt-ok');if(ok)ok.classList.add('on'); if(btn){btn.disabled=false;btn.innerHTML='<i data-lucide="send" style="margin-right:4px"></i> Send Reset Link';} })
-    .catch(e=>{ showAErr(fmtAErr(e.code)); if(btn){btn.disabled=false;btn.innerHTML='<i data-lucide="send" style="margin-right:4px"></i> Send Reset Link';} });
+    .then(()=>{ const ok=g('fgt-ok');if(ok)ok.classList.add('on'); if(btn){btn.disabled=false;btn.innerHTML='<i data-lucide="send" style="width:14px;height:14px;margin-right:4px;vertical-align:middle"></i> Send Reset Link';} })
+    .catch(e=>{ showAErr(fmtAErr(e.code)); if(btn){btn.disabled=false;btn.innerHTML='<i data-lucide="send" style="width:14px;height:14px;margin-right:4px;vertical-align:middle"></i> Send Reset Link';} });
 }
 function doGoogle(){
   if(!auth){toast('Not ready','e');return;}
@@ -1344,10 +1417,10 @@ function sendOTP(){
       confResult=res;
       show('a-ph-s2'); hide('a-ph-s1');
       const ob0=g('ob0'); if(ob0)ob0.focus();
-      if(btn){btn.disabled=false;btn.innerHTML='<i data-lucide="smartphone" style="margin-right:4px"></i> Send OTP';}
+      if(btn){btn.disabled=false;btn.innerHTML='<i data-lucide="smartphone" style="width:14px;height:14px;margin-right:4px;vertical-align:middle"></i> Send OTP';}
       toast('OTP sent!','i');
     })
-    .catch(e=>{ showAErr(fmtAErr(e.code)); if(btn){btn.disabled=false;btn.innerHTML='<i data-lucide="smartphone" style="margin-right:4px"></i> Send OTP';} if(rcapV){rcapV.clear();rcapV=null;} });
+    .catch(e=>{ showAErr(fmtAErr(e.code)); if(btn){btn.disabled=false;btn.innerHTML='<i data-lucide="smartphone" style="width:14px;height:14px;margin-right:4px;vertical-align:middle"></i> Send OTP';} if(rcapV){rcapV.clear();rcapV=null;} });
 }
 function otpN(el,idx){
   el.value=el.value.replace(/\D/g,'');
@@ -1368,7 +1441,48 @@ function backPh(){ show('a-ph-s1');hide('a-ph-s2'); confResult=null; if(rcapV){r
 // ===============================================
 
 let _authUnsubscribe = null;
+
+var _pendingHid = null;
+
+function showWelcome(hid, hhName){
+  _pendingHid = hid;
+  const firstName = curUser&&curUser.displayName ? curUser.displayName.split(' ')[0] : null;
+  const nameEl = g('welcome-hh-name');
+  const subEl = g('welcome-hh-sub');
+  const subMain = g('welcome-sub');
+  const titleEl = g('welcome-title');
+  const avatarEl = g('welcome-avatar');
+  const btnLabel = g('welcome-btn-label');
+  if(nameEl) nameEl.textContent = hhName || 'Your Household';
+  if(subEl) subEl.textContent = hid ? hid : 'Your household';
+  if(subMain) subMain.textContent = firstName ? 'Good to see you again, '+firstName+'.' : 'Good to see you again.';
+  if(titleEl) titleEl.textContent = firstName ? 'Welcome back, '+firstName+'!' : 'Welcome back!';
+  if(avatarEl) avatarEl.textContent = firstName ? firstName[0].toUpperCase() : '?';
+  if(btnLabel) btnLabel.textContent = firstName ? 'Continue as '+firstName : 'Continue';
+  hide('scr-auth'); hide('scr-setup'); hide('scr-pin');
+  g('app').classList.add('hide');
+  show('scr-welcome');
+  if(window.lucide) lucide.createIcons({nodes:[g('scr-welcome')]});
+}
+
+function welcomeContinue(){
+  if(!_pendingHid) return;
+  const hid = _pendingHid;
+  _pendingHid = null;
+  hide('scr-welcome');
+  if(hasPIN()){ g('app').classList.add('hide'); show('scr-pin'); showPIN(); }
+  else{ hide('scr-auth'); hide('scr-setup'); hide('scr-pin'); g('app').classList.remove('hide'); connectHH(hid); }
+}
+
+function welcomeSwitch(){
+  hide('scr-welcome');
+  _pendingHid = null;
+  show('scr-setup');
+}
+
+
 function bootApp(){
+  loadChatHistory();
   if(authReg)return;
   authReg=true;
   // Unsubscribe any previous listener before attaching a new one
@@ -1381,8 +1495,17 @@ function bootApp(){
           if(doc.exists&&doc.data().householdId){
             const hid=doc.data().householdId;
             localStorage.setItem('nb_household',hid);
-            if(hasPIN()){ g('app').classList.add('hide'); hide('scr-setup'); show('scr-pin'); showPIN(); }
-            else{ hide('scr-auth'); hide('scr-setup'); hide('scr-pin'); g('app').classList.remove('hide'); connectHH(hid); }
+            // Show welcome screen - let user choose to continue or switch household
+            const hhName = doc.data().householdName || null;
+            if(hhName){
+              showWelcome(hid, hhName);
+            } else {
+              // Fetch household name from Firestore for display
+              db.collection('households').doc(hid).get().then(hhDoc=>{
+                const name = hhDoc.exists ? (hhDoc.data().name||'Your Household') : 'Your Household';
+                showWelcome(hid, name);
+              }).catch(()=>showWelcome(hid, 'Your Household'));
+            }
           } else {
             hide('scr-auth'); hide('scr-pin'); g('app').classList.add('hide'); show('scr-setup');
           }
@@ -1440,7 +1563,7 @@ function joinHH(){
 }
 
 function connectHH(code){
-  hhId=code; setDot('spin');
+  hhId=code; loadChatHistory(); setDot('spin');
   db.collection('households').doc(code).onSnapshot(doc=>{
     if(doc.exists){ const d=doc.data();
       lHHDoc = d; // FIX 3: capture full doc so isPremium at root level is visible
@@ -1485,17 +1608,31 @@ function addPx(p){ if(!hhId){toast('Not connected','e');return;} setDot('spin');
 function updPx(id,data){ if(!hhId)return; setDot('spin'); db.collection('households').doc(hhId).collection('purchases').doc(id).update(data).then(()=>setDot('')).catch(()=>setDot('off')); }
 function delPx(id){ if(!hhId)return; setDot('spin'); db.collection('households').doc(hhId).collection('purchases').doc(id).delete().then(()=>setDot('')).catch(()=>setDot('off')); }
 
+
+function appConfirm(msg, onOk, okLabel, danger){
+  const box=g('mb-confirm');
+  box.innerHTML='<div class="dh"></div>'
+    +'<div style="padding:4px 0 18px;font-size:.88rem;line-height:1.6;color:var(--txt)">'+msg+'</div>'
+    +'<div style="display:flex;gap:10px">'
+    +'<button class="btnG" style="flex:1" onclick="closeM(\'mv-confirm\')">Cancel</button>'
+    +'<button class="btnM" style="flex:1'+(danger?';background:#C62828;box-shadow:0 4px 12px rgba(198,40,40,.3)':'')+'" onclick="closeM(\'mv-confirm\');(window._appConfirmCb&&window._appConfirmCb())">'+(okLabel||'Confirm')+'</button>'
+    +'</div>';
+  window._appConfirmCb=onOk;
+  openM('mv-confirm');
+}
+
 function logout(){
-  if(!confirm(tx().confirmLogout))return;
-  if(unsub)unsub();
-  // Clear local state only — keep Firestore householdId intact so partners aren't affected.
+  appConfirm(tx().confirmLogout, function(){
+  if(unsub)unsub();  // Clear local state only — keep Firestore householdId intact so partners aren't affected.
   // bootApp will re-read Firestore on next login and route correctly.
   localStorage.removeItem('nb_household');
   localStorage.removeItem('nb_uid');
   hhId=null; lCfg=JSON.parse(JSON.stringify(DEF_CFG)); lPx=[];
   authReg=false;
   auth.signOut().catch(()=>{});
+  chatHistory=[]; 
   toast('See you soon! 👋','i');
+  }, 'Sign Out', true);
 }
 
 // ===============================================
@@ -1537,7 +1674,7 @@ function rHome(){
   const cnt=lPx.filter(p=>isTM(p.date)&&p.type!=='income').length;
   let h='<div class="page">';
   h+=getTrialBanner();
-  h+='<div class="mnav"><button class="mnbtn" onclick="prevM()">&#9664;</button><span class="mnlbl"><i data-lucide="calendar" style="margin-right:4px;vertical-align:middle"></i>'+mName()+'</span><button class="mnbtn" onclick="nextM()" style="opacity:'+(isCurM()?'.3':'1')+'">&#9654;</button></div>';
+  h+='<div class="mnav"><button class="mnbtn" onclick="prevM()">&#9664;</button><span class="mnlbl"><i data-lucide="calendar" style="width:14px;height:14px;margin-right:4px;vertical-align:middle"></i>'+mName()+'</span><button class="mnbtn" onclick="nextM()" style="opacity:'+(isCurM()?'.3':'1')+'">&#9654;</button></div>';
   h+='<div class="hero2">';
   h+='<div class="h2-top">';
   h+='<div class="h2-ring"><svg viewBox="0 0 80 80" width="78" height="78" style="transform:rotate(-90deg)"><circle fill="none" stroke="rgba(255,255,255,.14)" stroke-width="8" cx="40" cy="40" r="32"/><circle fill="none" stroke="'+stroke+'" stroke-width="8" stroke-linecap="round" cx="40" cy="40" r="32" stroke-dasharray="'+circ.toFixed(1)+'" stroke-dashoffset="'+off.toFixed(1)+'"/></svg>';
@@ -1562,7 +1699,7 @@ function rHome(){
       const cc=isI?'#1B5E20':(CAT_COLORS[catOf(p.item)]||'#7B1FA2');
       h+='<div class="pri">'
         +'<div class="prico2" style="background:'+cc+'1A;border-radius:14px">'+ico(p.item)+'</div>'
-        +'<div class="prinfo"><div class="prname">'+p.item+(p.recurring?' <i data-lucide="refresh-cw" style="margin-right:3px;vertical-align:middle"></i>':'')+'</div>'
+        +'<div class="prinfo"><div class="prname">'+p.item+(p.recurring?' <i data-lucide="refresh-cw" style="width:12px;height:12px;margin-right:3px;vertical-align:middle"></i>':'')+'</div>'
         +(p.notes?'<div class="prnote">'+p.notes+'</div>':'')
         +'<div class="prmeta"><span class="prdate">'+p.date+'</span>'
         +'<span class="prwho" style="background:'+u.color+'">'+u.name+'</span></div></div>'
@@ -1583,8 +1720,8 @@ function waCode(){ if(hhId)window.open('https://wa.me/?text='+encodeURIComponent
 function rLog(){
   const t=tx(), hint=selItem!==null?lCfg.items[selItem]:null;
   let h='<div class="page"><div class="card"><div class="ch"><h2><i data-lucide="shopping-cart" style="margin-right:5px;vertical-align:middle;color:var(--p1)"></i> '+t.logTitle+'</h2></div><div class="cb">';
-  h+='<button class="magic-btn" onclick="openMagicLog()"><i data-lucide="wand-2" style="margin-right:5px"></i>'+(lang==='cw'?'Koperani SMS (Airtel/Mpamba) kapena Lembani':'Magic Log (Paste SMS or Type)')+'</button>';
-  h+='<div class="type-tog"><button class="tt exp'+(logType==='expense'?' on':'')+'" onclick="setLT(\'expense\')"><i data-lucide="trending-down" style="margin-right:4px"></i> '+t.expense+'</button><button class="tt inc'+(logType==='income'?' on':'')+'" onclick="setLT(\'income\')"><i data-lucide="trending-up" style="margin-right:4px"></i> '+t.income+'</button></div>';
+  h+='<button class="magic-btn" onclick="openMagicLog()"><i data-lucide="wand-2" style="width:14px;height:14px;margin-right:5px;vertical-align:middle"></i>'+(lang==='cw'?'Koperani SMS (Airtel/Mpamba) kapena Lembani':'Magic Log (Paste SMS or Type)')+'</button>';
+  h+='<div class="type-tog"><button class="tt exp'+(logType==='expense'?' on':'')+'" onclick="setLT(\'expense\')"><i data-lucide="trending-down" style="width:14px;height:14px;margin-right:4px;vertical-align:middle"></i> '+t.expense+'</button><button class="tt inc'+(logType==='income'?' on':'')+'" onclick="setLT(\'income\')"><i data-lucide="trending-up" style="width:14px;height:14px;margin-right:4px;vertical-align:middle"></i> '+t.income+'</button></div>';
   h+='<div class="fsec"><label class="fl">'+t.selUser+'</label><div class="usel">'+lCfg.users.map(u=>'<div class="usb'+(actU().id===u.id?' on':'')+'" onclick="setU(\''+u.id+'\')">'+'<div class="usav" style="background:'+u.color+'">'+u.name[0]+'</div><div class="usnm">'+u.name+'</div></div>').join('')+'</div></div>';
   if(logType==='expense'){
     const picks=QUICK_PICKS.map(name=>{const i=lCfg.items.findIndex(it=>it.name===name);return i<0?'':'<div class="qsb'+(selItem===i?' on':'')+'" onclick="pickID(this)" data-i="'+i+'">'+ico(name)+' '+name+'</div>';}).join('');
@@ -1594,15 +1731,15 @@ function rLog(){
       +'<div class="igrid" id="log-igrid">'+lCfg.items.map((it,i)=>'<div class="ic'+(selItem===i?' on':'')+'" onclick="pickID(this)" data-i="'+i+'" data-name="'+it.name.toLowerCase()+'"><div class="ic-ico">'+ico(it.name)+'</div><div class="ic-nm">'+it.name+'</div></div>').join('')+'</div></div>';
     if(hint){const sp=iSpent(hint.name);h+='<div class="bhint"><div class="bh"><div class="bhl">'+t.budget+'</div><div class="bhv">'+MK(hint.budget)+'</div></div><div class="bh"><div class="bhl">'+t.spent+'</div><div class="bhv">'+MK(sp)+'</div></div><div class="bh"><div class="bhl">'+t.left+'</div><div class="bhv" style="color:'+(hint.budget-sp<0?'#B71C1C':'inherit')+'">'+MK(hint.budget-sp)+'</div></div></div>';}
   } else {
-    h+='<div class="fsec"><label class="fl">'+(lang==='cw'?'Mtundu wa Ndalama':'Income Type')+'</label><div class="type-tog" style="margin-bottom:8px"><button class="tt inc" id="inc-t-ot" onclick="setIncType(this,0)"><i data-lucide="receipt" style="margin-right:3px"></i> '+(lang==='cw'?'Kamodzi Basi':'One Time')+'</button><button class="tt inc" id="inc-t-rc" onclick="setIncType(this,1)"><i data-lucide="refresh-cw" style="margin-right:3px;vertical-align:middle"></i> '+(lang==='cw'?'Nthawi Zonse':'Recurring')+'</button></div></div>';
+    h+='<div class="fsec"><label class="fl">'+(lang==='cw'?'Mtundu wa Ndalama':'Income Type')+'</label><div class="type-tog" style="margin-bottom:8px"><button class="tt inc" id="inc-t-ot" onclick="setIncType(this,0)"><i data-lucide="receipt" style="margin-right:3px"></i> '+(lang==='cw'?'Kamodzi Basi':'One Time')+'</button><button class="tt inc" id="inc-t-rc" onclick="setIncType(this,1)"><i data-lucide="refresh-cw" style="width:12px;height:12px;margin-right:3px;vertical-align:middle"></i> '+(lang==='cw'?'Nthawi Zonse':'Recurring')+'</button></div></div>';
     h+='<div class="fsec"><label class="fl">'+(lang==='cw'?'Gwero la Ndalama':'Source')+'</label><select class="fs" id="inc-src"><option value="Salary/Income">💼 Salary / Income</option><option value="Business Income">🏪 Business Income</option><option value="Farm Income">🌿 Farm Income</option><option value="Other Income">💰 Other Income</option></select></div>';
   }
   h+='<div class="fsec"><label class="fl">'+t.amount+'</label><input type="number" class="fi" id="fa" placeholder="0" inputmode="numeric"></div>';
   h+='<div class="frow"><div class="fsec"><label class="fl">'+t.date+'</label><input type="date" class="fi" id="fd" value="'+today()+'"></div><div class="fsec"><label class="fl">'+t.time+'</label><input type="time" class="fi" id="ft" value="'+nowTime()+'"></div></div>';
   if(logType==='expense'){const _hn=selItem!==null?(lCfg.items[selItem]||{}).name:'';if(!NO_QTY_ITEMS.includes(_hn))h+='<div class="frow"><div class="fsec"><label class="fl">'+t.qty+'</label><input type="number" class="fi" id="fq" placeholder="1" inputmode="decimal"></div><div class="fsec"><label class="fl">'+t.unit+'</label><select class="fs" id="fu">'+t.units.map(u=>'<option>'+u+'</option>').join('')+'</select></div></div>';}
   h+='<div class="fsec"><label class="fl">'+t.notes+'</label><input type="text" class="fi" id="fn" placeholder="e.g. Bought at Chipiku..."></div>';
-  if(logType==='expense')h+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:11px"><input type="checkbox" id="frc" style="width:17px;height:17px;accent-color:var(--p1)"><label for="frc" style="font-size:.78rem;font-weight:600;color:var(--mid)"><i data-lucide="refresh-cw" style="margin-right:3px;vertical-align:middle"></i> '+t.recurrYes+'</label></div>';
-  h+='<button class="btnM" onclick="saveP()" style="background:'+(logType==='income'?'linear-gradient(135deg,#1B5E20,#388E3C)':'')+'"><i data-lucide="save" style="margin-right:4px"></i> '+t.save+'</button></div></div></div>';
+  if(logType==='expense')h+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:11px"><input type="checkbox" id="frc" style="width:17px;height:17px;accent-color:var(--p1)"><label for="frc" style="font-size:.78rem;font-weight:600;color:var(--mid)"><i data-lucide="refresh-cw" style="width:12px;height:12px;margin-right:3px;vertical-align:middle"></i> '+t.recurrYes+'</label></div>';
+  h+='<button class="btnM" onclick="saveP()" style="background:'+(logType==='income'?'linear-gradient(135deg,#1B5E20,#388E3C)':'')+'"><i data-lucide="save" style="width:14px;height:14px;margin-right:4px;vertical-align:middle"></i> '+t.save+'</button></div></div></div>';
   g('view').innerHTML=h;
 }
 function setLT(t){ logType=t; selItem=null; rLog(); }
@@ -1648,8 +1785,8 @@ function rHist(){
 
   // Action buttons row
   h+='<div style="display:flex;gap:8px;margin-bottom:10px">';
-  h+='<button class="bsm be" style="flex:1;padding:10px;font-size:.75rem" onclick="copyPreviousMonth()"><i data-lucide="copy" style="margin-right:4px;vertical-align:middle;color:var(--p1)"></i> Copy Last Month <i data-lucide="gem" style="margin-right:3px;vertical-align:middle;color:var(--p1)"></i></button>';
-  h+='<button class="bsm bd" style="padding:10px;font-size:.75rem" onclick="openTrash()"><i data-lucide="trash-2" style="margin-right:4px"></i> Trash <i data-lucide="gem" style="margin-right:3px;vertical-align:middle;color:var(--p1)"></i></button>';
+  h+='<button class="bsm be" style="flex:1;padding:10px;font-size:.75rem" onclick="copyPreviousMonth()"><i data-lucide="copy" style="width:13px;height:13px;margin-right:4px;vertical-align:middle;color:var(--p1)"></i> Copy Last Month <i data-lucide="gem" style="margin-right:3px;vertical-align:middle;color:var(--p1)"></i></button>';
+  h+='<button class="bsm bd" style="padding:10px;font-size:.75rem" onclick="openTrash()"><i data-lucide="trash-2" style="width:14px;height:14px;margin-right:4px;vertical-align:middle"></i> Trash <i data-lucide="gem" style="margin-right:3px;vertical-align:middle;color:var(--p1)"></i></button>';
   h+='</div>';
 
   // Search
@@ -1657,9 +1794,9 @@ function rHist(){
 
   // Filter tabs
   h+='<div class="hist-filter">';
-  h+='<button class="hf'+(histFilter==='all'?' on':'')+'" onclick="setHF(this)" data-f="all"><i data-lucide="copy" style="margin-right:4px;vertical-align:middle;color:var(--p1)"></i> '+(lang==='cw'?'Zonse':'All')+'</button>';
-  h+='<button class="hf'+(histFilter==='inc'?' on-inc':'')+'" onclick="setHF(this)" data-f="inc"><i data-lucide="trending-up" style="margin-right:4px"></i> '+(lang==='cw'?'Ndalama Zolowa':'Income')+'</button>';
-  h+='<button class="hf'+(histFilter==='exp'?' on-exp':'')+'" onclick="setHF(this)" data-f="exp"><i data-lucide="trending-down" style="margin-right:4px"></i> '+(lang==='cw'?'Zogula':'Expenses')+'</button>';
+  h+='<button class="hf'+(histFilter==='all'?' on':'')+'" onclick="setHF(this)" data-f="all"><i data-lucide="copy" style="width:13px;height:13px;margin-right:4px;vertical-align:middle;color:var(--p1)"></i> '+(lang==='cw'?'Zonse':'All')+'</button>';
+  h+='<button class="hf'+(histFilter==='inc'?' on-inc':'')+'" onclick="setHF(this)" data-f="inc"><i data-lucide="trending-up" style="width:14px;height:14px;margin-right:4px;vertical-align:middle"></i> '+(lang==='cw'?'Ndalama Zolowa':'Income')+'</button>';
+  h+='<button class="hf'+(histFilter==='exp'?' on-exp':'')+'" onclick="setHF(this)" data-f="exp"><i data-lucide="trending-down" style="width:14px;height:14px;margin-right:4px;vertical-align:middle"></i> '+(lang==='cw'?'Zogula':'Expenses')+'</button>';
   h+='</div>';
 
   // User filter tags
@@ -1678,7 +1815,7 @@ function rHist(){
       var cc2=isI?'#1B5E20':(CAT_COLORS[catOf(p.item)]||'#7B1FA2');
       h+='<div class="pli'+(isI?' income-e':'')+'">';
       h+='<div class="plico" style="background:'+cc2+'1A;border-radius:14px">'+ico(p.item)+'</div>';
-      h+='<div class="plb"><div class="pltop"><div class="plname">'+p.item+(p.recurring?' <i data-lucide="refresh-cw" style="margin-right:3px;vertical-align:middle"></i>':'')+'</div>';
+      h+='<div class="plb"><div class="pltop"><div class="plname">'+p.item+(p.recurring?' <i data-lucide="refresh-cw" style="width:12px;height:12px;margin-right:3px;vertical-align:middle"></i>':'')+'</div>';
       h+='<div class="plamt'+(isI?' inc':' exp')+'">'+(isI?'+ ':'− ')+MK(p.amount)+'</div></div>';
       if(p.notes) h+='<div class="plnote">'+p.notes+'</div>';
       h+='<div class="plrow2"><span style="font-size:.64rem;color:var(--mid)">'+p.date+'</span>';
@@ -1711,9 +1848,9 @@ function doDel(id){
 function openTrash(){
   premiumGate('trash', function(){
     const trashed=lPx.filter(function(p){return p.deleted;});
-    let h='<div class="dh"></div><h3><i data-lucide="trash-2" style="margin-right:4px"></i> Trash</h3>';
+    let h='<div class="dh"></div><h3><i data-lucide="trash-2" style="width:14px;height:14px;margin-right:4px;vertical-align:middle"></i> Trash</h3>';
     if(!trashed.length){
-      h+='<div class="empty" style="padding:14px 0"><div class="ei"><i data-lucide="check-circle" style="font-size:2rem;color:var(--g2)"></i></div><p>Trash is empty</p></div>';
+      h+='<div class="empty" style="padding:14px 0"><div class="ei"><i data-lucide="check-circle" style="width:32px;height:32px;color:var(--g2)"></i></div><p>Trash is empty</p></div>';
     } else {
       h+='<p style="font-size:.72rem;color:var(--mid);margin-bottom:10px">Items are permanently deleted after 30 days.</p>';
       trashed.forEach(function(p){
@@ -1729,7 +1866,8 @@ function openTrash(){
         h+='</div></div>';
       });
     }
-    g('mb-u').innerHTML=h; initIcons(); openM('mv-u');
+    g('mb-u').innerHTML=h;
+  if(window.lucide)lucide.createIcons({nodes:[g('mb-u')]}); initIcons(); openM('mv-u');
   });
 }
 
@@ -1750,7 +1888,7 @@ function openEP(id){
   h+='<div class="frow"><div class="fsec"><label class="fl">'+t.date+'</label><input type="date" class="fi" id="ep-date" value="'+p.date+'"></div><div class="fsec"><label class="fl">'+t.time+'</label><input type="time" class="fi" id="ep-time" value="'+pt+'"></div></div>';
   if(!isI)h+='<div class="frow"><div class="fsec"><label class="fl">'+t.qty+'</label><input type="number" class="fi" id="ep-qty" value="'+(p.qty||'')+'" inputmode="decimal"></div><div class="fsec"><label class="fl">'+t.unit+'</label><select class="fs" id="ep-unit">'+t.units.map(u=>'<option '+(p.unit===u?'selected':'')+'>'+u+'</option>').join('')+'</select></div></div>';
   h+='<div class="fsec"><label class="fl">'+t.notes+'</label><input type="text" class="fi" id="ep-notes" value="'+(p.notes||'').replace(/"/g,'&quot;')+'"></div>';
-  h+='<div style="display:flex;gap:8px"><button class="btnG" style="flex:1" onclick="closeM(\'mv-ep\')">'+t.cancel+'</button><button class="btnM" style="flex:2" onclick="saveEP('+isI+')"><i data-lucide="save" style="margin-right:4px"></i> Save</button></div>';
+  h+='<div style="display:flex;gap:8px"><button class="btnG" style="flex:1" onclick="closeM(\'mv-ep\')">'+t.cancel+'</button><button class="btnM" style="flex:2" onclick="saveEP('+isI+')"><i data-lucide="save" style="width:14px;height:14px;margin-right:4px;vertical-align:middle"></i> Save</button></div>';
   g('mb-ep').innerHTML=h; initIcons(); openM('mv-ep');
 }
 function epU(el,uid){ g('ep-uid').value=uid; el.closest('.usel').querySelectorAll('.usb').forEach(b=>b.classList.remove('on')); el.classList.add('on'); }
@@ -1771,7 +1909,7 @@ function rSum(){
   const t=tx(), tB=lCfg.items.reduce((s,it)=>s+it.budget,0), tS=totSp();
   let h='<div class="page"><div class="mnav"><button class="mnbtn" onclick="prevM()">&#9664;</button><span class="mnlbl"><i data-lucide="bar-chart-2" style="margin-right:5px;vertical-align:middle;color:var(--p1)"></i> '+mName()+'</span><button class="mnbtn" onclick="nextM()" style="opacity:'+(isCurM()?'.3':'1')+'">&#9654;</button></div>';
   
-  h+='<button class="magic-btn" id="ai-sum-btn" onclick="generateAiSummary()" style="background:linear-gradient(135deg,var(--p1),var(--p2));color:white;border:none;"><i data-lucide="zap" style="margin-right:5px"></i>'+(lang==='cw'?'Chidule cha AI':'Get AI Financial Review')+'</button>';
+  h+='<button class="magic-btn" id="ai-sum-btn" onclick="generateAiSummary()" style="background:linear-gradient(135deg,var(--p1),var(--p2));color:white;border:none;"><i data-lucide="zap" style="width:14px;height:14px;margin-right:5px;vertical-align:middle"></i>'+(lang==='cw'?'Chidule cha AI':'Get AI Financial Review')+'</button>';
   h+='<div id="ai-sum-box" class="hide"></div>';
   
   // FIX 5: Modern donut chart + category breakdown cards
@@ -1800,8 +1938,8 @@ function rSum(){
       offset+=dash;
     });
     // Center stat
-    h+='<div style="display:flex;flex-direction:column;align-items:center;margin-bottom:14px">';
-    h+=`<svg viewBox="0 0 140 140" width="160" height="160" style="filter:drop-shadow(0 4px 18px rgba(0,0,0,.13))">
+    h+='<div style="display:flex;flex-direction:column;align-items:center;margin-bottom:14px;max-width:100%;overflow:hidden">';
+    h+=`<svg viewBox="0 0 140 140" width="100%" height="auto" style="max-width:160px;filter:drop-shadow(0 4px 18px rgba(0,0,0,.13))">
       ${donutSegs}
       <circle cx="${cx}" cy="${cy}" r="34" fill="var(--white)"/>
       <text x="${cx}" y="${cy-6}" text-anchor="middle" font-family="Syne" font-weight="800" font-size="12" fill="var(--ink)">${MKs(tS)}</text>
@@ -1864,8 +2002,8 @@ let insTab='summary'; // default sub-tab
 function rInsights(){
   const isCW=lang==='cw';
   const tabs=[
-    {k:'summary',lbl:isCW?'<i data-lucide="pie-chart"></i> Chidule':'<i data-lucide="pie-chart"></i> Summary'},
-    {k:'hist',   lbl:isCW?'<i data-lucide="history"></i> Mbiri':'<i data-lucide="history"></i> History'}
+    {k:'summary',lbl:isCW?'<i data-lucide="pie-chart" style="width:14px;height:14px;vertical-align:middle;margin-right:4px"></i> Chidule':'<i data-lucide="pie-chart" style="width:14px;height:14px;vertical-align:middle;margin-right:4px"></i> Summary'},
+    {k:'hist',   lbl:isCW?'<i data-lucide="history" style="width:14px;height:14px;vertical-align:middle;margin-right:4px"></i> Mbiri':'<i data-lucide="history" style="width:14px;height:14px;vertical-align:middle;margin-right:4px"></i> History'}
   ];
   const tabBar='<div class="ins-tabs">'+tabs.map(t=>'<button class="ins-tab'+(insTab===t.k?' on':'')+'" onclick="insTab=\''+t.k+'\';rInsights()">'+t.lbl+'</button>').join('')+'</div>';
   if(insTab==='hist'){
@@ -1889,7 +2027,7 @@ function rMGI(it,i){
   const bcls=st==='over'?'bover':st==='near'?'bnear':st==='ok'?'bok':'bnone';
   const t=tx(),btxt=st==='over'?t.over:st==='near'?t.near:st==='ok'?t.ok:t.none;
   const cc=CAT_COLORS[catOf(it.name)]||'#607D8B';
-  return '<div class="mgi"><div class="mgi-ico" style="background:'+cc+'18">'+ico(it.name)+'</div><div class="mgi-info"><div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap"><span class="mgname">'+it.name+'</span><span class="sibadge '+bcls+'" style="font-size:.55rem">'+btxt+'</span></div><div class="mgrow2"><span class="mgbudget">'+MK(it.budget)+'</span><span class="mgspent">'+t.spent+': '+MK(sp)+'</span></div><div class="mg-pb"><div class="mg-pf '+pfcls+'" style="width:'+pct+'%"></div></div></div><div class="mgi-acts"><button class="bsm be" onclick="openEB('+i+')">&#9998;</button><button class="bsm bd" onclick="delIt('+i+')</i></button></div></div>';
+  return '<div class="mgi"><div class="mgi-ico" style="background:'+cc+'18">'+ico(it.name)+'</div><div class="mgi-info"><div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap"><span class="mgname">'+it.name+'</span><span class="sibadge '+bcls+'" style="font-size:.55rem">'+btxt+'</span></div><div class="mgrow2"><span class="mgbudget">'+MK(it.budget)+'</span><span class="mgspent">'+t.spent+': '+MK(sp)+'</span></div><div class="mg-pb"><div class="mg-pf '+pfcls+'" style="width:'+pct+'%"></div></div></div><div class="mgi-acts"><button class="bsm be" onclick="openEB('+i+')">&#9998;</button><button class="bsm bd" onclick="delIt('+i+'">&#128465;</button></div></div>';
 }
 
 function goalMonthsLeft(dl){ if(!dl)return null; const n=new Date(),d=new Date(dl+'T00:00:00'); const m=(d.getFullYear()-n.getFullYear())*12+(d.getMonth()-n.getMonth()); return Math.max(m,0); }
@@ -1907,7 +2045,7 @@ function rMgr(){
     h+='<div class="goal-top"><div class="goal-name"'+(done?' style="color:#1B5E20"':'')+'>'+( done?'&#127881; ':'')+gl.name+'</div>';
     h+='<div style="display:flex;gap:5px;align-items:center"><div class="goal-pct"'+(done?' style="color:#1B5E20"':'')+'>'+Math.round(pct*100)+'%</div>';
     if(!done)h+='<button class="bsm be" style="padding:3px 8px;font-size:.63rem" onclick="openTopUp('+i+')">&#8593; '+t.topup+'</button>';
-    h+='<button class="bsm bd" style="padding:3px 7px;font-size:.63rem" onclick="delGoal('+i+')</i></button></div></div>';
+    h+='<button class="bsm bd" style="padding:3px 7px;font-size:.63rem" onclick="delGoal('+i+'">&#128465;</button></div></div>';
     h+='<div class="goal-bar"><div class="goal-fill" style="width:'+Math.round(pct*100)+'%'+(done?';background:linear-gradient(90deg,#2E7D32,#43A047)':'')+'"></div></div>';
     h+='<div class="goal-meta"><span>'+MK(gl.saved)+' '+(lang==='cw'?'yosungidwa':'saved')+'</span><span>'+(lang==='cw'?'Cholinga':'Target')+': '+MK(gl.target)+'</span></div>';
     if(!done&&mn!==null)h+='<div style="margin-top:6px;font-size:.65rem;color:#E65100;font-weight:700;background:#FFF3E0;border-radius:7px;padding:5px 8px"><i data-lucide="calendar" style="margin-right:3px;vertical-align:middle;color:var(--a1)"></i> '+MK(mn)+'/'+(lang==='cw'?'mwezi':'month')+' needed'+(ml!==null?' · '+ml+(lang==='cw'?' miyezi':'mths left'):'')+'</div>';
@@ -1939,7 +2077,7 @@ function rMgr(){
       h+='<div class="bill-due'+(urgent?' urgent':'')+'">Due: '+b.dueDate+(diff===0?' -- Today!':(diff<0?' -- Overdue!':(diff<=3?' -- '+diff+'d left':'')))+'</div></div>';
       h+='<div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">';
       h+='<div class="bill-amt">'+MK(b.amount)+'</div>';
-      h+='<button class="bsm bd" onclick="delBill('+i+')" style="font-size:.6rem;padding:2px 7px</i></button>';
+      h+='<button class="bsm bd" onclick="delBill('+i+')" style="font-size:.6rem;padding:2px 7px">&#128465;</button>';
       h+='</div></div>';
     });
   } else {
@@ -1957,8 +2095,9 @@ function openAddBill(){
     h+='<div class="fsec"><label class="fl">Icon</label><select class="fs" id="bl-ic"><option value="⚡">⚡ Electricity</option><option value="💧">💧 Water</option><option value="🏠">🏠 Rent</option><option value="📱">📱 Airtime</option><option value="🌐">🌐 Internet</option><option value="📺">📺 DSTV</option><option value="💰">💰 Loan</option><option value="📋">📋 Other</option></select></div>';
     h+='<div class="fsec"><label class="fl">Amount (MK)</label><input type="number" class="fi" id="bl-amt" inputmode="numeric" placeholder="0"></div>';
     h+='<div class="fsec"><label class="fl">Due Date</label><input type="date" class="fi" id="bl-due"></div>';
-    h+='<div style="display:flex;gap:8px"><button class="btnG" style="flex:1" onclick="closeM(&quot;mv-u&quot;)">Cancel</button><button class="btnM" style="flex:2" onclick="saveBill()"><i data-lucide="save" style="margin-right:4px"></i> Save</button></div>';
-    g('mb-u').innerHTML=h; initIcons(); openM('mv-u');
+    h+='<div style="display:flex;gap:8px"><button class="btnG" style="flex:1" onclick="closeM(&quot;mv-u&quot;)">Cancel</button><button class="btnM" style="flex:2" onclick="saveBill()"><i data-lucide="save" style="width:14px;height:14px;margin-right:4px;vertical-align:middle"></i> Save</button></div>';
+    g('mb-u').innerHTML=h;
+  if(window.lucide)lucide.createIcons({nodes:[g('mb-u')]}); initIcons(); openM('mv-u');
   });
 }
 
@@ -1973,7 +2112,7 @@ function saveBill(){
 }
 
 function delBill(i){
-  if(!confirm('Remove this bill?'))return;
+  
   var cfg=JSON.parse(JSON.stringify(lCfg));
   cfg.bills.splice(i,1); saveCfg(cfg); toast('Removed'); rMgr();
 }
@@ -1981,22 +2120,24 @@ function delBill(i){
 function setSort(s){ sortMode=s; rMgr(); }
 function updOB(v){ const n=parseFloat(v); if(!n||isNaN(n)||n<=0||n>99999999){toast(lang==='cw'?'Lowetsani ndalama yabwino':'Enter a valid budget','e');return;} saveCfg({...lCfg,overallBudget:n}); }
 function addIt(){ const t=tx(),n=val('ni-n').trim(),b=parseFloat(val('ni-b')); if(!n){toast(lang==='cw'?'Lowetsani dzina':'Enter a name','e');return;} if(!b||isNaN(b)||b<=0||b>99999999){toast(lang==='cw'?'Lowetsani bajeti yabwino':'Enter a valid budget','e');return;} if(lCfg.items.find(it=>it.name.toLowerCase()===n.toLowerCase())){toast(lang==='cw'?'Chinthu chimenechi chilipo kale':'Item already exists','e');return;} const cfg=JSON.parse(JSON.stringify(lCfg)); cfg.items.push({name:n,budget:b}); saveCfg(cfg); toast(t.itemAdded); rMgr(); }
-function delIt(i){ if(!confirm(tx().confirmDelItem+' "'+lCfg.items[i].name+'"?'))return; const cfg=JSON.parse(JSON.stringify(lCfg)); cfg.items.splice(i,1); saveCfg(cfg); toast(tx().itemDeleted); rMgr(); }
+function delIt(i){ appConfirm(tx().confirmDelItem+' "'+lCfg.items[i].name+'"?', function(){ const cfg=JSON.parse(JSON.stringify(lCfg)); cfg.items.splice(i,1); saveCfg(cfg); toast(tx().itemDeleted); rMgr(); }, 'Delete', true) }
 function openAddM(){
   const t=tx();
-  let h='<div class="dh"></div><h3><i data-lucide="user" style="margin-right:5px;vertical-align:middle;color:var(--p1)"></i> '+t.addMember+'</h3><div class="fsec"><label class="fl">'+t.memberName+'</label><input type="text" class="fi" id="nm-nm" placeholder="e.g. Son, Helper..."></div><div class="fsec"><label class="fl">Colour</label><div class="cpick" id="cp-new">'+MEMBER_COLORS.map((c,i)=>'<div class="cp'+(i===0?' on':'')+'" style="background:'+c+'" onclick="pickC(this,\'cp-new\',\'nm-col\')"></div>').join('')+'</div><input type="hidden" id="nm-col" value="'+MEMBER_COLORS[0]+'"></div><div style="display:flex;gap:8px"><button class="btnG" style="flex:1" onclick="closeM(\'mv-e\')">'+t.cancel+'</button><button class="btnM" style="flex:2" onclick="saveMember()"><i data-lucide="save" style="margin-right:4px"></i> '+t.add+'</button></div>';
-  g('mb-e').innerHTML=h; initIcons(); openM('mv-e');
+  let h='<div class="dh"></div><h3><i data-lucide="user" style="margin-right:5px;vertical-align:middle;color:var(--p1)"></i> '+t.addMember+'</h3><div class="fsec"><label class="fl">'+t.memberName+'</label><input type="text" class="fi" id="nm-nm" placeholder="e.g. Son, Helper..."></div><div class="fsec"><label class="fl">Colour</label><div class="cpick" id="cp-new">'+MEMBER_COLORS.map((c,i)=>'<div class="cp'+(i===0?' on':'')+'" style="background:'+c+'" onclick="pickC(this,\'cp-new\',\'nm-col\')"></div>').join('')+'</div><input type="hidden" id="nm-col" value="'+MEMBER_COLORS[0]+'"></div><div style="display:flex;gap:8px"><button class="btnG" style="flex:1" onclick="closeM(\'mv-e\')">'+t.cancel+'</button><button class="btnM" style="flex:2" onclick="saveMember()"><i data-lucide="save" style="width:14px;height:14px;margin-right:4px;vertical-align:middle"></i> '+t.add+'</button></div>';
+  g('mb-e').innerHTML=h;
+  if(window.lucide)lucide.createIcons({nodes:[g('mb-e')]}); initIcons(); openM('mv-e');
 }
 function pickC(el,pid,hid){ g(hid).value=el.style.background; document.querySelectorAll('#'+pid+' .cp').forEach(cp=>cp.classList.remove('on')); el.classList.add('on'); }
 function saveMember(){ const nm=val('nm-nm').trim(); if(!nm){toast('Enter a name','e');return;} const cfg=JSON.parse(JSON.stringify(lCfg)); cfg.users.push({id:'u'+Date.now(),name:nm,color:val('nm-col')||'#7B1FA2'}); saveCfg(cfg); closeM('mv-e'); toast(tx().nameUpdated); rMgr(); }
-function openEU(i){ const u=lCfg.users[i],t=tx(); let h='<div class="dh"></div><h3><i data-lucide="user" style="margin-right:5px;vertical-align:middle;color:var(--p1)"></i> '+t.editUser+'</h3><div class="fsec"><label class="fl">Name</label><input type="text" class="fi" id="eu-nm" value="'+u.name+'"></div><div class="fsec"><label class="fl">Colour</label><div class="cpick" id="cp-edit">'+MEMBER_COLORS.map(c=>'<div class="cp'+(u.color===c?' on':'')+'" style="background:'+c+'" onclick="pickC(this,\'cp-edit\',\'eu-col\')"></div>').join('')+'</div><input type="hidden" id="eu-col" value="'+u.color+'"></div><div style="display:flex;gap:8px"><button class="btnG" style="flex:1" onclick="closeM(\'mv-e\')">'+t.cancel+'</button><button class="btnM" style="flex:2" onclick="svEU('+i+')"><i data-lucide="save" style="margin-right:4px"></i> Save</button></div>'; g('mb-e').innerHTML=h; initIcons(); openM('mv-e'); }
+function openEU(i){ const u=lCfg.users[i],t=tx(); let h='<div class="dh"></div><h3><i data-lucide="user" style="margin-right:5px;vertical-align:middle;color:var(--p1)"></i> '+t.editUser+'</h3><div class="fsec"><label class="fl">Name</label><input type="text" class="fi" id="eu-nm" value="'+u.name+'"></div><div class="fsec"><label class="fl">Colour</label><div class="cpick" id="cp-edit">'+MEMBER_COLORS.map(c=>'<div class="cp'+(u.color===c?' on':'')+'" style="background:'+c+'" onclick="pickC(this,\'cp-edit\',\'eu-col\')"></div>').join('')+'</div><input type="hidden" id="eu-col" value="'+u.color+'"></div><div style="display:flex;gap:8px"><button class="btnG" style="flex:1" onclick="closeM(\'mv-e\')">'+t.cancel+'</button><button class="btnM" style="flex:2" onclick="svEU('+i+')"><i data-lucide="save" style="width:14px;height:14px;margin-right:4px;vertical-align:middle"></i> Save</button></div>'; g('mb-e').innerHTML=h;
+  if(window.lucide)lucide.createIcons({nodes:[g('mb-e')]}); initIcons(); openM('mv-e'); }
 function svEU(i){ const nm=val('eu-nm').trim(); if(!nm)return; const cfg=JSON.parse(JSON.stringify(lCfg)); cfg.users[i].name=nm; cfg.users[i].color=val('eu-col')||cfg.users[i].color; saveCfg(cfg); closeM('mv-e'); updatePill(); toast(tx().nameUpdated); rMgr(); }
-function delMember(i){ if(!confirm(tx().confirmDelMember))return; const cfg=JSON.parse(JSON.stringify(lCfg)); cfg.users.splice(i,1); saveCfg(cfg); toast(tx().deleted); rMgr(); }
-function openEB(i){ const it=lCfg.items[i],t=tx(); g('mb-e').innerHTML='<div class="dh"></div><h3>'+ico(it.name)+' '+it.name+'</h3><input type="hidden" id="eb-i" value="'+i+'"><div class="fsec"><label class="fl">'+t.mbudget+'</label><input type="number" class="fi" id="eb-v" value="'+it.budget+'" inputmode="numeric"></div><div style="display:flex;gap:8px"><button class="btnG" style="flex:1" onclick="closeM(\'mv-e\')">'+t.cancel+'</button><button class="btnM" style="flex:2" onclick="svEB()"><i data-lucide="save" style="margin-right:4px"></i> Save</button></div>'; openM('mv-e'); }
+function delMember(i){ appConfirm(tx().confirmDelMember, function(){ const cfg=JSON.parse(JSON.stringify(lCfg)); cfg.users.splice(i,1); saveCfg(cfg); toast(tx().deleted); rMgr(); }, 'Remove', true) }
+function openEB(i){ const it=lCfg.items[i],t=tx(); g('mb-e').innerHTML='<div class="dh"></div><h3>'+ico(it.name)+' '+it.name+'</h3><input type="hidden" id="eb-i" value="'+i+'"><div class="fsec"><label class="fl">'+t.mbudget+'</label><input type="number" class="fi" id="eb-v" value="'+it.budget+'" inputmode="numeric"></div><div style="display:flex;gap:8px"><button class="btnG" style="flex:1" onclick="closeM(\'mv-e\')">'+t.cancel+'</button><button class="btnM" style="flex:2" onclick="svEB()"><i data-lucide="save" style="width:14px;height:14px;margin-right:4px;vertical-align:middle"></i> Save</button></div>'; openM('mv-e'); }
 function svEB(){ const i=parseInt(val('eb-i')),v=parseFloat(val('eb-v')); if(!v||isNaN(v)||v<=0||v>99999999){toast(lang==='cw'?'Lowetsani bajeti yabwino':'Enter a valid budget','e');return;} const cfg=JSON.parse(JSON.stringify(lCfg));cfg.items[i].budget=v;saveCfg(cfg);toast(tx().budgetUpdated); closeM('mv-e'); rMgr(); }
-function openAddGoal(){ const t=tx(); g('mb-gl').innerHTML='<div class="dh"></div><h3><i data-lucide="target" style="margin-right:5px;vertical-align:middle;color:var(--a1)"></i> '+t.addGoal+'</h3><div class="fsec"><label class="fl">'+t.goalName+'</label><input type="text" class="fi" id="g-nm" placeholder="e.g. New TV, School Fees..."></div><div class="fsec"><label class="fl">'+t.goalTarget+'</label><input type="number" class="fi" id="g-tg" inputmode="numeric" placeholder="e.g. 150000"></div><div class="fsec"><label class="fl">'+t.goalSaved+' (optional)</label><input type="number" class="fi" id="g-sv" inputmode="numeric" placeholder="0"></div><div style="display:flex;gap:8px"><button class="btnG" style="flex:1" onclick="closeM(\'mv-gl\')">'+t.cancel+'</button><button class="btnM" style="flex:2" onclick="saveGoal()"><i data-lucide="save" style="margin-right:4px"></i> '+t.add+'</button></div>'; openM('mv-gl'); }
+function openAddGoal(){ const t=tx(); g('mb-gl').innerHTML='<div class="dh"></div><h3><i data-lucide="target" style="margin-right:5px;vertical-align:middle;color:var(--a1)"></i> '+t.addGoal+'</h3><div class="fsec"><label class="fl">'+t.goalName+'</label><input type="text" class="fi" id="g-nm" placeholder="e.g. New TV, School Fees..."></div><div class="fsec"><label class="fl">'+t.goalTarget+'</label><input type="number" class="fi" id="g-tg" inputmode="numeric" placeholder="e.g. 150000"></div><div class="fsec"><label class="fl">'+t.goalSaved+' (optional)</label><input type="number" class="fi" id="g-sv" inputmode="numeric" placeholder="0"></div><div style="display:flex;gap:8px"><button class="btnG" style="flex:1" onclick="closeM(\'mv-gl\')">'+t.cancel+'</button><button class="btnM" style="flex:2" onclick="saveGoal()"><i data-lucide="save" style="width:14px;height:14px;margin-right:4px;vertical-align:middle"></i> '+t.add+'</button></div>'; openM('mv-gl'); }
 function saveGoal(){ const nm=val('g-nm').trim(),tg=parseFloat(val('g-tg')),sv=parseFloat(val('g-sv'))||0; if(!nm){toast(lang==='cw'?'Lowetsani dzina la cholinga':'Enter a goal name','e');return;} if(!tg||isNaN(tg)||tg<=0||tg>99999999){toast(lang==='cw'?'Lowetsani ndalama yabwino':'Enter a valid target amount','e');return;} if(sv<0||sv>tg){toast(lang==='cw'?'Ndalama yosungidwa yachuluka':'Saved amount cannot exceed target','e');return;} const cfg=JSON.parse(JSON.stringify(lCfg)); if(!cfg.goals)cfg.goals=[]; cfg.goals.push({name:nm,target:tg,saved:sv}); saveCfg(cfg); closeM('mv-gl'); toast('Goal added!'); rMgr(); }
-function openTopUp(i){ const gl=lCfg.goals[i],t=tx(); g('mb-gl').innerHTML='<div class="dh"></div><h3>&#8593; '+t.topup+': '+gl.name+'</h3><div class="fsec" style="margin-bottom:8px"><div style="display:flex;justify-content:space-between;font-size:.78rem;color:var(--mid);margin-bottom:6px"><span>'+(lang==='cw'?'Yosungidwa':'Saved')+': <strong>'+MK(gl.saved)+'</strong></span><span>'+(lang==='cw'?'Cholinga':'Target')+': <strong>'+MK(gl.target)+'</strong></span></div><label class="fl">'+(lang==='cw'?'Ndalama Yowonjezera (MK)':'Amount to Add (MK)')+'</label><input type="number" class="fi" id="tu-amt" inputmode="numeric" placeholder="0"></div><div style="display:flex;gap:8px"><button class="btnG" style="flex:1" onclick="closeM(\'mv-gl\')">'+(lang==='cw'?'Siyani':t.cancel)+'</button><button class="btnM" style="flex:2;background:linear-gradient(135deg,#1B5E20,#388E3C)" onclick="topUpGoal('+i+')"><i data-lucide="save" style="margin-right:4px"></i> '+t.topup+'</button></div>'; openM('mv-gl'); }
+function openTopUp(i){ const gl=lCfg.goals[i],t=tx(); g('mb-gl').innerHTML='<div class="dh"></div><h3>&#8593; '+t.topup+': '+gl.name+'</h3><div class="fsec" style="margin-bottom:8px"><div style="display:flex;justify-content:space-between;font-size:.78rem;color:var(--mid);margin-bottom:6px"><span>'+(lang==='cw'?'Yosungidwa':'Saved')+': <strong>'+MK(gl.saved)+'</strong></span><span>'+(lang==='cw'?'Cholinga':'Target')+': <strong>'+MK(gl.target)+'</strong></span></div><label class="fl">'+(lang==='cw'?'Ndalama Yowonjezera (MK)':'Amount to Add (MK)')+'</label><input type="number" class="fi" id="tu-amt" inputmode="numeric" placeholder="0"></div><div style="display:flex;gap:8px"><button class="btnG" style="flex:1" onclick="closeM(\'mv-gl\')">'+(lang==='cw'?'Siyani':t.cancel)+'</button><button class="btnM" style="flex:2;background:linear-gradient(135deg,#1B5E20,#388E3C)" onclick="topUpGoal('+i+')"><i data-lucide="save" style="width:14px;height:14px;margin-right:4px;vertical-align:middle"></i> '+t.topup+'</button></div>'; openM('mv-gl'); }
 function topUpGoal(i){
   const amt=parseFloat(val('tu-amt'));
   if(!amt||amt<=0){toast(lang==='cw'?'Lowetsani ndalama':'Enter an amount','e');return;}
@@ -2022,7 +2163,7 @@ function doWithdraw(i){
   cfg.goals[i].saved=Math.max(cfg.goals[i].saved-amt,0);
   saveCfg(cfg); closeM('mv-gl'); toast(lang==='cw'?'Ndalama yachotsedwa':'Withdrawn'); rMgr();
 }
-function delGoal(i){ if(!confirm('Delete this goal?'))return; const cfg=JSON.parse(JSON.stringify(lCfg)); cfg.goals.splice(i,1); saveCfg(cfg); rMgr(); }
+function delGoal(i){ appConfirm(lang==='cw'?'Mukufuna kuchotsa cholinga ichi?':'Delete this goal?', function(){ const cfg=JSON.parse(JSON.stringify(lCfg)); cfg.goals.splice(i,1); saveCfg(cfg); rMgr(); }, 'Delete', true) }
 
 // ===============================================
 // 14. SETTINGS
@@ -2068,7 +2209,7 @@ function rStg(){
   // Overall budget
   h+='<div class="stg-row no-tap"><div class="stg-row-ico" style="background:#F3E5F5">&#128176;</div><div class="stg-row-body"><div class="stg-row-lbl">'+(lang==='cw'?'Ndalama Yonse ya Mwezi':'Monthly Budget Cap')+'</div></div><div class="stg-row-right"><input type="number" style="width:90px;text-align:right;border:1.5px solid var(--border);border-radius:8px;padding:4px 7px;font-size:.78rem;background:var(--white);color:var(--ink);font-family:Syne,sans-serif;font-weight:700" value="'+lCfg.overallBudget+'" inputmode="numeric" onchange="updOB(this.value)"></div></div>';
   // Household Code
-  if(hhId)h+='<div class="stg-row no-tap"><div class="stg-row-ico" style="background:#E8EAF6"><i data-lucide="home" style="color:var(--p1)"></i></div><div class="stg-row-body"><div class="stg-row-lbl">'+(lang==='cw'?'Kodi ya Nyumba':'Household Code')+'</div><div class="stg-row-sub" style="font-family:monospace;letter-spacing:1px">'+hhId+'</div></div><div class="stg-row-right"><button class="bsm be" onclick="cpCode()" style="padding:4px 9px;font-size:.65rem"><i data-lucide="copy" style="margin-right:4px;vertical-align:middle;color:var(--p1)"></i></button><button class="hc-btn hc-wa" onclick="waCode()" style="font-size:.65rem"><i data-lucide="send" style="color:#25D366"></i></button></div></div>';
+  if(hhId)h+='<div class="stg-row no-tap"><div class="stg-row-ico" style="background:#E8EAF6"><i data-lucide="home" style="color:var(--p1)"></i></div><div class="stg-row-body"><div class="stg-row-lbl">'+(lang==='cw'?'Kodi ya Nyumba':'Household Code')+'</div><div class="stg-row-sub" style="font-family:monospace;letter-spacing:1px">'+hhId+'</div></div><div class="stg-row-right"><button class="bsm be" onclick="cpCode()" style="padding:4px 9px;font-size:.65rem"><i data-lucide="copy" style="width:13px;height:13px;margin-right:4px;vertical-align:middle;color:var(--p1)"></i></button><button class="hc-btn hc-wa" onclick="waCode()" style="font-size:.65rem"><i data-lucide="send" style="color:#25D366"></i></button></div></div>';
   h+='</div>';
 
   // -- Security --
@@ -2123,10 +2264,10 @@ function rStg(){
   // -- About --
   h+='<span class="stg-sec-lbl">'+(lang==='cw'?'Za Pulogalamuyi':'About')+'</span>';
   h+='<div class="stg-grp">';
-  h+='<div class="stg-row no-tap"><div class="stg-row-ico" style="background:#F3E5F5"><i data-lucide="home" style="color:var(--p1)"></i></div><div class="stg-row-body"><div class="stg-row-lbl">Bajeti Yanga</div><div class="stg-row-sub">Version 9.1.0 — © Rodart Creatives</div></div></div>';
+  h+='<div class="stg-row no-tap"><div class="stg-row-ico" style="background:#F3E5F5"><i data-lucide="home" style="color:var(--p1)"></i></div><div class="stg-row-body"><div class="stg-row-lbl">Bajeti Yanga</div><div class="stg-row-sub">Version 9.1.1 — © Rodart Creatives</div></div></div>';
   h+='</div>';
 
-  h+='<button class="stg-logout" onclick="logout()"><i data-lucide="log-out" style="margin-right:6px"></i> '+t.logout+'</button>';
+  h+='<button class="stg-logout" onclick="logout()"><i data-lucide="log-out" style="width:15px;height:15px;margin-right:6px;vertical-align:middle"></i> '+t.logout+'</button>';
   h+='</div>';
   g('view').innerHTML=h;
 }
@@ -2146,6 +2287,7 @@ function openPrivacyPolicy(){
   h+='</div>';
   h+='<button class="btnG" style="width:100%;margin-top:16px" onclick="closeM(\'mv-u\')">Close</button>';
   g('mb-u').innerHTML=h;
+  if(window.lucide)lucide.createIcons({nodes:[g('mb-u')]});
   openM('mv-u');
 }
 
@@ -2180,7 +2322,7 @@ function stgOpenSection(sec){
         h+='<div class="goal-top"><div class="goal-name"'+(done?' style="color:#1B5E20"':'')+'>'+( done?'&#127881; ':'')+gl.name+'</div>';
         h+='<div style="display:flex;gap:5px;align-items:center"><div class="goal-pct"'+(done?' style="color:#1B5E20"':'')+'>'+Math.round(pct*100)+'%</div>';
         if(!done)h+='<button class="bsm be" style="padding:3px 8px;font-size:.63rem" onclick="openTopUp('+i+')">&#8593; '+t.topup+'</button>';
-        h+='<button class="bsm bd" style="padding:3px 7px;font-size:.63rem" onclick="delGoal('+i+')</i></button></div></div>';
+        h+='<button class="bsm bd" style="padding:3px 7px;font-size:.63rem" onclick="delGoal('+i+'">&#128465;</button></div></div>';
         h+='<div class="goal-bar"><div class="goal-fill" style="width:'+Math.round(pct*100)+'%'+(done?';background:linear-gradient(90deg,#2E7D32,#43A047)':'')+'"></div></div>';
         h+='<div class="goal-meta"><span>'+MK(gl.saved)+' '+(lang==='cw'?'yosungidwa':'saved')+'</span><span>'+(lang==='cw'?'Cholinga':'Target')+': '+MK(gl.target)+'</span></div>';
         if(!done&&mn!==null)h+='<div style="margin-top:6px;font-size:.65rem;color:#E65100;font-weight:700;background:#FFF3E0;border-radius:7px;padding:5px 8px"><i data-lucide="calendar" style="margin-right:3px;vertical-align:middle;color:var(--a1)"></i> '+MK(mn)+'/'+(lang==='cw'?'mwezi':'month')+' needed'+(ml!==null?' · '+ml+(lang==='cw'?' miyezi':'mths left'):'')+'</div>';
@@ -2234,11 +2376,30 @@ function doExportPDF(){
     + '<div class="summary-grid"><div class="sum-card spent"><div class="sum-val">MK '+Number(sp).toLocaleString()+'</div><div class="sum-lbl">Total Spent</div></div><div class="sum-card income"><div class="sum-val">MK '+Number(inc).toLocaleString()+'</div><div class="sum-lbl">Income</div></div><div class="sum-card"><div class="sum-val">MK '+Number(Math.max(0,bg-sp)).toLocaleString()+'</div><div class="sum-lbl">Remaining</div></div></div>'
     + '<div class="section"><h2>&#127922; Spending by Category</h2>'+catRows+'</div>'
     + '<div class="section"><h2><i data-lucide="user" style="margin-right:5px;vertical-align:middle;color:var(--p1)"></i> Spending by Member</h2>'+memberRows+'</div>'
-    + '<div class="section"><h2><i data-lucide="copy" style="margin-right:4px;vertical-align:middle;color:var(--p1)"></i> All Transactions ('+rows_count+')</h2><table class="tx-table"><thead><tr><th>Date</th><th>Item</th><th>Type</th><th>Amount</th><th>Member</th></tr></thead><tbody>'+rows+'</tbody></table></div>'
+    + '<div class="section"><h2><i data-lucide="copy" style="width:13px;height:13px;margin-right:4px;vertical-align:middle;color:var(--p1)"></i> All Transactions ('+rows_count+')</h2><table class="tx-table"><thead><tr><th>Date</th><th>Item</th><th>Type</th><th>Amount</th><th>Member</th></tr></thead><tbody>'+rows+'</tbody></table></div>'
     + '<div class="footer">Bajeti Yanga v9.1. 0&mdash; &copy; 2026 Rodart Creatives &bull; Made in Malawi &#127474;&#127484;</div></body></html>';
-    const w=window.open('','_blank'); if(!w){toast('Allow popups to export PDF','e');return;}
-    w.document.write(fullHtml); w.document.close();
-    setTimeout(function(){w.print(); w.close();},600);
+    const w=window.open('','_blank');
+    if(w){
+      w.document.write(fullHtml); w.document.close();
+      setTimeout(function(){w.print(); w.close();},600);
+    } else {
+      // Fallback for Android/QuickEdit: download as HTML file
+      try {
+        const blob = new Blob([fullHtml], {type:'text/html'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'BajetiYanga_'+mName().replace(' ','_')+'_Report.html';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(function(){ URL.revokeObjectURL(url); }, 2000);
+        toast('Report downloaded! Open it in your browser to print.','s');
+      } catch(e){
+        toast('Export failed. Allow popups and try again.','e');
+      }
+      return;
+    }
     toast('PDF ready -- tap Print to save');
   });
 }
@@ -2259,15 +2420,16 @@ function buildNotifs(){
 function openNotifs(){
   const notifs=buildNotifs(), t=tx();
   let h='<div class="dh"></div><h3><i data-lucide="bell" style="margin-right:5px;vertical-align:middle;color:var(--a1)"></i> Notifications</h3>';
-  if(!notifs.length){h+='<div class="empty" style="padding:14px 0"><div class="ei"><i data-lucide="check-circle" style="font-size:2rem;color:var(--g2)"></i></div><p>'+(lang==='cw'?'Palibe zachenjezo':'All clear -- nothing needs your attention!')+'</p></div>';}
+  if(!notifs.length){h+='<div class="empty" style="padding:14px 0"><div class="ei"><i data-lucide="check-circle" style="width:32px;height:32px;color:var(--g2)"></i></div><p>'+(lang==='cw'?'Palibe zachenjezo':'All clear -- nothing needs your attention!')+'</p></div>';}
   else{notifs.forEach(n=>{h+='<div class="notif-item"><div class="notif-ico" style="background:'+n.bg+'">'+n.ico+'</div><div class="notif-txt"><b>'+n.title+'</b>'+n.msg+'</div></div>';});}
-  g('mb-u').innerHTML=h; initIcons(); openM('mv-u');
+  g('mb-u').innerHTML=h;
+  if(window.lucide)lucide.createIcons({nodes:[g('mb-u')]}); initIcons(); openM('mv-u');
 }
 function setIncType(el,idx){const wrap=el.closest('.type-tog');if(!wrap)return;wrap.querySelectorAll('button').forEach((b,i)=>{b.classList.toggle('on',i===idx);});wrap.setAttribute('data-inc',idx===1?'recurring':'once');}
 function setHF(el){histFilter=el.dataset.f||'all';rHist();}
 function openSwitch(){
   const t=tx();
-  g('mb-u').innerHTML='<div class="dh"></div><h3><i data-lucide="refresh-cw" style="margin-right:3px;vertical-align:middle"></i> '+t.switchUser+'</h3><div style="display:flex;flex-direction:column;gap:8px">'+lCfg.users.map(u=>'<div style="display:flex;align-items:center;gap:11px;padding:12px;border-radius:13px;border:2.5px solid '+(actU().id===u.id?u.color:'var(--border)')+';background:'+(actU().id===u.id?u.color+'18':'var(--white)')+';cursor:pointer" onclick="swU(\''+u.id+'\')">'+'<div style="width:42px;height:42px;border-radius:50%;background:'+u.color+';display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.05rem;color:#fff">'+u.name[0]+'</div><div style="flex:1"><div style="font-weight:800;font-size:.9rem">'+u.name+'</div><div style="font-size:.68rem;color:var(--mid)">'+lPx.filter(p=>p.userId===u.id&&isTM(p.date)).length+' entries this month</div></div>'+(actU().id===u.id?'<span style="color:'+u.color+';font-size:1.05rem">&#10003;</span>':'')+'</div>').join('')+'</div>';
+  g('mb-u').innerHTML='<div class="dh"></div><h3><i data-lucide="refresh-cw" style="width:12px;height:12px;margin-right:3px;vertical-align:middle"></i> '+t.switchUser+'</h3><div style="display:flex;flex-direction:column;gap:8px">'+lCfg.users.map(u=>'<div style="display:flex;align-items:center;gap:11px;padding:12px;border-radius:13px;border:2.5px solid '+(actU().id===u.id?u.color:'var(--border)')+';background:'+(actU().id===u.id?u.color+'18':'var(--white)')+';cursor:pointer" onclick="swU(\''+u.id+'\')">'+'<div style="width:42px;height:42px;border-radius:50%;background:'+u.color+';display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.05rem;color:#fff">'+u.name[0]+'</div><div style="flex:1"><div style="font-weight:800;font-size:.9rem">'+u.name+'</div><div style="font-size:.68rem;color:var(--mid)">'+lPx.filter(p=>p.userId===u.id&&isTM(p.date)).length+' entries this month</div></div>'+(actU().id===u.id?'<span style="color:'+u.color+';font-size:1.05rem">&#10003;</span>':'')+'</div>').join('')+'</div>';
   openM('mv-u');
 }
 function swU(id){ localStorage.setItem('nb_uid',id); updatePill(); closeM('mv-u'); render(); }
@@ -2499,25 +2661,24 @@ function premiumGate(featureName, onGranted){
 function showUpgradePrompt(feature, status){
   const names = {
     charts:'Visual Charts', export_pdf:'PDF Export', bill_tracker:'Bill Tracker',
-    copy_month:'Copy Previous Month', unlimited_ai:'Unlimited Bajeti AI', trash:'Trash / Undo Delete'
+    copy_month:'Copy Previous Month', unlimited_ai:'Unlimited Bajeti AI', trash:'Trash / Undo Delete',
+    receipt_scan:'Receipt Scanner'
   };
   const featureName = names[feature] || feature;
   let h = '<div class="dh"></div>';
   h += '<div style="text-align:center;padding:8px 0 16px">';
-  h += '<div style="font-size:2.5rem;margin-bottom:8px"><i data-lucide="gem" style="margin-right:3px;vertical-align:middle;color:var(--p1)"></i></div>';
-  h += '<h3 style="font-family:Syne,sans-serif;font-size:1.1rem;margin-bottom:6px">Premium Feature</h3>';
-  h += '<p style="font-size:.82rem;color:var(--mid);margin-bottom:16px"><strong>'+featureName+'</strong> requires Bajeti Yanga Premium.</p>';
-  h += '<div style="background:linear-gradient(135deg,#F3E5F5,#EDE7F6);border-radius:14px;padding:14px;margin-bottom:16px">';
-  h += '<div style="font-family:Syne,sans-serif;font-weight:800;font-size:1.2rem;color:var(--p1)">MK 2,500<span style="font-size:.7rem;font-weight:600;color:var(--mid)">/month</span></div>';
-  h += '<div style="font-size:.7rem;color:var(--mid);margin-top:2px">or MK 20,000/year (save 2 months)</div>';
+  h += '<div style="font-size:2.5rem;margin-bottom:8px">💎</div>';
+  h += '<h3 style="font-family:Syne,sans-serif;font-weight:800;font-size:1.05rem;margin-bottom:6px">'+featureName+' is Premium</h3>';
+  h += '<div style="font-size:.78rem;color:var(--mid);margin-bottom:14px;line-height:1.5">Upgrade to unlock this and all other premium features.</div>';
+  h += '<div style="font-size:.75rem;color:var(--mid);margin-bottom:16px;text-align:left;background:var(--mist);border-radius:12px;padding:10px 12px">';
+  h += '✅ Visual Charts &nbsp; ✅ PDF Export<br>✅ Bill Tracker &nbsp;&nbsp;&nbsp; ✅ Unlimited AI<br>✅ Trash & Undo &nbsp; ✅ Copy Month';
   h += '</div>';
-  h += '<div style="font-size:.75rem;color:var(--mid);margin-bottom:16px;text-align:left">';
-  h += '<i data-lucide="check" style="color:var(--g1);margin-right:3px"></i> Visual Charts &nbsp; <i data-lucide="check" style="color:var(--g1);margin-right:3px"></i> PDF Export<br><i data-lucide="check" style="color:var(--g1);margin-right:3px"></i> Bill Tracker &nbsp; <i data-lucide="check" style="color:var(--g1);margin-right:3px"></i> Unlimited AI<br><i data-lucide="check" style="color:var(--g1);margin-right:3px"></i> Trash & Undo &nbsp; <i data-lucide="check" style="color:var(--g1);margin-right:3px"></i> Copy Previous Month';
-  h += '</div>';
-  h += '<button class="btnM" style="width:100%;margin-bottom:8px" onclick="openUpgrade()"><i data-lucide="gem" style="margin-right:3px;vertical-align:middle;color:var(--p1)"></i> Upgrade to Premium</button>';
-  h += '<button class="btnG" style="width:100%" onclick="closeM(&quot;mv-u&quot;)">Maybe Later</button>';
+  h += '<button class="btnM" style="width:100%;margin-bottom:8px" onclick="closeM(\'mv-u\');showPremiumPage()">💎 Upgrade to Premium</button>';
+  h += '<button onclick="closeM(\'mv-u\')" style="background:none;border:none;color:var(--mid);font-size:.8rem;font-family:inherit;cursor:pointer;padding:8px 16px;display:block;margin:0 auto">Maybe Later</button>';
   h += '</div>';
   g('mb-u').innerHTML = h;
+  if(window.lucide)lucide.createIcons({nodes:[g('mb-u')]});
+  initIcons();
   openM('mv-u');
 }
 
@@ -2528,79 +2689,127 @@ function openUpgrade(){
 
 function showPremiumPage(){
   const status = getPremiumStatus();
+
+  // ── Airtel Money inline SVG logo ──
+  const airtelLogo = '<svg width="36" height="36" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">'
+    +'<rect width="36" height="36" rx="9" fill="#E30613"/>'
+    +'<text x="18" y="23" font-family="Arial Black,sans-serif" font-weight="900" font-size="9.5" fill="white" text-anchor="middle">airtel</text>'
+    +'<text x="18" y="30.5" font-family="Arial,sans-serif" font-size="6.5" font-weight="700" fill="rgba(255,255,255,.85)" text-anchor="middle">MONEY</text>'
+    +'</svg>';
+
+  // ── TNM Mpamba inline SVG logo ──
+  const tnmLogo = '<svg width="36" height="36" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">'
+    +'<rect width="36" height="36" rx="9" fill="#003087"/>'
+    +'<rect x="0" y="22" width="36" height="14" rx="0" fill="#FFD700"/>'
+    +'<rect x="0" y="22" width="36" height="14" rx="9" fill="#FFD700"/>'
+    +'<text x="18" y="17" font-family="Arial Black,sans-serif" font-weight="900" font-size="11" fill="white" text-anchor="middle">TNM</text>'
+    +'<text x="18" y="30" font-family="Arial,sans-serif" font-size="6.5" font-weight="800" fill="#003087" text-anchor="middle">MPAMBA</text>'
+    +'</svg>';
+
+  // ── WhatsApp SVG ──
+  const waLogo = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0">'
+    +'<path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>'
+    +'<path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2 22l4.978-1.413A9.953 9.953 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18c-1.7 0-3.3-.43-4.7-1.19l-.337-.19-3.478.99.946-3.405-.21-.35A7.97 7.97 0 014 12c0-4.418 3.582-8 8-8s8 3.582 8 8-3.582 8-8 8z" fill="white"/>'
+    +'</svg>';
+
   let h = '<div class="dh"></div>';
-  h += '<div style="text-align:center;padding:4px 0 12px">';
-  h += '<div style="font-size:2.8rem;margin-bottom:6px"><i data-lucide="gem" style="margin-right:3px;vertical-align:middle;color:var(--p1)"></i></div>';
-  h += '<div style="font-family:Syne,sans-serif;font-weight:800;font-size:1.25rem;color:var(--ink);margin-bottom:4px">Bajeti Yanga Premium</div>';
-  h += '<div style="font-size:.78rem;color:var(--mid)">Unlock the full budgeting experience</div>';
+
+  // ── Hero header ──
+  h += '<div style="margin:-2px -18px 0;padding:28px 20px 24px;background:linear-gradient(145deg,#4A148C 0%,#6A1B9A 45%,#8E24AA 100%);border-radius:0 0 24px 24px;text-align:center;position:relative;overflow:hidden">';
+  h += '<div style="position:absolute;top:-30px;right:-30px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.06)"></div>';
+  h += '<div style="position:absolute;bottom:-20px;left:-20px;width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,.05)"></div>';
+  h += '<div style="width:56px;height:56px;border-radius:18px;background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;margin:0 auto 10px">';
+  h += '<i data-lucide="gem" style="width:28px;height:28px;color:#fff"></i></div>';
+  h += '<div style="font-family:Syne,sans-serif;font-weight:800;font-size:1.3rem;color:#fff;letter-spacing:-.3px;margin-bottom:4px">Bajeti Yanga Premium</div>';
+  h += '<div style="font-size:.76rem;color:rgba(255,255,255,.75);max-width:240px;margin:0 auto;line-height:1.5">Unlock the full power of your money. Built in Malawi, for Malawian families.</div>';
   h += '</div>';
 
-  // Feature list
+  // ── Feature grid ──
   const feats = [
-    ['<i data-lucide="pie-chart" style="color:var(--p1)"></i>','Visual Charts','Pie + bar charts showing spending by category'],
-    ['<i data-lucide="file-text" style="color:#C2185B"></i>','PDF Export','Printable branded financial reports'],
-    ['<i data-lucide="alarm-clock" style="color:var(--a1)"></i>','Bill Tracker','Track ESCOM, water, rent due dates'],
-    ['<i data-lucide="message-circle" style="color:var(--p1)"></i>','Unlimited Bajeti AI','No daily message limit'],
-    ['<i data-lucide="trash-2" style="color:var(--r1)"></i>','30-Day Trash','Recover accidentally deleted entries'],
-    ['<i data-lucide="copy" style="color:var(--g1)"></i>','Copy Previous Month','One tap to repeat last month expenses'],
-    ['<i data-lucide="camera" style="color:#1565C0"></i>','Receipt Scanner','Scan receipts with camera (coming soon)']
+    ['bar-chart-2','Visual Charts','Pie + bar charts by category','#7B1FA2'],
+    ['file-text','PDF Export','Printable branded reports','#1565C0'],
+    ['bell','Bill Tracker','ESCOM, water, rent due dates','#E65100'],
+    ['cpu','Unlimited AI','No daily message limit','#00695C'],
+    ['trash-2','30-Day Trash','Undo accidental deletes','#B71C1C'],
+    ['copy','Copy Month','Repeat last month in one tap','#4527A0'],
+    ['camera','Receipt Scan','Camera scan receipts','#1B5E20']
   ];
-  h += '<div style="background:var(--mist);border-radius:14px;padding:12px;margin-bottom:14px">';
+  h += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:16px 0 14px">';
   feats.forEach(function(f){
-    h += '<div style="display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)">';
-    h += '<div style="width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,#F3E5F5,#EDE7F6);display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0">'+f[0]+'</div>';
-    h += '<div><div style="font-weight:700;font-size:.82rem">'+f[1]+'</div><div style="font-size:.68rem;color:var(--mid);margin-top:1px">'+f[2]+'</div></div>';
+    h += '<div style="background:var(--mist);border-radius:12px;padding:10px 11px;display:flex;align-items:flex-start;gap:10px">';
+    h += '<div style="width:34px;height:34px;border-radius:10px;background:'+f[3]+'18;display:flex;align-items:center;justify-content:center;flex-shrink:0">';
+    h += '<i data-lucide="'+f[0]+'" style="width:17px;height:17px;color:'+f[3]+'"></i></div>';
+    h += '<div style="padding-top:2px"><div style="font-weight:700;font-size:.78rem;color:var(--ink)">'+f[1]+'</div>';
+    h += '<div style="font-size:.65rem;color:var(--mid);margin-top:2px;line-height:1.4">'+f[2]+'</div></div>';
     h += '</div>';
   });
   h += '</div>';
 
-  // Pricing cards
-  h += '<div style="font-family:Syne,sans-serif;font-weight:800;font-size:.78rem;text-transform:uppercase;letter-spacing:.5px;color:var(--mid);margin-bottom:8px">Choose a plan</div>';
-  h += '<div style="display:flex;gap:8px;margin-bottom:14px">';
-  h += '<div style="flex:1;background:var(--white);border:2px solid var(--border);border-radius:14px;padding:12px;text-align:center">';
-  h += '<div style="font-size:.68rem;font-weight:700;color:var(--mid);text-transform:uppercase;letter-spacing:.3px">Monthly</div>';
-  h += '<div style="font-family:Syne,sans-serif;font-weight:800;font-size:1.3rem;color:var(--p1);margin:4px 0">MK 2,500</div>';
-  h += '<div style="font-size:.65rem;color:var(--mid)">per month</div></div>';
-  h += '<div style="flex:1;background:linear-gradient(135deg,#F3E5F5,#EDE7F6);border:2px solid var(--p1);border-radius:14px;padding:12px;text-align:center;position:relative">';
-  h += '<div style="position:absolute;top:-8px;left:50%;transform:translateX(-50%);background:var(--p1);color:#fff;font-size:.58rem;font-weight:800;padding:2px 8px;border-radius:10px;white-space:nowrap">BEST VALUE</div>';
-  h += '<div style="font-size:.68rem;font-weight:700;color:var(--p1);text-transform:uppercase;letter-spacing:.3px">Yearly</div>';
-  h += '<div style="font-family:Syne,sans-serif;font-weight:800;font-size:1.3rem;color:var(--p1);margin:4px 0">MK 20,000</div>';
-  h += '<div style="font-size:.65rem;color:var(--mid)">save 2 months free</div></div>';
+  // ── Pricing cards ──
+  h += '<div style="font-family:Syne,sans-serif;font-weight:800;font-size:.72rem;text-transform:uppercase;letter-spacing:.6px;color:var(--mid);margin-bottom:8px">Choose a plan</div>';
+  h += '<div style="display:flex;gap:8px;margin-bottom:16px">';
+
+  // Monthly
+  h += '<div style="flex:1;background:var(--surf);border:2px solid var(--brd);border-radius:16px;padding:14px 10px;text-align:center">';
+  h += '<div style="font-size:.63rem;font-weight:700;color:var(--mid);text-transform:uppercase;letter-spacing:.3px;margin-bottom:5px">Monthly</div>';
+  h += '<div style="font-family:Syne,sans-serif;font-weight:800;font-size:1.25rem;color:var(--ink)">MK 2,500</div>';
+  h += '<div style="font-size:.62rem;color:var(--mid);margin-top:2px">per month</div>';
   h += '</div>';
 
-  // Why pay section
-  h += '<div style="background:linear-gradient(135deg,#E8F5E9,#C8E6C9);border-radius:12px;padding:11px 13px;margin-bottom:14px;font-size:.76rem;color:#1B5E20;line-height:1.5">';
-  h += '<i data-lucide="heart" style="color:#4CAF50;margin-right:5px"></i> <strong>Why pay?</strong> Bajeti Yanga is built in Malawi, for Malawian families. Your subscription keeps the app running, ad-free and private forever. No data selling, ever.';
-  h += '</div>';
-
-  // Payment methods
-  h += '<div style="font-family:Syne,sans-serif;font-weight:800;font-size:.78rem;text-transform:uppercase;letter-spacing:.5px;color:var(--mid);margin-bottom:8px">How to pay</div>';
-  h += '<div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px">';
-
-  // Airtel Money
-  h += '<div style="background:var(--white);border:1.5px solid var(--border);border-radius:12px;padding:12px">';
-  h += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">';
-  h += '<div style="width:36px;height:36px;border-radius:9px;background:#FF0000;display:flex;align-items:center;justify-content:center;font-size:1.1rem;color:#fff;font-weight:800;font-size:.75rem">AM</div>';
-  h += '<div><div style="font-weight:700;font-size:.84rem">Airtel Money</div><div style="font-size:.67rem;color:var(--mid)">Send to merchant number</div></div></div>';
-  h += '<div style="background:var(--mist);border-radius:9px;padding:9px 11px;font-size:.76rem">';
-  h += '1. Open Airtel Money<br>2. Tap <strong>Send Money</strong><br>3. Number: <strong style="color:var(--p1)">0991864753</strong> (Rodrick Kabango)<br>4. Amount: MK 2,500 or MK 20,000<br>5. Reference: <strong>your household code ('+hhId+')</strong><br>6. Send screenshot to WhatsApp below</div>';
-  h += '</div>';
-
-  // TNM Mpamba
-  h += '<div style="background:var(--white);border:1.5px solid var(--border);border-radius:12px;padding:12px">';
-  h += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">';
-  h += '<div style="width:36px;height:36px;border-radius:9px;background:#FFD700;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.7rem;color:#333">TNM</div>';
-  h += '<div><div style="font-weight:700;font-size:.84rem">TNM Mpamba</div><div style="font-size:.67rem;color:var(--mid)">Send to merchant number</div></div></div>';
-  h += '<div style="background:var(--mist);border-radius:9px;padding:9px 11px;font-size:.76rem">';
-  h += '1. Open Mpamba<br>2. Tap <strong>Send Money</strong><br>3. Number: <strong style="color:var(--p1)">0888 029 029</strong> (Rodrick Kabango)<br>4. Amount: MK 2,500 or MK 20,000<br>5. Reference: <strong>your household code ('+hhId+')</strong><br>6. Send screenshot to WhatsApp below</div>';
+  // Yearly — highlighted with shimmer
+  h += '<div style="flex:1;background:linear-gradient(145deg,#4A148C,#7B1FA2);border:2px solid #CE93D8;border-radius:16px;padding:14px 10px;text-align:center;position:relative;box-shadow:0 6px 24px rgba(106,27,154,.35)">';
+  h += '<div style="position:absolute;top:-9px;left:50%;transform:translateX(-50%);background:linear-gradient(90deg,#FFD700,#FFA000);color:#4A148C;font-size:.58rem;font-weight:900;padding:2px 10px;border-radius:10px;white-space:nowrap;letter-spacing:.3px">BEST VALUE</div>';
+  h += '<div style="font-size:.63rem;font-weight:700;color:rgba(255,255,255,.7);text-transform:uppercase;letter-spacing:.3px;margin-bottom:5px">Yearly</div>';
+  h += '<div style="font-family:Syne,sans-serif;font-weight:800;font-size:1.25rem;color:#fff">MK 20,000</div>';
+  h += '<div style="font-size:.62rem;color:rgba(255,255,255,.65);margin-top:2px">2 months free</div>';
   h += '</div>';
   h += '</div>';
 
-  // WhatsApp confirm button
-  h += '<button onclick="confirmPaymentWA()" style="width:100%;padding:13px;background:#25D366;color:#fff;border:none;border-radius:12px;font-family:Syne,sans-serif;font-weight:800;font-size:.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:8px"><i data-lucide="message-circle" style="color:#fff;margin-right:6px"></i> Confirm Payment on WhatsApp</button>';
-  h += '<button onclick="closeM(&quot;mv-u&quot;)" style="width:100%;padding:10px;background:none;border:1.5px solid var(--border);border-radius:12px;font-family:Syne,sans-serif;font-weight:700;font-size:.82rem;color:var(--mid);cursor:pointer">Maybe Later</button>';
+  // ── Why pay ──
+  h += '<div style="border:1.5px solid #A5D6A7;background:linear-gradient(135deg,#F1F8E9,#E8F5E9);border-radius:14px;padding:11px 13px;margin-bottom:16px;font-size:.76rem;color:#1B5E20;line-height:1.6">';
+  h += '<i data-lucide="heart" style="width:14px;height:14px;vertical-align:middle;margin-right:4px;color:#2E7D32"></i> <strong>Why pay?</strong> Bajeti Yanga is built in Malawi, for Malawian families. Your subscription keeps the app running — ad-free, private, forever. No data selling, ever.';
+  h += '</div>';
+
+  // ── How to pay ──
+  h += '<div style="font-family:Syne,sans-serif;font-weight:800;font-size:.72rem;text-transform:uppercase;letter-spacing:.6px;color:var(--mid);margin-bottom:10px">How to pay</div>';
+
+  // Airtel Money card
+  h += '<div style="background:var(--surf);border:1.5px solid var(--brd);border-radius:16px;padding:13px;margin-bottom:10px">';
+  h += '<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">'+airtelLogo;
+  h += '<div><div style="font-weight:800;font-size:.86rem;font-family:Syne,sans-serif">Airtel Money</div>';
+  h += '<div style="font-size:.67rem;color:var(--mid)">Send to merchant</div></div></div>';
+  h += '<div style="background:var(--mist);border-radius:10px;padding:10px 12px;font-size:.76rem;line-height:1.8;color:var(--ink)">';
+  h += '1. Open Airtel Money &rarr; <strong>Send Money</strong><br>';
+  h += '2. Number: <strong style="font-family:Syne,sans-serif;color:#E30613">0991 864 753</strong><br>';
+  h += '3. Amount: MK 2,500 <em>or</em> MK 20,000<br>';
+  h += '4. Reference: <strong style="color:var(--p1)">'+hhId+'</strong><br>';
+  h += '5. Screenshot &rarr; WhatsApp below';
+  h += '</div></div>';
+
+  // TNM Mpamba card
+  h += '<div style="background:var(--surf);border:1.5px solid var(--brd);border-radius:16px;padding:13px;margin-bottom:16px">';
+  h += '<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">'+tnmLogo;
+  h += '<div><div style="font-weight:800;font-size:.86rem;font-family:Syne,sans-serif">TNM Mpamba</div>';
+  h += '<div style="font-size:.67rem;color:var(--mid)">Send to merchant</div></div></div>';
+  h += '<div style="background:var(--mist);border-radius:10px;padding:10px 12px;font-size:.76rem;line-height:1.8;color:var(--ink)">';
+  h += '1. Open Mpamba &rarr; <strong>Send Money</strong><br>';
+  h += '2. Number: <strong style="font-family:Syne,sans-serif;color:#003087">0888 029 029</strong><br>';
+  h += '3. Amount: MK 2,500 <em>or</em> MK 20,000<br>';
+  h += '4. Reference: <strong style="color:var(--p1)">'+hhId+'</strong><br>';
+  h += '5. Screenshot &rarr; WhatsApp below';
+  h += '</div></div>';
+
+  // ── WhatsApp CTA ── (compact, pill, not full-width)
+  h += '<div style="text-align:center;margin-bottom:6px">';
+  h += '<button onclick="confirmPaymentWA()" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 28px;background:#25D366;color:#fff;border:none;border-radius:50px;font-family:Syne,sans-serif;font-weight:800;font-size:.84rem;cursor:pointer;box-shadow:0 4px 16px rgba(37,211,102,.4);letter-spacing:.2px">'+waLogo+' Confirm via WhatsApp</button>';
+  h += '</div>';
+  h += '<div style="text-align:center;margin-bottom:4px">';
+  h += '<button onclick="closeM(\'mv-u\')" style="background:none;border:none;color:var(--mid);font-size:.8rem;font-family:inherit;cursor:pointer;padding:8px 16px">Maybe Later</button>';
+  h += '</div>';
 
   g('mb-u').innerHTML = h;
+  if(window.lucide)lucide.createIcons({nodes:[g('mb-u')]});
+  initIcons();
   openM('mv-u');
 }
 
@@ -2633,7 +2842,7 @@ function copyPreviousMonth(){
     const prevStr=prevM.getFullYear()+'-'+String(prevM.getMonth()+1).padStart(2,'0');
     const prevPx=lPx.filter(p=>p.date&&p.date.startsWith(prevStr)&&p.type!=='income');
     if(!prevPx.length){toast('No expenses found from last month','e');return;}
-    if(!confirm('Copy '+prevPx.length+' expense(s) from last month to today?'))return;
+    
     const todayStr=today();
     const batch=db.batch();
     prevPx.forEach(function(p){
@@ -2739,7 +2948,15 @@ function scheduleInAppAlerts(){
 // ===============================================
 
 // -- Chat state — persistent across sessions via localStorage --
-let chatHistory = (()=>{ try{ return JSON.parse(localStorage.getItem('nb_chat_v2')||'[]'); }catch(e){return[];} })();
+let chatHistory = [];
+function loadChatHistory(){
+  const key = 'nb_chat_'+(hhId||'anon');
+  try{ chatHistory = JSON.parse(localStorage.getItem(key)||'[]'); }catch(e){ chatHistory=[]; }
+}
+function saveChatHistory(){
+  const key = 'nb_chat_'+(hhId||'anon');
+  localStorage.setItem(key, JSON.stringify(chatHistory.slice(-30)));
+}
 let chatBusy = false;
 
 function getAiUsageToday(){
@@ -2798,18 +3015,32 @@ function toggleChatSheet(e){
   const footer=document.querySelector('.chat-footer');
   footer.style.position='relative';
   footer.appendChild(sheet);
+  if(window.lucide)lucide.createIcons({nodes:[sheet]});
   document.addEventListener('click',()=>sheet.remove(),{once:true});
 }
 function sheet_magicLog(){document.querySelector('.chat-action-sheet')?.remove();openMagicLog();}
 function sheet_scan(){
   document.querySelector('.chat-action-sheet')?.remove();
-  // Open Magic Log which contains the scan receipt option
-  // Then auto-trigger the camera input after modal opens
-  openMagicLog();
-  setTimeout(()=>{
-    const camBtn=g('receipt-cam');
-    if(camBtn) camBtn.click();
-  },300);
+  const isPrem=hasPremiumFeature('receipt_scan');
+  if(!isPrem){
+    const status=getPremiumStatus();
+    showUpgradePrompt('receipt_scan',status);
+    return;
+  }
+  // Open dedicated scan receipt modal
+  const h='<div class="dh"></div>'
+    +'<h3><i data-lucide="camera" style="width:16px;height:16px;margin-right:6px;vertical-align:middle;color:var(--p1)"></i>'+(lang==="cw"?"Skani Risiti":"Scan Receipt")+'</h3>'
+    +'<p style="font-size:.76rem;color:var(--mid);margin-bottom:14px">'+(lang==="cw"?"Sankhani chithunzi cha risiti kapena ngodya yanu yosindikizidwa.":"Choose a photo of your receipt or printed invoice to extract expenses.")+'</p>'
+    +'<div style="display:flex;flex-direction:column;gap:10px">'
+    +'<label style="display:flex;align-items:center;justify-content:center;gap:8px;padding:14px;background:linear-gradient(135deg,#E8F5E9,#C8E6C9);border:1.5px solid #43A047;border-radius:14px;cursor:pointer;font-family:Syne,sans-serif;font-weight:700;font-size:.85rem;color:#1B5E20">'
+    +'<i data-lucide="camera" style="width:16px;height:16px;vertical-align:middle"></i> '+(lang==="cw"?"Gwiritsani Kamera":"Open Camera")+'<input type="file" accept="image/*" capture="camera" id="receipt-cam" style="display:none" onchange="scanReceipt(this);closeM(\'mb-u\')"></label>'
+    +'<label style="display:flex;align-items:center;justify-content:center;gap:8px;padding:14px;background:var(--surf);border:1.5px solid var(--brd);border-radius:14px;cursor:pointer;font-family:Syne,sans-serif;font-weight:700;font-size:.85rem;color:var(--ink)">'
+    +'<i data-lucide="image" style="width:16px;height:16px;vertical-align:middle;color:var(--p1)"></i> '+(lang==="cw"?"Sankhani kuchokera ku Gallery":"Choose from Gallery")+'<input type="file" accept="image/*" id="receipt-gallery" style="display:none" onchange="scanReceipt(this);closeM(\'mb-u\')"></label>'
+    +'</div>'
+    +'<button class="btnG" style="width:100%;margin-top:14px" onclick="closeM(\'mb-u\')">'+(lang==="cw"?"Lekani":"Cancel")+'</button>';
+  g('mb-u').innerHTML=h;
+  if(window.lucide)lucide.createIcons({nodes:[g('mb-u')]});
+  openM('mv-u');
 }
 function sheet_summary(){
   document.querySelector('.chat-action-sheet')?.remove();
@@ -2862,7 +3093,7 @@ function renderBubbles(){
 function chipSend(el){ const inp=g('chat-inp'); if(!inp)return; inp.value=el.textContent; autoResize(inp); sendChat(); }
 function chatKey(e){ if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendChat();} }
 function autoResize(el){ el.style.height='auto'; el.style.height=Math.min(el.scrollHeight,110)+'px'; }
-function clearChat(){ chatHistory=[]; localStorage.removeItem('nb_chat_v2'); renderBubbles(); }
+function clearChat(){ chatHistory=[]; localStorage.removeItem('nb_chat_'+(hhId||'anon')); renderBubbles(); }
 
 function buildCtx(){
   const now=new Date();
@@ -2920,7 +3151,7 @@ async function sendChat(){
   if(sendBtn)sendBtn.disabled=true;
   
   chatHistory.push({role:'user',text:msg,ts:Date.now()});
-  localStorage.setItem('nb_chat_v2',JSON.stringify(chatHistory.slice(-30)));
+  saveChatHistory();
   renderBubbles();
   
   const msgsEl=g('chat-msgs');
@@ -2972,7 +3203,7 @@ async function sendChat(){
     const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text || (lang==='cw'?'Pepani, kuna vuto. Yesaninso.':'Sorry, something went wrong. Please try again.');
     
     chatHistory.push({role:'assistant',text:reply,ts:Date.now()});
-    localStorage.setItem('nb_chat_v2',JSON.stringify(chatHistory.slice(-30)));
+    saveChatHistory();
     
   } catch(err) {
     let errorMsg = lang==='cw'?'Pepani, kuna vuto la intaneti. Yesaninso.':'Sorry, there was a connection error. Please try again.';
@@ -3018,6 +3249,8 @@ function openMagicLog() {
   h += '<div id="magic-results" style="margin-bottom:10px;"></div>';
   h += '<div style="display:flex;gap:8px"><button class="btnG" style="flex:1" onclick="closeM(&quot;mv-magic&quot;)">'+t.cancel+'</button><button class="btnM" id="magic-btn-process" style="flex:2;background:linear-gradient(135deg,#F57F17,#F9A825);" onclick="processMagicLog()">&#10024; Extract</button></div>';
   g('mb-magic').innerHTML = h;
+  if(window.lucide)lucide.createIcons({nodes:[g('mb-magic')]});
+  if(window.lucide)lucide.createIcons({nodes:[g('mb-magic')]});
   openM('mv-magic');
 }
 
@@ -3050,7 +3283,7 @@ async function scanReceipt(input){
       });
       resHtml+='</div>';
       if(resultsEl)resultsEl.innerHTML=resHtml;
-      if(btn){btn.disabled=false;btn.innerHTML='<i data-lucide="save" style="margin-right:4px"></i> Save All '+pendingMagicTxs.length+' Items';btn.setAttribute('onclick','saveMagicTxs()');}
+      if(btn){btn.disabled=false;btn.innerHTML='<i data-lucide="save" style="width:14px;height:14px;margin-right:4px;vertical-align:middle"></i> Save All '+pendingMagicTxs.length+' Items';btn.setAttribute('onclick','saveMagicTxs()');}
       toast('Receipt scanned!','s');
     }catch(err){
       if(resultsEl)resultsEl.innerHTML='';
@@ -3099,7 +3332,8 @@ async function processMagicLog() {
     });
     resHtml += '</div>';
     g('magic-results').innerHTML = resHtml;
-    btn.innerHTML = '<i data-lucide="save" style="margin-right:4px"></i> Save All';
+      if(window.lucide)lucide.createIcons({nodes:[g('magic-results')]});
+    btn.innerHTML = '<i data-lucide="save" style="width:14px;height:14px;margin-right:4px;vertical-align:middle"></i> Save All';
     btn.setAttribute('onclick', 'saveMagicTxs()');
     btn.disabled = false;
   } catch (err) {
