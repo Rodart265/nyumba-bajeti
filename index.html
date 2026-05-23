@@ -155,7 +155,8 @@ html,body{height:100%;overflow:hidden;background:var(--mist);font-family:'Genera
 .a-input:focus{border-color:rgba(255,255,255,.5)}
 .pw-wrap{position:relative;margin-bottom:12px}
 .pw-wrap .a-input{margin-bottom:0;padding-right:46px}
-.pw-eye{position:absolute;right:13px;top:50%;transform:translateY(-50%);background:none;border:none;color:rgba(255,255,255,.5);font-size:1rem;cursor:pointer;line-height:1;padding:4px}
+.pw-eye{position:absolute;right:13px;top:50%;transform:translateY(-50%);background:none;border:none;color:rgba(255,255,255,.55);cursor:pointer;line-height:1;padding:4px;display:flex;align-items:center;justify-content:center}
+.pw-eye svg{width:17px;height:17px;stroke:rgba(255,255,255,.55)}
 .a-btn{width:100%;padding:14px;border:none;border-radius:13px;cursor:pointer;font-family:'Syne',sans-serif;font-size:.95rem;font-weight:800;background:#fff;color:var(--p1);box-shadow:0 4px 16px rgba(0,0,0,.2);transition:transform .1s,opacity .2s}
 .a-btn:active{transform:scale(.98)}
 .a-btn:disabled{opacity:.55;cursor:not-allowed}
@@ -295,6 +296,10 @@ html,body{height:100%;overflow:hidden;background:var(--mist);font-family:'Genera
   .h2-cv{font-size:.72rem}
   .h2-cl{font-size:.5rem}
   .h2-sub{font-size:.63rem}
+  /* Breakdown donut + category cards */
+  .breakdown-donut{width:130px!important;height:130px!important}
+  .breakdown-cat-card{padding:9px 10px!important}
+  .breakdown-cat-card .cat-bar-wrap{height:5px!important}
 }
 .prico2{width:44px;height:44px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.15rem}
 .chips{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:11px}
@@ -327,6 +332,7 @@ html,body{height:100%;overflow:hidden;background:var(--mist);font-family:'Genera
 .prwho{font-size:.59rem;font-weight:800;padding:2px 7px;border-radius:9px;color:#fff}
 .pramt{font-family:'Syne',sans-serif;font-weight:800;font-size:.86rem;white-space:nowrap}
 .pramt.inc{color:#2E7D32}
+.pramt.exp{color:#C62828}
 .type-tog{display:flex;background:#F3E5F5;border-radius:10px;padding:3px;margin-bottom:11px}
 .tt{flex:1;padding:9px;border:none;background:none;font-family:'Syne',sans-serif;font-weight:700;font-size:.78rem;cursor:pointer;border-radius:8px;color:var(--mid);transition:all .15s}
 .tt.exp.on{background:var(--r1);color:#fff}
@@ -341,10 +347,12 @@ html,body{height:100%;overflow:hidden;background:var(--mist);font-family:'Genera
 .qsugg::-webkit-scrollbar{display:none}
 .qsb{padding:7px 10px;border:2px solid var(--border);border-radius:10px;font-size:.72rem;font-weight:700;white-space:nowrap;cursor:pointer;background:var(--white);flex-shrink:0;transition:all .15s}
 .qsb.on{border-color:var(--p1);background:#F3E5F5;color:var(--p1)}
-.igrid{display:grid;grid-template-columns:1fr 1fr;gap:6px;max-height:200px;overflow-y:auto}
+.igrid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;max-height:220px;overflow-y:auto}
 .igrid::-webkit-scrollbar{width:3px}
 .igrid::-webkit-scrollbar-thumb{background:#D1C4E9;border-radius:10px}
-.ic{padding:9px 5px;border:2.5px solid var(--border);border-radius:12px;font-size:.74rem;font-weight:700;text-align:center;cursor:pointer;background:var(--white);transition:all .15s;line-height:1.35}
+.ic{padding:8px 4px 7px;border:2px solid var(--border);border-radius:12px;font-size:.7rem;font-weight:700;text-align:center;cursor:pointer;background:var(--white);transition:all .15s;display:flex;flex-direction:column;align-items:center;gap:4px;line-height:1.2}
+.ic .ic-ico{font-size:1.1rem;line-height:1}
+.ic .ic-nm{font-size:.65rem;font-weight:700;line-height:1.2;word-break:break-word}
 .ic.on{border-color:var(--p1);background:linear-gradient(135deg,#F3E5F5,#EDE7F6);color:var(--p1)}
 .bhint{background:linear-gradient(135deg,#FFF8E1,#FFF3E0);border-radius:10px;padding:9px 11px;margin-bottom:11px;display:flex;justify-content:space-between;border-left:4px solid var(--a2)}
 .bh{text-align:center}
@@ -353,7 +361,7 @@ html,body{height:100%;overflow:hidden;background:var(--mist);font-family:'Genera
 .srch-wrap{position:relative;margin-bottom:10px}
 .srch-wrap input{width:100%;padding:11px 12px 11px 36px;border:2px solid var(--border);border-radius:12px;font-family:'General Sans',sans-serif;font-size:.86rem;color:var(--ink);background:var(--white);outline:none;transition:border-color .2s}
 .srch-wrap input:focus{border-color:var(--p1)}
-.srch-wrap::before{content:'\f2c4';font-family:'uicons-regular-rounded';position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:.82rem;pointer-events:none;color:var(--mid);font-style:normal}
+.srch-wrap::before{content:'';position:absolute;left:10px;top:50%;transform:translateY(-50%);width:14px;height:14px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23607D8B' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");background-repeat:no-repeat;background-size:contain;pointer-events:none}
 .ftags{display:flex;gap:6px;margin-bottom:9px;overflow-x:auto;padding-bottom:2px}
 .ftags::-webkit-scrollbar{display:none}
 .ftag{padding:5px 12px;border-radius:17px;font-size:.69rem;font-weight:700;cursor:pointer;white-space:nowrap;background:var(--white);border:2px solid var(--border);color:var(--mid);flex-shrink:0}
@@ -366,6 +374,7 @@ html,body{height:100%;overflow:hidden;background:var(--mist);font-family:'Genera
 .plname{font-weight:700;font-size:.86rem;flex:1}
 .plamt{font-family:'Syne',sans-serif;font-weight:800;font-size:.88rem;white-space:nowrap}
 .plamt.inc{color:#2E7D32}
+.plamt.exp{color:#C62828}
 .plrow2{display:flex;align-items:center;gap:4px;flex-wrap:wrap}
 .plnote{font-size:.65rem;color:var(--mid);margin-top:2px;font-style:italic}
 .plact{display:flex;gap:5px;margin-top:6px}
@@ -646,11 +655,11 @@ body.dark .chat-action-row:active{background:#2A2A2A}
     </svg>
   </div>
   <div class="auth-title">Bajeti Yanga</div>
-  <div class="auth-sub" id="auth-sub">Know where your Kwacha goes</div>
+  <div class="auth-sub" id="auth-sub">Finally know where your money goes 💜</div>
   <div class="auth-card">
     <div class="auth-tabs">
-      <button class="auth-tab on" id="at-login" onclick="aTab(&quot;login&quot;)">Sign In</button>
-      <button class="auth-tab" id="at-reg" onclick="aTab(&quot;register&quot;)">Create Account</button>
+      <button class="auth-tab on" id="at-login" onclick="aTab(&quot;login&quot;)">Welcome Back</button>
+      <button class="auth-tab" id="at-reg" onclick="aTab(&quot;register&quot;)">Start Tracking</button>
     </div>
     <div id="a-err" class="a-err"></div>
     <!-- Forgot panel -->
@@ -689,7 +698,7 @@ body.dark .chat-action-row:active{background:#2A2A2A}
             <button class="pw-eye" type="button" onclick="tgPW('a-pw2',this)"><i data-lucide="eye"></i></button>
           </div>
         </div>
-        <button class="a-btn" id="a-em-btn" onclick="doEmailAuth()">Sign In</button>
+        <button class="a-btn" id="a-em-btn" onclick="doEmailAuth()">Welcome Back</button>
         <div class="divider"><span>or</span></div>
         <button class="g-btn" onclick="doGoogle()" type="button">
           <svg width="19" height="19" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
@@ -727,7 +736,7 @@ body.dark .chat-action-row:active{background:#2A2A2A}
         </div>
       </div>
     </div>
-    <p class="a-link" id="a-sw">Don&#39;t have an account? <span onclick="aTab(&quot;register&quot;)">Create one</span></p>
+    <p class="a-link" id="a-sw">New to Bajeti Yanga? <span onclick="aTab(&quot;register&quot;)">Start tracking</span></p>
   </div>
   <p class="auth-copy">&#169; Rodart Creatives. All Rights Reserved.</p>
 </div>
@@ -743,19 +752,28 @@ body.dark .chat-action-row:active{background:#2A2A2A}
     </svg>
   </div>
   <div class="setup-title">Bajeti Yanga</div>
-  <div class="setup-sub">Track household spending together.<br>Create or join a household to get started.</div>
+  <div class="setup-sub">Your money, your rules. Set up your household to start tracking every kwacha.</div>
   <div class="setup-card">
     <div class="setup-card-hdr">
-      <span class="setup-card-hdr-ico"><i data-lucide="plus-square"></i></span>
-      <h3>Create New Household</h3>
+      <span class="setup-card-hdr-ico"><i data-lucide="user"></i></span>
+      <h3>Just Me (Solo)</h3>
     </div>
-    <p>Start fresh. Share the code with your partner so they can join on their device.</p>
-    <button class="setup-btn" onclick="createHH()">Create Household</button>
+    <p>Track your personal spending solo — no partner needed. You can always add members later.</p>
+    <button class="setup-btn" onclick="createHHSolo()">Start Solo</button>
   </div>
   <div class="setup-or"><span>or</span></div>
   <div class="setup-card">
     <div class="setup-card-hdr">
       <span class="setup-card-hdr-ico"><i data-lucide="users"></i></span>
+      <h3>Create Household</h3>
+    </div>
+    <p>Start fresh with your partner or family. Share the code so they can join on their device.</p>
+    <button class="setup-btn" onclick="createHH()">Create Household</button>
+  </div>
+  <div class="setup-or"><span>or</span></div>
+  <div class="setup-card">
+    <div class="setup-card-hdr">
+      <span class="setup-card-hdr-ico"><i data-lucide="log-in"></i></span>
       <h3>Join Existing Household</h3>
     </div>
     <p>Enter the household code shared by your partner.</p>
@@ -823,7 +841,7 @@ body.dark .chat-action-row:active{background:#2A2A2A}
       <label for="pp-agree" style="font-size:.8rem;color:#444;line-height:1.5;cursor:pointer">I have read and agree to the <strong>Privacy Policy</strong> and consent to my household financial data being stored securely on Firebase.</label>
     </div>
     <button onclick="agreePrivacy()" id="pp-agree-btn" style="width:100%;padding:15px;background:linear-gradient(135deg,#7B1FA2,#4A148C);color:#fff;border:none;border-radius:14px;font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;cursor:pointer;box-shadow:0 4px 18px rgba(123,31,162,.35)">Continue to App →</button>
-    <p style="text-align:center;font-size:.7rem;color:#999;margin-top:12px">Bajeti Yanga v9.0 · © 2026 Rodart Creatives · Malawi 🇲🇼</p>
+    <p style="text-align:center;font-size:.7rem;color:#999;margin-top:12px">Bajeti Yanga v9.1.0· © 2026 Rodart Creatives · Malawi 🇲🇼</p>
   </div>
 </div>
 
@@ -925,7 +943,7 @@ const TX = {
     switchUser:'Sinthani Wogwiritsa',householdCode:'Kodi ya Nyumba',
     copyCode:'Kopelani',shareWA:'WhatsApp',codeCopied:'Kodi yakopedwa!',
     logout:'Tulukani pa Pulogalamuyi',confirmLogout:'Mukufuna kutuluka?',
-    sortCat:'Mtundu wa Zinthu',sortAZ:'Dongosolo A-Z',sortOver:'Zapitilira Bajeti',sortSpend:'Zogwiritsidwa Kwambiri',
+    sortCat:'Mtundu wa Zinthu',sortAZ:'Dongosolo A-Z',sortOver:'Zapitilira Bajeti',sortSpend:'Zogwiritsa Kwambiri',
     searchPurchases:'Fufuzani pa zolemba...',quickPick:'Sankhani Msanga',
     goals:'Ndalama Zosungidwa',addGoal:'Onjezani Cholinga Chatsopano',goalName:'Dzina la cholinga',
     goalTarget:'Ndalama Yofuna Kusungira (MK)',goalSaved:'Ndalama Yosungidwa (MK)',topup:'Onjezani',noGoals:'Mulibe zolinga zolemba.',
@@ -1050,7 +1068,7 @@ function show(id){ const el=g(id); if(el)el.classList.remove('hide'); }
 function hide(id){ const el=g(id); if(el)el.classList.add('hide'); }
 function toast(msg,type){ const el=g('toast'); if(!el)return; el.className='toast '+(type||'s'); el.textContent=msg; el.classList.add('on'); setTimeout(()=>el.classList.remove('on'),2400); }
 function setDot(s){ const d=g('sync-dot'); if(!d)return; d.className='sync-dot'+(s==='off'?' off':s==='spin'?' spin':''); }
-function tgPW(id,btn){ const el=g(id); if(!el)return; const sh=el.type==='text'; el.type=sh?'password':'text'; btn.innerHTML=sh?'<i data-lucide="eye"></i>':'<i data-lucide="eye-off"></i>'; }
+function tgPW(id,btn){ const el=g(id); if(!el)return; const sh=el.type==='text'; el.type=sh?'password':'text'; btn.innerHTML=sh?'<i data-lucide="eye"></i>':'<i data-lucide="eye-off"></i>'; if(window.lucide)lucide.createIcons({nodes:[btn]}); }
 
 // ===============================================
 // 5. PIN
@@ -1237,8 +1255,8 @@ function aTab(mode){
   if(nmf)nmf.classList.toggle('hide',!isReg);
   if(pw2f)pw2f.classList.toggle('hide',!isReg);
   if(fgtL)fgtL.style.display=isReg?'none':'block';
-  if(btn)btn.textContent=isReg?'Create Account':'Sign In';
-  if(sw)sw.innerHTML=isReg?"Already have an account? <span onclick=\"aTab('login')\">Sign in</span>":"Don't have an account? <span onclick=\"aTab('register')\">Create one</span>";
+  if(btn)btn.textContent=isReg?'Start Tracking':'Welcome Back';
+  if(sw)sw.innerHTML=isReg?"Already tracking? <span onclick=\"aTab('login')\">Welcome back</span>":"New to Bajeti Yanga? <span onclick=\"aTab('register')\">Start tracking</span>";
   showAErr('');
 }
 function aMethod(m){
@@ -1285,21 +1303,21 @@ function fmtAErr(code){
 function doEmailAuth(){
   const email=val('a-em').trim(), pass=val('a-pw');
   if(!email||!pass){ showAErr('Please fill in email and password.'); return; }
-  const btn=g('a-em-btn'), isReg=btn&&btn.textContent==='Create Account';
+  const btn=g('a-em-btn'), isReg=btn&&btn.textContent==='Start Tracking';
   if(btn){btn.disabled=true;btn.textContent='Please wait...';}
   showAErr('');
   if(isReg){
     const p2=val('a-pw2'), nm=val('a-nm').trim();
-    if(pass!==p2){ showAErr('Passwords do not match.'); if(btn){btn.disabled=false;btn.textContent='Create Account';} return; }
-    if(pass.length<6){ showAErr('Password must be at least 6 characters.'); if(btn){btn.disabled=false;btn.textContent='Create Account';} return; }
+    if(pass!==p2){ showAErr('Passwords do not match.'); if(btn){btn.disabled=false;btn.textContent='Start Tracking';} return; }
+    if(pass.length<6){ showAErr('Password must be at least 6 characters.'); if(btn){btn.disabled=false;btn.textContent='Start Tracking';} return; }
     auth.createUserWithEmailAndPassword(email,pass)
       .then(cred=>{ if(nm)return cred.user.updateProfile({displayName:nm}); })
-      .then(()=>{ if(btn){btn.disabled=false;btn.textContent='Create Account';} })
-      .catch(e=>{ showAErr(fmtAErr(e.code)); if(btn){btn.disabled=false;btn.textContent='Create Account';} });
+      .then(()=>{ if(btn){btn.disabled=false;btn.textContent='Start Tracking';} })
+      .catch(e=>{ showAErr(fmtAErr(e.code)); if(btn){btn.disabled=false;btn.textContent='Start Tracking';} });
   } else {
     auth.signInWithEmailAndPassword(email,pass)
-      .then(()=>{ if(btn){btn.disabled=false;btn.textContent='Sign In';} })
-      .catch(e=>{ showAErr(fmtAErr(e.code)); if(btn){btn.disabled=false;btn.textContent='Sign In';} });
+      .then(()=>{ if(btn){btn.disabled=false;btn.textContent='Welcome Back';} })
+      .catch(e=>{ showAErr(fmtAErr(e.code)); if(btn){btn.disabled=false;btn.textContent='Welcome Back';} });
   }
 }
 function doFgt(){
@@ -1334,7 +1352,7 @@ function sendOTP(){
 function otpN(el,idx){
   el.value=el.value.replace(/\D/g,'');
   if(el.value&&idx<5){const nx=g('ob'+(idx+1));if(nx)nx.focus();}
-  if(idx===5){const code=[0,1,2,3,4,5].map(i=>(g('ob'+i)||{}).value||'').join('');if(code.length===6)vfyOTP();}
+  if(idx===5&&el.value){const code=[0,1,2,3,4,5].map(i=>(g('ob'+i)||{}).value||'').join('');if(code.length===6)vfyOTP();}
 }
 function vfyOTP(){
   const code=[0,1,2,3,4,5].map(i=>(g('ob'+i)||{}).value||'').join('');
@@ -1378,6 +1396,20 @@ function bootApp(){
 }
 
 function setupErr(msg){ const el=g('setup-err'); if(!el)return; el.textContent=msg; el.classList.toggle('on',!!msg); }
+
+function createHHSolo(){
+  const code=randCode(); setDot('spin'); setupErr('');
+  const soloCfg=injectTrialStart(JSON.parse(JSON.stringify(DEF_CFG)));
+  // Solo: only one member with user's display name
+  const nm=(curUser&&(curUser.displayName||curUser.email||'').split('@')[0])||'Me';
+  soloCfg.users=[{id:'u1',name:nm,color:'#7B1FA2'}];
+  soloCfg.solo=true;
+  db.collection('households').doc(code)
+    .set({config:soloCfg,createdAt:firebase.firestore.FieldValue.serverTimestamp(),owner:curUser?curUser.uid:null,solo:true})
+    .then(()=>{ if(curUser)return db.collection('users').doc(curUser.uid).set({householdId:code,displayName:curUser.displayName||curUser.email||'Me'},{merge:true}); })
+    .then(()=>{ localStorage.setItem('nb_household',code); localStorage.setItem('nb_uid','u1'); hide('scr-setup'); g('app').classList.remove('hide'); connectHH(code); toast('Welcome! You\'re all set 🎉','s'); })
+    .catch(e=>{ setDot('off'); setupErr('Error: '+e.message); });
+}
 
 function createHH(){
   const code=randCode(); setDot('spin'); setupErr('');
@@ -1456,20 +1488,14 @@ function delPx(id){ if(!hhId)return; setDot('spin'); db.collection('households')
 function logout(){
   if(!confirm(tx().confirmLogout))return;
   if(unsub)unsub();
-  // FIX 2: Also clear householdId from Firestore so re-login routes back
-  // to the setup/join screen instead of jumping straight into the app.
-  const uid = curUser ? curUser.uid : null;
-  const clearFirestore = uid
-    ? db.collection('users').doc(uid).update({householdId: firebase.firestore.FieldValue.delete()}).catch(()=>{})
-    : Promise.resolve();
-  clearFirestore.finally(()=>{
-    localStorage.removeItem('nb_household');
-    localStorage.removeItem('nb_uid');
-    hhId=null; lCfg=JSON.parse(JSON.stringify(DEF_CFG)); lPx=[];
-    authReg=false; // allow bootApp to re-register listener on next login
-    auth.signOut().catch(()=>{});
-    toast('Signed out','i');
-  });
+  // Clear local state only — keep Firestore householdId intact so partners aren't affected.
+  // bootApp will re-read Firestore on next login and route correctly.
+  localStorage.removeItem('nb_household');
+  localStorage.removeItem('nb_uid');
+  hhId=null; lCfg=JSON.parse(JSON.stringify(DEF_CFG)); lPx=[];
+  authReg=false;
+  auth.signOut().catch(()=>{});
+  toast('See you soon! 👋','i');
 }
 
 // ===============================================
@@ -1540,7 +1566,7 @@ function rHome(){
         +(p.notes?'<div class="prnote">'+p.notes+'</div>':'')
         +'<div class="prmeta"><span class="prdate">'+p.date+'</span>'
         +'<span class="prwho" style="background:'+u.color+'">'+u.name+'</span></div></div>'
-        +'<div class="pramt '+(isI?'inc':'')+'">'+(isI?'+':'')+MK(p.amount)+'</div></div>';
+        +'<div class="pramt '+(isI?'inc':'exp')+'">'+(isI?'+ ':'− ')+MK(p.amount)+'</div></div>';
     });
   } else { h+='<div class="empty"><div class="ei"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg></div><p><strong>'+(lang==='cw'?'Palibe cholemba.':'No transactions yet.')+'</strong><br><span style="font-size:.75rem;color:var(--mid)">'+(lang==='cw'?'Dina + kuchita cholowetsa.':'Tap + to log your first expense.')+'</span></p></div>'; }
   h+='</div></div></div>';
@@ -1565,11 +1591,11 @@ function rLog(){
     if(picks)h+='<div class="fsec"><label class="fl">&#9889; '+t.quickPick+'</label><div class="qsugg">'+picks+'</div></div>';
     h+='<div class="fsec"><label class="fl">'+t.selItem+'</label>'
       +'<input type="text" class="fi" id="log-srch" placeholder="Search items..." oninput="filterLogItems(this.value)" style="margin-bottom:8px;font-size:.84rem">'
-      +'<div class="igrid" id="log-igrid">'+lCfg.items.map((it,i)=>'<div class="ic'+(selItem===i?' on':'')+'" onclick="pickID(this)" data-i="'+i+'" data-name="'+it.name.toLowerCase()+'">'+ico(it.name)+'<br>'+it.name+'</div>').join('')+'</div></div>';
+      +'<div class="igrid" id="log-igrid">'+lCfg.items.map((it,i)=>'<div class="ic'+(selItem===i?' on':'')+'" onclick="pickID(this)" data-i="'+i+'" data-name="'+it.name.toLowerCase()+'"><div class="ic-ico">'+ico(it.name)+'</div><div class="ic-nm">'+it.name+'</div></div>').join('')+'</div></div>';
     if(hint){const sp=iSpent(hint.name);h+='<div class="bhint"><div class="bh"><div class="bhl">'+t.budget+'</div><div class="bhv">'+MK(hint.budget)+'</div></div><div class="bh"><div class="bhl">'+t.spent+'</div><div class="bhv">'+MK(sp)+'</div></div><div class="bh"><div class="bhl">'+t.left+'</div><div class="bhv" style="color:'+(hint.budget-sp<0?'#B71C1C':'inherit')+'">'+MK(hint.budget-sp)+'</div></div></div>';}
   } else {
     h+='<div class="fsec"><label class="fl">'+(lang==='cw'?'Mtundu wa Ndalama':'Income Type')+'</label><div class="type-tog" style="margin-bottom:8px"><button class="tt inc" id="inc-t-ot" onclick="setIncType(this,0)"><i data-lucide="receipt" style="margin-right:3px"></i> '+(lang==='cw'?'Kamodzi Basi':'One Time')+'</button><button class="tt inc" id="inc-t-rc" onclick="setIncType(this,1)"><i data-lucide="refresh-cw" style="margin-right:3px;vertical-align:middle"></i> '+(lang==='cw'?'Nthawi Zonse':'Recurring')+'</button></div></div>';
-    h+='<div class="fsec"><label class="fl">'+(lang==='cw'?'Gwero la Ndalama':'Source')+'</label><select class="fs" id="inc-src"><option value="Salary/Income"><i data-lucide="trending-up" style="margin-right:4px"></i> Salary / Income</option><option value="Business Income">&#128188; Business Income</option><option value="Farm Income">&#127807; Farm Income</option><option value="Other Income">&#128181; Other Income</option></select></div>';
+    h+='<div class="fsec"><label class="fl">'+(lang==='cw'?'Gwero la Ndalama':'Source')+'</label><select class="fs" id="inc-src"><option value="Salary/Income">💼 Salary / Income</option><option value="Business Income">🏪 Business Income</option><option value="Farm Income">🌿 Farm Income</option><option value="Other Income">💰 Other Income</option></select></div>';
   }
   h+='<div class="fsec"><label class="fl">'+t.amount+'</label><input type="number" class="fi" id="fa" placeholder="0" inputmode="numeric"></div>';
   h+='<div class="frow"><div class="fsec"><label class="fl">'+t.date+'</label><input type="date" class="fi" id="fd" value="'+today()+'"></div><div class="fsec"><label class="fl">'+t.time+'</label><input type="time" class="fi" id="ft" value="'+nowTime()+'"></div></div>';
@@ -1586,7 +1612,8 @@ function filterLogItems(q){
   const grid=document.getElementById('log-igrid'); if(!grid)return;
   const term=q.toLowerCase().trim();
   grid.querySelectorAll('.ic').forEach(el=>{
-    el.style.display=(term.length<2||el.dataset.name.includes(term))?'':'none';
+    // show all when empty, filter when typing
+    el.style.display=(!term||el.dataset.name.includes(term))?'':'none';
   });
 }
 function saveP(){
@@ -1652,7 +1679,7 @@ function rHist(){
       h+='<div class="pli'+(isI?' income-e':'')+'">';
       h+='<div class="plico" style="background:'+cc2+'1A;border-radius:14px">'+ico(p.item)+'</div>';
       h+='<div class="plb"><div class="pltop"><div class="plname">'+p.item+(p.recurring?' <i data-lucide="refresh-cw" style="margin-right:3px;vertical-align:middle"></i>':'')+'</div>';
-      h+='<div class="plamt'+(isI?' inc':'')+'">'+(isI?'+':'')+MK(p.amount)+'</div></div>';
+      h+='<div class="plamt'+(isI?' inc':' exp')+'">'+(isI?'+ ':'− ')+MK(p.amount)+'</div></div>';
       if(p.notes) h+='<div class="plnote">'+p.notes+'</div>';
       h+='<div class="plrow2"><span style="font-size:.64rem;color:var(--mid)">'+p.date+'</span>';
       h+='<span class="prwho" style="background:'+u.color+'">'+u.name+'</span></div>';
@@ -1702,7 +1729,7 @@ function openTrash(){
         h+='</div></div>';
       });
     }
-    g('mb-u').innerHTML=h; openM('mv-u');
+    g('mb-u').innerHTML=h; initIcons(); openM('mv-u');
   });
 }
 
@@ -1724,7 +1751,7 @@ function openEP(id){
   if(!isI)h+='<div class="frow"><div class="fsec"><label class="fl">'+t.qty+'</label><input type="number" class="fi" id="ep-qty" value="'+(p.qty||'')+'" inputmode="decimal"></div><div class="fsec"><label class="fl">'+t.unit+'</label><select class="fs" id="ep-unit">'+t.units.map(u=>'<option '+(p.unit===u?'selected':'')+'>'+u+'</option>').join('')+'</select></div></div>';
   h+='<div class="fsec"><label class="fl">'+t.notes+'</label><input type="text" class="fi" id="ep-notes" value="'+(p.notes||'').replace(/"/g,'&quot;')+'"></div>';
   h+='<div style="display:flex;gap:8px"><button class="btnG" style="flex:1" onclick="closeM(\'mv-ep\')">'+t.cancel+'</button><button class="btnM" style="flex:2" onclick="saveEP('+isI+')"><i data-lucide="save" style="margin-right:4px"></i> Save</button></div>';
-  g('mb-ep').innerHTML=h; openM('mv-ep');
+  g('mb-ep').innerHTML=h; initIcons(); openM('mv-ep');
 }
 function epU(el,uid){ g('ep-uid').value=uid; el.closest('.usel').querySelectorAll('.usb').forEach(b=>b.classList.remove('on')); el.classList.add('on'); }
 function saveEP(isI){
@@ -1927,11 +1954,11 @@ function openAddBill(){
   premiumGate('bill_tracker', function(){
     var h='<div class="dh"></div><h3><i data-lucide="alarm-clock" style="margin-right:6px;vertical-align:middle"></i>Add Bill</h3>';
     h+='<div class="fsec"><label class="fl">Bill Name</label><input type="text" class="fi" id="bl-nm" placeholder="e.g. ESCOM, Water, Rent"></div>';
-    h+='<div class="fsec"><label class="fl">Icon</label><select class="fs" id="bl-ic"><option value="&#128161;">&#128161; Electricity</option><option value="&#128167;">&#128167; Water</option><option value="<i data-lucide="home" style="color:var(--p1)"></i>"><i data-lucide="home" style="color:var(--p1)"></i> Rent</option><option value="&#128241;">&#128241; Airtime</option><option value="&#127760;">&#127760; Internet</option><option value="&#128250;">&#128250; DSTV</option><option value="&#128176;">&#128176; Loan</option><option value="<i data-lucide="copy" style="margin-right:4px;vertical-align:middle;color:var(--p1)"></i>"><i data-lucide="copy" style="margin-right:4px;vertical-align:middle;color:var(--p1)"></i> Other</option></select></div>';
+    h+='<div class="fsec"><label class="fl">Icon</label><select class="fs" id="bl-ic"><option value="⚡">⚡ Electricity</option><option value="💧">💧 Water</option><option value="🏠">🏠 Rent</option><option value="📱">📱 Airtime</option><option value="🌐">🌐 Internet</option><option value="📺">📺 DSTV</option><option value="💰">💰 Loan</option><option value="📋">📋 Other</option></select></div>';
     h+='<div class="fsec"><label class="fl">Amount (MK)</label><input type="number" class="fi" id="bl-amt" inputmode="numeric" placeholder="0"></div>';
     h+='<div class="fsec"><label class="fl">Due Date</label><input type="date" class="fi" id="bl-due"></div>';
     h+='<div style="display:flex;gap:8px"><button class="btnG" style="flex:1" onclick="closeM(&quot;mv-u&quot;)">Cancel</button><button class="btnM" style="flex:2" onclick="saveBill()"><i data-lucide="save" style="margin-right:4px"></i> Save</button></div>';
-    g('mb-u').innerHTML=h; openM('mv-u');
+    g('mb-u').innerHTML=h; initIcons(); openM('mv-u');
   });
 }
 
@@ -1958,11 +1985,11 @@ function delIt(i){ if(!confirm(tx().confirmDelItem+' "'+lCfg.items[i].name+'"?')
 function openAddM(){
   const t=tx();
   let h='<div class="dh"></div><h3><i data-lucide="user" style="margin-right:5px;vertical-align:middle;color:var(--p1)"></i> '+t.addMember+'</h3><div class="fsec"><label class="fl">'+t.memberName+'</label><input type="text" class="fi" id="nm-nm" placeholder="e.g. Son, Helper..."></div><div class="fsec"><label class="fl">Colour</label><div class="cpick" id="cp-new">'+MEMBER_COLORS.map((c,i)=>'<div class="cp'+(i===0?' on':'')+'" style="background:'+c+'" onclick="pickC(this,\'cp-new\',\'nm-col\')"></div>').join('')+'</div><input type="hidden" id="nm-col" value="'+MEMBER_COLORS[0]+'"></div><div style="display:flex;gap:8px"><button class="btnG" style="flex:1" onclick="closeM(\'mv-e\')">'+t.cancel+'</button><button class="btnM" style="flex:2" onclick="saveMember()"><i data-lucide="save" style="margin-right:4px"></i> '+t.add+'</button></div>';
-  g('mb-e').innerHTML=h; openM('mv-e');
+  g('mb-e').innerHTML=h; initIcons(); openM('mv-e');
 }
 function pickC(el,pid,hid){ g(hid).value=el.style.background; document.querySelectorAll('#'+pid+' .cp').forEach(cp=>cp.classList.remove('on')); el.classList.add('on'); }
 function saveMember(){ const nm=val('nm-nm').trim(); if(!nm){toast('Enter a name','e');return;} const cfg=JSON.parse(JSON.stringify(lCfg)); cfg.users.push({id:'u'+Date.now(),name:nm,color:val('nm-col')||'#7B1FA2'}); saveCfg(cfg); closeM('mv-e'); toast(tx().nameUpdated); rMgr(); }
-function openEU(i){ const u=lCfg.users[i],t=tx(); let h='<div class="dh"></div><h3><i data-lucide="user" style="margin-right:5px;vertical-align:middle;color:var(--p1)"></i> '+t.editUser+'</h3><div class="fsec"><label class="fl">Name</label><input type="text" class="fi" id="eu-nm" value="'+u.name+'"></div><div class="fsec"><label class="fl">Colour</label><div class="cpick" id="cp-edit">'+MEMBER_COLORS.map(c=>'<div class="cp'+(u.color===c?' on':'')+'" style="background:'+c+'" onclick="pickC(this,\'cp-edit\',\'eu-col\')"></div>').join('')+'</div><input type="hidden" id="eu-col" value="'+u.color+'"></div><div style="display:flex;gap:8px"><button class="btnG" style="flex:1" onclick="closeM(\'mv-e\')">'+t.cancel+'</button><button class="btnM" style="flex:2" onclick="svEU('+i+')"><i data-lucide="save" style="margin-right:4px"></i> Save</button></div>'; g('mb-e').innerHTML=h; openM('mv-e'); }
+function openEU(i){ const u=lCfg.users[i],t=tx(); let h='<div class="dh"></div><h3><i data-lucide="user" style="margin-right:5px;vertical-align:middle;color:var(--p1)"></i> '+t.editUser+'</h3><div class="fsec"><label class="fl">Name</label><input type="text" class="fi" id="eu-nm" value="'+u.name+'"></div><div class="fsec"><label class="fl">Colour</label><div class="cpick" id="cp-edit">'+MEMBER_COLORS.map(c=>'<div class="cp'+(u.color===c?' on':'')+'" style="background:'+c+'" onclick="pickC(this,\'cp-edit\',\'eu-col\')"></div>').join('')+'</div><input type="hidden" id="eu-col" value="'+u.color+'"></div><div style="display:flex;gap:8px"><button class="btnG" style="flex:1" onclick="closeM(\'mv-e\')">'+t.cancel+'</button><button class="btnM" style="flex:2" onclick="svEU('+i+')"><i data-lucide="save" style="margin-right:4px"></i> Save</button></div>'; g('mb-e').innerHTML=h; initIcons(); openM('mv-e'); }
 function svEU(i){ const nm=val('eu-nm').trim(); if(!nm)return; const cfg=JSON.parse(JSON.stringify(lCfg)); cfg.users[i].name=nm; cfg.users[i].color=val('eu-col')||cfg.users[i].color; saveCfg(cfg); closeM('mv-e'); updatePill(); toast(tx().nameUpdated); rMgr(); }
 function delMember(i){ if(!confirm(tx().confirmDelMember))return; const cfg=JSON.parse(JSON.stringify(lCfg)); cfg.users.splice(i,1); saveCfg(cfg); toast(tx().deleted); rMgr(); }
 function openEB(i){ const it=lCfg.items[i],t=tx(); g('mb-e').innerHTML='<div class="dh"></div><h3>'+ico(it.name)+' '+it.name+'</h3><input type="hidden" id="eb-i" value="'+i+'"><div class="fsec"><label class="fl">'+t.mbudget+'</label><input type="number" class="fi" id="eb-v" value="'+it.budget+'" inputmode="numeric"></div><div style="display:flex;gap:8px"><button class="btnG" style="flex:1" onclick="closeM(\'mv-e\')">'+t.cancel+'</button><button class="btnM" style="flex:2" onclick="svEB()"><i data-lucide="save" style="margin-right:4px"></i> Save</button></div>'; openM('mv-e'); }
@@ -2008,7 +2035,7 @@ function rStg(){
   const photo=cu&&cu.photoURL;
   const provId=cu&&cu.providerData&&cu.providerData[0]?cu.providerData[0].providerId:'';
   const provLabel={'google.com':'Google','phone':'Phone','password':'Email'}[provId]||'Account';
-  const provIcon={'google.com':'<i data-lucide="google" style="color:#EA4335"></i>','phone':'<i data-lucide="smartphone" style="color:var(--g1)"></i>','password':'<i data-lucide="mail" style="color:var(--p1)"></i>'}[provId]||'<i data-lucide="user" style="color:var(--mid)"></i>';
+  const provIcon={'google.com':'<i data-lucide="globe" style="color:#EA4335"></i>','phone':'<i data-lucide="smartphone" style="color:var(--g1)"></i>','password':'<i data-lucide="mail" style="color:var(--p1)"></i>'}[provId]||'<i data-lucide="user" style="color:var(--mid)"></i>';
   let h='<div class="page">';
 
   // -- Profile Header --
@@ -2056,7 +2083,7 @@ function rStg(){
   if(hasBio()){
     h+='<div class="stg-row" onclick="removeBio()"><div class="stg-row-ico" style="background:#E8F5E9"><i data-lucide="fingerprint" style="color:var(--g1)"></i></div><div class="stg-row-body"><div class="stg-row-lbl">'+(lang==='cw'?'Biometrics':'Biometrics')+'</div><div class="stg-row-sub">'+(lang==='cw'?'Ikugwira ntchito':'Enabled -- tap to remove')+'</div></div><div class="stg-row-right"><span style="font-size:.7rem;color:#2E7D32;font-weight:700">ON</span><span class="stg-chev">›</span></div></div>';
   } else {
-    h+='<div class="stg-row" onclick="registerBio()"><div class="stg-row-ico" style="background:#EDE7F6"><i data-lucide="fingerprint" style="color:var(--p1)"></i></div><div class="stg-row-body"><div class="stg-row-lbl">'+(lang==='cw'?'Biometrics':'Biometrics')+'</div><div class="stg-row-sub">'+(lang==='cw'?'Gwiritsani ntchito chala kapena nkhope potsegula':'Use fingerprint or face to unlock')+'</div></div><div class="stg-row-right"><span class="stg-chev">›</span></div></div>';
+    h+='<div class="stg-row" onclick="registerBio()"><div class="stg-row-ico" style="background:#EDE7F6"><i data-lucide="fingerprint" style="color:var(--p1)"></i></div><div class="stg-row-body"><div class="stg-row-lbl">'+(lang==='cw'?'Biometrics':'Biometrics')+'</div><div class="stg-row-sub">'+(lang==='cw'?'Gwiritsa ntchito chikanka kapena nkhope kukutsa':'Use fingerprint or face to unlock')+'</div></div><div class="stg-row-right"><span class="stg-chev">›</span></div></div>';
   }
   if(cu&&cu.email)h+='<div class="stg-row" onclick="doPwReset()"><div class="stg-row-ico" style="background:#EDE7F6"><i data-lucide="key" style="color:var(--p1)"></i></div><div class="stg-row-body"><div class="stg-row-lbl">'+(lang==='cw'?'Sinthani mawu a Chinsinsi':'Change Password')+'</div><div class="stg-row-sub">'+(lang==='cw'?'Tumizani link ku '+cu.email:'Send reset link to '+cu.email)+'</div></div><div class="stg-row-right"><span class="stg-chev">›</span></div></div>';
   h+='</div>';
@@ -2064,7 +2091,7 @@ function rStg(){
   // -- Data --
   h+='<span class="stg-sec-lbl">'+(lang==='cw'?'Deta':'Data')+'</span>';
   h+='<div class="stg-grp">';
-  h+='<div class="stg-row" onclick="doExport()"><div class="stg-row-ico" style="background:#E8F5E9"><i data-lucide="file-spreadsheet" style="color:var(--g1)"></i></div><div class="stg-row-body"><div class="stg-row-lbl">'+t.exportCSV+'</div><div class="stg-row-sub">'+(lang==='cw'?'Tsitsani deta yanu':'Download your data as CSV')+'</div></div><div class="stg-row-right"><span class="stg-chev">›</span></div></div>';
+  h+='<div class="stg-row" onclick="doExport()"><div class="stg-row-ico" style="background:#E8F5E9"><i data-lucide="table-2" style="color:var(--g1)"></i></div><div class="stg-row-body"><div class="stg-row-lbl">'+t.exportCSV+'</div><div class="stg-row-sub">'+(lang==='cw'?'Tsitsani deta yanu':'Download your data as CSV')+'</div></div><div class="stg-row-right"><span class="stg-chev">›</span></div></div>';
   h+='<div class="stg-row" onclick="doExportPDF()"><div class="stg-row-ico" style="background:#FCE4EC"><i data-lucide="file-text" style="color:#C2185B"></i></div><div class="stg-row-body"><div class="stg-row-lbl">Export PDF <i data-lucide="gem" style="color:var(--p1);font-size:.7rem"></i></div><div class="stg-row-sub">'+(lang==='cw'?'Lunzani mwachithunzi kusamutsira':'Printable report -- Premium')+'</div></div><div class="stg-row-right"><span class="stg-chev">›</span></div></div>';
   h+='<div class="stg-row" onclick="openDeleteAccount()"><div class="stg-row-ico" style="background:#FFEBEE"><i data-lucide="trash-2" style="color:var(--r1)"></i></div><div class="stg-row-body"><div class="stg-row-lbl" style="color:var(--r1)">'+(lang==='cw'?'Chotsani Akaunti':'Delete Account')+'</div><div class="stg-row-sub">'+(lang==='cw'?'Data isungidwa kwa masiku 30':'Data kept for 30 days -- restorable')+'</div></div><div class="stg-row-right"><span class="stg-chev" style="color:var(--r1)">›</span></div></div>';
   h+='</div>';
@@ -2081,22 +2108,25 @@ function rStg(){
   const pStatus = getPremiumStatus();
   h+='<span class="stg-sec-lbl">Premium</span>';
   h+='<div class="stg-grp">';
-  if(pStatus.isPremium && pStatus.isTrial){
-    h+='<div class="stg-row no-tap"><div class="stg-row-ico" style="background:#F3E5F5"><i data-lucide="gem" style="color:var(--p1)"></i></div><div class="stg-row-body"><div class="stg-row-lbl">Free Trial Active</div><div class="stg-row-sub">'+pStatus.daysLeft+' days remaining</div></div><div class="stg-row-right"><button class="bsm be" onclick="showPremiumPage()" style="font-size:.65rem;padding:4px 9px">Upgrade <i data-lucide="gem" style="font-size:.6rem"></i></button></div></div>';
-  } else if(pStatus.isPremium){
-    h+='<div class="stg-row no-tap"><div class="stg-row-ico" style="background:#E8F5E9"><i data-lucide="gem" style="margin-right:3px;vertical-align:middle;color:var(--p1)"></i></div><div class="stg-row-body"><div class="stg-row-lbl">Premium Active</div><div class="stg-row-sub">Thank you for supporting Bajeti Yanga!</div></div></div>';
+  if(pStatus.isPremium && !pStatus.isTrial){
+    const expiry=lCfg.premiumExpiry||lHHDoc.premiumExpiry||null;
+    const expiryDays=expiry?Math.max(0,Math.ceil((new Date(expiry)-new Date())/86400000)):null;
+    const expiryStr=expiry?(expiryDays===0?'Expires today!':(expiryDays<=7?expiryDays+'d left · '+expiry:'Active until '+expiry)):'Lifetime / no expiry set';
+    h+='<div class="stg-row no-tap"><div class="stg-row-ico" style="background:#E8F5E9"><i data-lucide="gem" style="color:#2E7D32"></i></div><div class="stg-row-body"><div class="stg-row-lbl" style="color:#1B5E20">✓ Premium Active</div><div class="stg-row-sub">'+expiryStr+'</div></div><div class="stg-row-right"><span style="font-size:.65rem;font-weight:800;color:#2E7D32;background:#E8F5E9;padding:3px 9px;border-radius:10px">PRO</span></div></div>';
+  } else if(pStatus.isPremium && pStatus.isTrial){
+    h+='<div class="stg-row no-tap"><div class="stg-row-ico" style="background:#F3E5F5"><i data-lucide="gem" style="color:var(--p1)"></i></div><div class="stg-row-body"><div class="stg-row-lbl">Free Trial Active</div><div class="stg-row-sub">'+pStatus.daysLeft+' day'+(pStatus.daysLeft===1?'':'s')+' remaining — enjoy all features!</div></div><div class="stg-row-right"><button class="bsm be" onclick="showPremiumPage()" style="font-size:.65rem;padding:4px 9px">Upgrade</button></div></div>';
   } else {
-    h+='<div class="stg-row" onclick="showPremiumPage()"><div class="stg-row-ico" style="background:#F3E5F5"><i data-lucide="gem" style="color:var(--p1)"></i></div><div class="stg-row-body"><div class="stg-row-lbl" style="color:var(--p1)">Upgrade to Premium</div><div class="stg-row-sub">MK 2,500/month -- Charts, PDF, AI & more</div></div><div class="stg-row-right"><span class="stg-chev">›</span></div></div>';
+    h+='<div class="stg-row" onclick="showPremiumPage()"><div class="stg-row-ico" style="background:#F3E5F5"><i data-lucide="gem" style="color:var(--p1)"></i></div><div class="stg-row-body"><div class="stg-row-lbl" style="color:var(--p1)">Upgrade to Premium</div><div class="stg-row-sub">MK 2,500/month · Charts, PDF, AI & more</div></div><div class="stg-row-right"><span class="stg-chev">›</span></div></div>';
   }
   h+='</div>';
 
   // -- About --
   h+='<span class="stg-sec-lbl">'+(lang==='cw'?'Za Pulogalamuyi':'About')+'</span>';
   h+='<div class="stg-grp">';
-  h+='<div class="stg-row no-tap"><div class="stg-row-ico" style="background:#F3E5F5"><i data-lucide="home" style="color:var(--p1)"></i></div><div class="stg-row-body"><div class="stg-row-lbl">Bajeti Yanga</div><div class="stg-row-sub">Version 9.0 -- © Rodart Creatives</div></div></div>';
+  h+='<div class="stg-row no-tap"><div class="stg-row-ico" style="background:#F3E5F5"><i data-lucide="home" style="color:var(--p1)"></i></div><div class="stg-row-body"><div class="stg-row-lbl">Bajeti Yanga</div><div class="stg-row-sub">Version 9.1.0 — © Rodart Creatives</div></div></div>';
   h+='</div>';
 
-  h+='<button class="stg-logout" onclick="logout()"><i data-lucide="sign-out-alt" style="margin-right:6px"></i> '+t.logout+'</button>';
+  h+='<button class="stg-logout" onclick="logout()"><i data-lucide="log-out" style="margin-right:6px"></i> '+t.logout+'</button>';
   h+='</div>';
   g('view').innerHTML=h;
 }
@@ -2205,7 +2235,7 @@ function doExportPDF(){
     + '<div class="section"><h2>&#127922; Spending by Category</h2>'+catRows+'</div>'
     + '<div class="section"><h2><i data-lucide="user" style="margin-right:5px;vertical-align:middle;color:var(--p1)"></i> Spending by Member</h2>'+memberRows+'</div>'
     + '<div class="section"><h2><i data-lucide="copy" style="margin-right:4px;vertical-align:middle;color:var(--p1)"></i> All Transactions ('+rows_count+')</h2><table class="tx-table"><thead><tr><th>Date</th><th>Item</th><th>Type</th><th>Amount</th><th>Member</th></tr></thead><tbody>'+rows+'</tbody></table></div>'
-    + '<div class="footer">Bajeti Yanga v9.0 &mdash; &copy; 2026 Rodart Creatives &bull; Made in Malawi &#127474;&#127484;</div></body></html>';
+    + '<div class="footer">Bajeti Yanga v9.1. 0&mdash; &copy; 2026 Rodart Creatives &bull; Made in Malawi &#127474;&#127484;</div></body></html>';
     const w=window.open('','_blank'); if(!w){toast('Allow popups to export PDF','e');return;}
     w.document.write(fullHtml); w.document.close();
     setTimeout(function(){w.print(); w.close();},600);
@@ -2231,7 +2261,7 @@ function openNotifs(){
   let h='<div class="dh"></div><h3><i data-lucide="bell" style="margin-right:5px;vertical-align:middle;color:var(--a1)"></i> Notifications</h3>';
   if(!notifs.length){h+='<div class="empty" style="padding:14px 0"><div class="ei"><i data-lucide="check-circle" style="font-size:2rem;color:var(--g2)"></i></div><p>'+(lang==='cw'?'Palibe zachenjezo':'All clear -- nothing needs your attention!')+'</p></div>';}
   else{notifs.forEach(n=>{h+='<div class="notif-item"><div class="notif-ico" style="background:'+n.bg+'">'+n.ico+'</div><div class="notif-txt"><b>'+n.title+'</b>'+n.msg+'</div></div>';});}
-  g('mb-u').innerHTML=h; openM('mv-u');
+  g('mb-u').innerHTML=h; initIcons(); openM('mv-u');
 }
 function setIncType(el,idx){const wrap=el.closest('.type-tog');if(!wrap)return;wrap.querySelectorAll('button').forEach((b,i)=>{b.classList.toggle('on',i===idx);});wrap.setAttribute('data-inc',idx===1?'recurring':'once');}
 function setHF(el){histFilter=el.dataset.f||'all';rHist();}
@@ -2633,9 +2663,54 @@ function checkNameChange(){
   setTimeout(()=>{ if(div.parentNode)div.remove(); },8000);
 }
 
-if(checkPrivacy()){
-  bootApp();
-  setTimeout(checkNameChange, 2000);
+// ── PUSH NOTIFICATIONS — FCM shell (activate in Firebase Console) ──────────
+// To enable real push: add firebase-messaging-compat.js, set VAPID key below,
+// and deploy the Cloud Function in /functions/index.js
+const FCM_VAPID = ''; // paste your VAPID key here when ready
+
+async function requestPushPermission(){
+  if(!('Notification' in window)||!('serviceWorker' in navigator))return;
+  if(Notification.permission==='granted'){ setupFCMToken(); return; }
+  if(Notification.permission==='denied')return;
+  const perm=await Notification.requestPermission();
+  if(perm==='granted') setupFCMToken();
+}
+
+async function setupFCMToken(){
+  // FCM token registration — no-op until firebase-messaging is loaded
+  // and VAPID key is set. Kept as a shell so enabling is just adding the
+  // SDK script and VAPID key above.
+  try{
+    if(!window.firebase||!firebase.messaging)return;
+    const messaging=firebase.messaging();
+    if(FCM_VAPID){
+      const token=await messaging.getToken({vapidKey:FCM_VAPID});
+      if(token&&hhId){
+        db.collection('households').doc(hhId).update({
+          [`pushTokens.${curUser?curUser.uid:'anon'}`]:token
+        }).catch(()=>{});
+      }
+    }
+  }catch(e){}
+}
+
+// In-app budget alert: show a browser Notification if tab is not visible
+function maybeNotify(title,body){
+  if(document.visibilityState==='visible')return; // in-app toast handles it
+  if(Notification.permission==='granted'){
+    new Notification(title,{body,icon:'/bajeti-yanga/icon-192.png',badge:'/bajeti-yanga/icon-96.png'});
+  }
+}
+
+// Call on boot after household connects
+function scheduleInAppAlerts(){
+  const sp=totSp(), bg=lCfg.overallBudget, pct=sp/bg;
+  if(pct>=1) maybeNotify('Bajeti Yanga — Over Budget!',`You've spent MK ${Math.round(sp).toLocaleString()} of your MK ${bg.toLocaleString()} budget.`);
+  else if(pct>=0.8) maybeNotify('Bajeti Yanga — Budget Warning',`${Math.round(pct*100)}% of your monthly budget used.`);
+  lCfg.items.forEach(it=>{
+    const s=iSpent(it.name);
+    if(s>it.budget) maybeNotify(`${it.name} over budget`,`Spent MK ${Math.round(s).toLocaleString()} of MK ${it.budget.toLocaleString()}`);
+  });
 }
 
 // -- Android Back Button Fix --
@@ -2663,8 +2738,8 @@ if(checkPrivacy()){
 // CHAT -- Bajeti AI Budget Assistant
 // ===============================================
 
-// -- Chat state --
-let chatHistory = JSON.parse(sessionStorage.getItem('nb_chat')||'[]');
+// -- Chat state — persistent across sessions via localStorage --
+let chatHistory = (()=>{ try{ return JSON.parse(localStorage.getItem('nb_chat_v2')||'[]'); }catch(e){return[];} })();
 let chatBusy = false;
 
 function getAiUsageToday(){
@@ -2787,7 +2862,7 @@ function renderBubbles(){
 function chipSend(el){ const inp=g('chat-inp'); if(!inp)return; inp.value=el.textContent; autoResize(inp); sendChat(); }
 function chatKey(e){ if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendChat();} }
 function autoResize(el){ el.style.height='auto'; el.style.height=Math.min(el.scrollHeight,110)+'px'; }
-function clearChat(){ chatHistory=[]; sessionStorage.removeItem('nb_chat'); renderBubbles(); }
+function clearChat(){ chatHistory=[]; localStorage.removeItem('nb_chat_v2'); renderBubbles(); }
 
 function buildCtx(){
   const now=new Date();
@@ -2845,7 +2920,7 @@ async function sendChat(){
   if(sendBtn)sendBtn.disabled=true;
   
   chatHistory.push({role:'user',text:msg,ts:Date.now()});
-  sessionStorage.setItem('nb_chat',JSON.stringify(chatHistory.slice(-30)));
+  localStorage.setItem('nb_chat_v2',JSON.stringify(chatHistory.slice(-30)));
   renderBubbles();
   
   const msgsEl=g('chat-msgs');
@@ -2897,7 +2972,7 @@ async function sendChat(){
     const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text || (lang==='cw'?'Pepani, kuna vuto. Yesaninso.':'Sorry, something went wrong. Please try again.');
     
     chatHistory.push({role:'assistant',text:reply,ts:Date.now()});
-    sessionStorage.setItem('nb_chat',JSON.stringify(chatHistory.slice(-30)));
+    localStorage.setItem('nb_chat_v2',JSON.stringify(chatHistory.slice(-30)));
     
   } catch(err) {
     let errorMsg = lang==='cw'?'Pepani, kuna vuto la intaneti. Yesaninso.':'Sorry, there was a connection error. Please try again.';
@@ -2932,7 +3007,7 @@ function openMagicLog() {
   h += '<div style="display:flex;gap:8px;margin-bottom:10px">';
   if(isPrem){
     h += '<label style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:10px;background:linear-gradient(135deg,#E8F5E9,#C8E6C9);border:1.5px solid #43A047;border-radius:12px;cursor:pointer;font-family:Syne,sans-serif;font-weight:700;font-size:.78rem;color:#1B5E20"><i data-lucide="camera" style="margin-right:4px;vertical-align:middle;color:#1565C0"></i> Scan Receipt<input type="file" accept="image/*" capture="camera" id="receipt-cam" style="display:none" onchange="scanReceipt(this)"></label>';
-    h += '<label style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:10px;background:linear-gradient(135deg,#E3F2FD,#BBDEFB);border:1.5px solid #1976D2;border-radius:12px;cursor:pointer;font-family:Syne,sans-serif;font-weight:700;font-size:.78rem;color:#0D47A1"><i data-lucide="picture" style="margin-right:4px"></i> Gallery<input type="file" accept="image/*" id="receipt-gal" style="display:none" onchange="scanReceipt(this)"></label>';
+    h += '<label style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:10px;background:linear-gradient(135deg,#E3F2FD,#BBDEFB);border:1.5px solid #1976D2;border-radius:12px;cursor:pointer;font-family:Syne,sans-serif;font-weight:700;font-size:.78rem;color:#0D47A1"><i data-lucide="image" style="margin-right:4px"></i> Gallery<input type="file" accept="image/*" id="receipt-gal" style="display:none" onchange="scanReceipt(this)"></label>';
   } else {
     h += '<button onclick="showPremiumPage();closeM(&quot;mv-magic&quot;)" style="width:100%;padding:10px;background:linear-gradient(135deg,#F3E5F5,#EDE7F6);border:1.5px solid var(--p1);border-radius:12px;font-family:Syne,sans-serif;font-weight:700;font-size:.78rem;color:var(--p1);cursor:pointer"><i data-lucide="camera" style="margin-right:4px;vertical-align:middle;color:#1565C0"></i> Scan Receipt <i data-lucide="gem" style="margin-right:3px;vertical-align:middle;color:var(--p1)"></i> (Premium)</button>';
   }
@@ -2992,7 +3067,7 @@ async function processMagicLog() {
   const input = val('magic-input').trim();
   if (!input) { toast('Please enter some text', 'e'); return; }
   const btn = g('magic-btn-process');
-  btn.disabled = true; btn.innerHTML = '<i data-lucide="loader" style="margin-right:4px"></i>...';
+  btn.disabled = true; btn.innerHTML = '<i data-lucide="refresh-cw" style="margin-right:4px"></i>...';
   
   const prompt = `Extract transactions from this text. 
   Respond ONLY with a valid JSON array of objects. Do not include markdown formatting like \`\`\`json.
@@ -3056,7 +3131,7 @@ function saveMagicTxs() {
 async function generateAiSummary() {
   const btn = g('ai-sum-btn');
   const box = g('ai-sum-box');
-  btn.disabled = true; btn.innerHTML = '<i data-lucide="loader" style="margin-right:4px"></i> Analyzing...';
+  btn.disabled = true; btn.innerHTML = '<i data-lucide="refresh-cw" style="margin-right:4px"></i> Analyzing...';
   
   try {
     const url = "https://nyumba-ai.kabangorodrick6.workers.dev/chat";
@@ -3131,6 +3206,21 @@ if(_origRender){
       lnk.href=url;
     }
   }catch(e){}
+})();
+
+// ── BOOT ────────────────────────────────────────────────────────────────────
+(function(){
+  if(localStorage.getItem('nb_privacy_agreed')){
+    bootApp();
+    setTimeout(checkNameChange, 2000);
+    setTimeout(requestPushPermission, 8000);
+  } else {
+    // Show privacy gate
+    const ps=document.getElementById('scr-privacy');
+    if(ps) ps.style.display='block';
+    ['scr-auth','scr-setup','scr-pin'].forEach(id=>{const el=g(id);if(el)el.style.display='none';});
+    const app=g('app'); if(app)app.classList.add('hide');
+  }
 })();
 
 </script>
