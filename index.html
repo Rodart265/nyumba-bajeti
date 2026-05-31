@@ -1187,7 +1187,12 @@ function totIn()     { return lPx.filter(p=>p.type==='income'&&isTM(p.date)).red
 function actU()      { return lCfg.users.find(u=>u.id===localStorage.getItem('nb_uid'))||lCfg.users[0]; }
 function uById(id)   { return lCfg.users.find(u=>u.id===id)||lCfg.users[0]; }
 function statOf(sp,bg){ if(!sp)return'none'; const r=sp/bg; return r>=1?'over':r>=.8?'near':'ok'; }
-function randCode()  { const w=['nyumba','banja','tsamba','nkhokwe','khomo','mudzi','chisomo','bwino','dalitso','pakhomo','mtendere','chifundo']; return w[Math.floor(Math.random()*w.length)]+'-'+Math.floor(1000+Math.random()*9000); }
+function randCode(){
+  // 8 chars from a-z0-9 (excluding confusing chars: 0,o,1,l,i) = ~2.8 trillion possibilities
+  const chars='abcdefghjkmnpqrstuvwxyz23456789';
+  const bytes=crypto.getRandomValues(new Uint8Array(8));
+  return Array.from(bytes).map(b=>chars[b%chars.length]).join('');
+}
 
 // ===============================================
 // 4. DOM HELPERS
@@ -1544,8 +1549,8 @@ function doFgt(){
   const btn=g('fgt-btn'); if(btn){btn.disabled=true;btn.textContent='Sending...';}
   showAErr('');
   auth.sendPasswordResetEmail(em)
-    .then(()=>{ const ok=g('fgt-ok');if(ok)ok.classList.add('on'); if(btn){btn.disabled=false;btn.innerHTML='<i data-lucide="send" style="width:14px;height:14px;margin-right:4px;vertical-align:middle"></i> Send Reset Link';} })
-    .catch(e=>{ showAErr(fmtAErr(e.code)); if(btn){btn.disabled=false;btn.innerHTML='<i data-lucide="send" style="width:14px;height:14px;margin-right:4px;vertical-align:middle"></i> Send Reset Link';} });
+    .then(()=>{ const ok=g('fgt-ok');if(ok)ok.classList.add('on'); if(btn){btn.disabled=false;btn.innerHTML='<i data-lucide="send" style="width:14px;height:14px;margin-right:4px;vertical-align:middle"></i> Send Reset Link'; if(window.lucide)lucide.createIcons({nodes:[btn]});} })
+    .catch(e=>{ showAErr(fmtAErr(e.code)); if(btn){btn.disabled=false;btn.innerHTML='<i data-lucide="send" style="width:14px;height:14px;margin-right:4px;vertical-align:middle"></i> Send Reset Link'; if(window.lucide)lucide.createIcons({nodes:[btn]});} });
 }
 function doGoogle(){
   if(!auth){toast('Not ready','e');return;}
@@ -1563,10 +1568,10 @@ function sendOTP(){
       confResult=res;
       show('a-ph-s2'); hide('a-ph-s1');
       const ob0=g('ob0'); if(ob0)ob0.focus();
-      if(btn){btn.disabled=false;btn.innerHTML='<i data-lucide="smartphone" style="width:14px;height:14px;margin-right:4px;vertical-align:middle"></i> Send OTP';}
+      if(btn){btn.disabled=false;btn.innerHTML='<i data-lucide="smartphone" style="width:14px;height:14px;margin-right:4px;vertical-align:middle"></i> Send OTP'; if(window.lucide)lucide.createIcons({nodes:[btn]});}
       toast('OTP sent!','i');
     })
-    .catch(e=>{ showAErr(fmtAErr(e.code)); if(btn){btn.disabled=false;btn.innerHTML='<i data-lucide="smartphone" style="width:14px;height:14px;margin-right:4px;vertical-align:middle"></i> Send OTP';} if(rcapV){rcapV.clear();rcapV=null;} });
+    .catch(e=>{ showAErr(fmtAErr(e.code)); if(btn){btn.disabled=false;btn.innerHTML='<i data-lucide="smartphone" style="width:14px;height:14px;margin-right:4px;vertical-align:middle"></i> Send OTP'; if(window.lucide)lucide.createIcons({nodes:[btn]});} if(rcapV){rcapV.clear();rcapV=null;} });
 }
 function otpN(el,idx){
   el.value=el.value.replace(/\D/g,'');
@@ -1738,6 +1743,7 @@ function connectHH(code){
       });
       setDot(''); render();
       checkAndAddRecurring();
+    }, err=>{
       if(field&&(err.code==='failed-precondition'||err.code==='unimplemented')){
         // Index not ready or field missing, try without ordering
         if(unsub) unsub();
@@ -1813,7 +1819,14 @@ function checkAndAddRecurring(){
   toast(actuallyAdd.length+' recurring item'+(actuallyAdd.length>1?'s':'')+' added for this period 🔄','s');
 }
 
-function render(){ ({home:rHome,log:rLog,hist:rHist,sum:rSum,insights:rInsights,stg:rStg,chat:rChat})[tab]?.(); }
+function render(){
+  // When the chat tab is active and a conversation is open, avoid a full rChat() rebuild
+  // (which would wipe the DOM and re-fetch async). Just refresh the bubbles.
+  if(tab==='chat' && activeChatId && g('chat-msgs')){
+    renderBubbles(); return;
+  }
+  ({home:rHome,log:rLog,hist:rHist,sum:rSum,insights:rInsights,stg:rStg,chat:rChat})[tab]?.();
+}
 function toggleLang(){ lang=lang==='en'?'cw':'en'; localStorage.setItem('nb_lang',lang); const btn=g('lbtn'); if(btn)btn.textContent=lang==='en'?'CW':'EN'; applyLang(); render(); }
 function applyLang(){
   const t=tx();
@@ -1915,6 +1928,7 @@ function rLog(){
   if(logType==='expense')h+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:11px"><input type="checkbox" id="frc" style="width:17px;height:17px;accent-color:var(--p1)"><label for="frc" style="font-size:.78rem;font-weight:600;color:var(--mid)"><i data-lucide="refresh-cw" style="width:12px;height:12px;margin-right:3px;vertical-align:middle"></i> '+t.recurrYes+'</label></div>';
   h+='<button class="btnM" onclick="saveP()" style="background:'+(logType==='income'?'linear-gradient(135deg,#1B5E20,#388E3C)':'')+'"><i data-lucide="save" style="width:14px;height:14px;margin-right:4px;vertical-align:middle"></i> '+t.save+'</button></div></div></div>';
   g('view').innerHTML=h;
+  if(window.lucide) lucide.createIcons({nodes:[g('view')]});
 }
 function setLT(t){ logType=t; selItem=null; rLog(); }
 function setU(id){ localStorage.setItem('nb_uid',id); updatePill(); rLog(); }
@@ -2358,11 +2372,11 @@ function openEU(i){ const u=lCfg.users[i],t=tx(); let h='<div class="dh"></div><
   if(window.lucide)lucide.createIcons({nodes:[g('mb-e')]}); initIcons(); openM('mv-e'); }
 function svEU(i){ const nm=val('eu-nm').trim(); if(!nm)return; const cfg=JSON.parse(JSON.stringify(lCfg)); cfg.users[i].name=nm; cfg.users[i].color=val('eu-col')||cfg.users[i].color; saveCfg(cfg); closeM('mv-e'); updatePill(); toast(tx().nameUpdated); rMgr(); }
 function delMember(i){ appConfirm(tx().confirmDelMember, function(){ const cfg=JSON.parse(JSON.stringify(lCfg)); cfg.users.splice(i,1); saveCfg(cfg); toast(tx().deleted); rMgr(); }, 'Remove', true) }
-function openEB(i){ const it=lCfg.items[i],t=tx(); g('mb-e').innerHTML='<div class="dh"></div><h3>'+ico(it.name)+' '+it.name+'</h3><input type="hidden" id="eb-i" value="'+i+'"><div class="fsec"><label class="fl">'+t.mbudget+'</label><input type="number" class="fi" id="eb-v" value="'+it.budget+'" inputmode="numeric"></div><div style="display:flex;gap:8px"><button class="btnG" style="flex:1" onclick="closeM(\'mv-e\')">'+t.cancel+'</button><button class="btnM" style="flex:2" onclick="svEB()"><i data-lucide="save" style="width:14px;height:14px;margin-right:4px;vertical-align:middle"></i> Save</button></div>'; openM('mv-e'); }
+function openEB(i){ const it=lCfg.items[i],t=tx(); g('mb-e').innerHTML='<div class="dh"></div><h3>'+ico(it.name)+' '+it.name+'</h3><input type="hidden" id="eb-i" value="'+i+'"><div class="fsec"><label class="fl">'+t.mbudget+'</label><input type="number" class="fi" id="eb-v" value="'+it.budget+'" inputmode="numeric"></div><div style="display:flex;gap:8px"><button class="btnG" style="flex:1" onclick="closeM(\'mv-e\')">'+t.cancel+'</button><button class="btnM" style="flex:2" onclick="svEB()"><i data-lucide="save" style="width:14px;height:14px;margin-right:4px;vertical-align:middle"></i> Save</button></div>'; if(window.lucide)lucide.createIcons({nodes:[g('mb-e')]}); openM('mv-e'); }
 function svEB(){ const i=parseInt(val('eb-i')),v=parseFloat(val('eb-v')); if(!v||isNaN(v)||v<=0||v>99999999){toast(lang==='cw'?'Lowetsani bajeti yabwino':'Enter a valid budget','e');return;} const cfg=JSON.parse(JSON.stringify(lCfg));cfg.items[i].budget=v;saveCfg(cfg);toast(tx().budgetUpdated); closeM('mv-e'); rMgr(); }
-function openAddGoal(){ const t=tx(); g('mb-gl').innerHTML='<div class="dh"></div><h3><i data-lucide="target" style="margin-right:5px;vertical-align:middle;color:var(--a1)"></i> '+t.addGoal+'</h3><div class="fsec"><label class="fl">'+t.goalName+'</label><input type="text" class="fi" id="g-nm" placeholder="e.g. New TV, School Fees..."></div><div class="fsec"><label class="fl">'+t.goalTarget+'</label><input type="number" class="fi" id="g-tg" inputmode="numeric" placeholder="e.g. 150000"></div><div class="fsec"><label class="fl">'+t.goalSaved+' (optional)</label><input type="number" class="fi" id="g-sv" inputmode="numeric" placeholder="0"></div><div style="display:flex;gap:8px"><button class="btnG" style="flex:1" onclick="closeM(\'mv-gl\')">'+t.cancel+'</button><button class="btnM" style="flex:2" onclick="saveGoal()"><i data-lucide="save" style="width:14px;height:14px;margin-right:4px;vertical-align:middle"></i> '+t.add+'</button></div>'; openM('mv-gl'); }
+function openAddGoal(){ const t=tx(); g('mb-gl').innerHTML='<div class="dh"></div><h3><i data-lucide="target" style="margin-right:5px;vertical-align:middle;color:var(--a1)"></i> '+t.addGoal+'</h3><div class="fsec"><label class="fl">'+t.goalName+'</label><input type="text" class="fi" id="g-nm" placeholder="e.g. New TV, School Fees..."></div><div class="fsec"><label class="fl">'+t.goalTarget+'</label><input type="number" class="fi" id="g-tg" inputmode="numeric" placeholder="e.g. 150000"></div><div class="fsec"><label class="fl">'+t.goalSaved+' (optional)</label><input type="number" class="fi" id="g-sv" inputmode="numeric" placeholder="0"></div><div style="display:flex;gap:8px"><button class="btnG" style="flex:1" onclick="closeM(\'mv-gl\')">'+t.cancel+'</button><button class="btnM" style="flex:2" onclick="saveGoal()"><i data-lucide="save" style="width:14px;height:14px;margin-right:4px;vertical-align:middle"></i> '+t.add+'</button></div>'; if(window.lucide)lucide.createIcons({nodes:[g('mb-gl')]}); openM('mv-gl'); }
 function saveGoal(){ const nm=val('g-nm').trim(),tg=parseFloat(val('g-tg')),sv=parseFloat(val('g-sv'))||0; if(!nm){toast(lang==='cw'?'Lowetsani dzina la cholinga':'Enter a goal name','e');return;} if(!tg||isNaN(tg)||tg<=0||tg>99999999){toast(lang==='cw'?'Lowetsani ndalama yabwino':'Enter a valid target amount','e');return;} if(sv<0||sv>tg){toast(lang==='cw'?'Ndalama yosungidwa yachuluka':'Saved amount cannot exceed target','e');return;} const cfg=JSON.parse(JSON.stringify(lCfg)); if(!cfg.goals)cfg.goals=[]; cfg.goals.push({name:nm,target:tg,saved:sv}); saveCfg(cfg); closeM('mv-gl'); toast('Goal added!'); rMgr(); }
-function openTopUp(i){ const gl=lCfg.goals[i],t=tx(); g('mb-gl').innerHTML='<div class="dh"></div><h3>&#8593; '+t.topup+': '+gl.name+'</h3><div class="fsec" style="margin-bottom:8px"><div style="display:flex;justify-content:space-between;font-size:.78rem;color:var(--mid);margin-bottom:6px"><span>'+(lang==='cw'?'Yosungidwa':'Saved')+': <strong>'+MK(gl.saved)+'</strong></span><span>'+(lang==='cw'?'Cholinga':'Target')+': <strong>'+MK(gl.target)+'</strong></span></div><label class="fl">'+(lang==='cw'?'Ndalama Yowonjezera (MK)':'Amount to Add (MK)')+'</label><input type="number" class="fi" id="tu-amt" inputmode="numeric" placeholder="0"></div><div style="display:flex;gap:8px"><button class="btnG" style="flex:1" onclick="closeM(\'mv-gl\')">'+(lang==='cw'?'Siyani':t.cancel)+'</button><button class="btnM" style="flex:2;background:linear-gradient(135deg,#1B5E20,#388E3C)" onclick="topUpGoal('+i+')"><i data-lucide="save" style="width:14px;height:14px;margin-right:4px;vertical-align:middle"></i> '+t.topup+'</button></div>'; openM('mv-gl'); }
+function openTopUp(i){ const gl=lCfg.goals[i],t=tx(); g('mb-gl').innerHTML='<div class="dh"></div><h3>&#8593; '+t.topup+': '+gl.name+'</h3><div class="fsec" style="margin-bottom:8px"><div style="display:flex;justify-content:space-between;font-size:.78rem;color:var(--mid);margin-bottom:6px"><span>'+(lang==='cw'?'Yosungidwa':'Saved')+': <strong>'+MK(gl.saved)+'</strong></span><span>'+(lang==='cw'?'Cholinga':'Target')+': <strong>'+MK(gl.target)+'</strong></span></div><label class="fl">'+(lang==='cw'?'Ndalama Yowonjezera (MK)':'Amount to Add (MK)')+'</label><input type="number" class="fi" id="tu-amt" inputmode="numeric" placeholder="0"></div><div style="display:flex;gap:8px"><button class="btnG" style="flex:1" onclick="closeM(\'mv-gl\')">'+(lang==='cw'?'Siyani':t.cancel)+'</button><button class="btnM" style="flex:2;background:linear-gradient(135deg,#1B5E20,#388E3C)" onclick="topUpGoal('+i+')"><i data-lucide="save" style="width:14px;height:14px;margin-right:4px;vertical-align:middle"></i> '+t.topup+'</button></div>'; if(window.lucide)lucide.createIcons({nodes:[g('mb-gl')]}); openM('mv-gl'); }
 function topUpGoal(i){
   const amt=parseFloat(val('tu-amt'));
   if(!amt||amt<=0){toast(lang==='cw'?'Lowetsani ndalama':'Enter an amount','e');return;}
@@ -2519,6 +2533,7 @@ function rStg(){
   h+='<button class="stg-logout" onclick="logout()"><i data-lucide="log-out" style="width:15px;height:15px;margin-right:6px;vertical-align:middle"></i> '+t.logout+'</button>';
   h+='</div>';
   g('view').innerHTML=h;
+  if(window.lucide) lucide.createIcons({nodes:[g('view')]});
 }
 
 function openPrivacyPolicy(){
@@ -2694,7 +2709,7 @@ function doExportPDF(){
     + '<div class="section"><h2>&#127922; Spending by Category</h2>'+catRows+'</div>'
     + '<div class="section"><h2><i data-lucide="user" style="margin-right:5px;vertical-align:middle;color:var(--p1)"></i> Spending by Member</h2>'+memberRows+'</div>'
     + '<div class="section"><h2><i data-lucide="copy" style="width:13px;height:13px;margin-right:4px;vertical-align:middle;color:var(--p1)"></i> All Transactions ('+rows_count+')</h2><table class="tx-table"><thead><tr><th>Date</th><th>Item</th><th>Type</th><th>Amount</th><th>Member</th></tr></thead><tbody>'+rows+'</tbody></table></div>'
-    + '<div class="footer">Bajeti Yanga v9.3. 0&mdash; &copy; 2026 Rodart Creatives &bull; Made in Malawi &#127474;&#127484;</div></body></html>';
+    + '<div class="footer">Bajeti Yanga v9.1.4. 0&mdash; &copy; 2026 Rodart Creatives &bull; Made in Malawi &#127474;&#127484;</div></body></html>';
     const w=window.open('','_blank');
     if(w){
       w.document.write(fullHtml); w.document.close();
@@ -3302,13 +3317,12 @@ function scheduleInAppAlerts(){
 // CHAT -- Bajeti AI Budget Assistant
 // ===============================================
 
-// -- Chat state — persistent across sessions via localStorage --
+// -- Chat state --
 let chatHistory = [];
-let chatConversations = []; // premium: array of {id, title, createdAt, messages}
-let activeChatId = null;    // null = single-chat (free), string = conversation id (premium)
+let chatConversations = [];
+let activeChatId = null;
 let chatBusy = false;
 
-function chatStorageKey(){ return 'nb_chat_'+(hhId||'anon'); }
 // Firestore-backed usage counters (source of truth — not localStorage)
 const FREE_MAX_CONVOS = 3;
 const FREE_DAILY_MSGS = 10;
@@ -3505,53 +3519,36 @@ function rChat(){
     {icon:'target',color:'#1565C0',txt:'Can I afford my savings goals?'},
     {icon:'lightbulb',color:'#F57F17',txt:'Give me tips to cut costs'},
   ];
-  const hasMessages = chatHistory.length > 0;
-  let heroHtml = '';
-  if(!hasMessages){
-    heroHtml = '<div id="chat-hero" style="display:flex;flex-direction:column;align-items:center;text-align:center;padding:28px 20px 8px;flex-shrink:0">'
-      +'<div style="width:68px;height:68px;background:linear-gradient(135deg,#4A148C,#7B1FA2);border-radius:20px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;box-shadow:0 8px 24px rgba(123,31,162,.28)">'
-      +'<svg width="36" height="36" viewBox="0 0 52 52" fill="none"><rect x="8" y="34" width="9" height="10" rx="2.5" fill="rgba(255,255,255,0.45)"/><rect x="21" y="24" width="9" height="20" rx="2.5" fill="rgba(255,255,255,0.7)"/><rect x="34" y="14" width="9" height="30" rx="2.5" fill="#fff"/><polygon points="34,18 38.5,9 43,18" fill="#00E5FF"/></svg>'
-      +'</div>'
-      +'<div style="font-family:Syne,sans-serif;font-size:1.4rem;font-weight:800;color:var(--p1);margin-bottom:5px">'+greeting+'</div>'
-      +'<div style="font-size:.8rem;color:var(--mid);max-width:240px;line-height:1.5">'+subText+'</div>'
-      +'</div>'
-      +'<div id="chat-suggestions" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:10px 14px 4px;flex-shrink:0">'
-      +suggestions.map(function(s){
-        return '<button onclick="chatSuggest(this)" data-txt="'+s.txt+'" style="background:var(--white);border:1.5px solid var(--border);border-radius:14px;padding:11px 10px;display:flex;align-items:flex-start;gap:8px;cursor:pointer;text-align:left;box-shadow:0 2px 8px rgba(123,31,162,.06)">'
-          +'<div style="width:28px;height:28px;border-radius:8px;background:'+s.color+'18;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">'
-          +'<i data-lucide="'+s.icon+'" style="width:14px;height:14px;color:'+s.color+'"></i></div>'
-          +'<span style="font-size:.72rem;font-weight:600;color:var(--ink);line-height:1.35">'+s.txt+'</span>'
-          +'</button>';
-      }).join('')
-      +'</div>';
-  }
+  // Build the chrome — renderBubbles() owns #chat-msgs content entirely, no heroHtml here
   g('view').innerHTML =
     '<div style="position:relative;display:flex;flex-direction:column;height:calc(100dvh - 116px);padding:0;overflow:hidden">'
-    +'<div class="chat-wrap"><div class="chat-msgs" id="chat-msgs">'
-    +heroHtml
-    +'</div>'
+    +'<div class="chat-wrap"><div class="chat-msgs" id="chat-msgs"></div>'
     +'<div class="chat-footer" style="position:relative">'
     +'<button class="chat-attach-btn" id="chat-attach" onclick="toggleChatSheet(event)" title="More options" style="background:linear-gradient(135deg,var(--p1),#9C27B0);color:#fff;border-radius:50%;width:38px;height:38px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 3px 10px rgba(123,31,162,.35)">'+attachIcon+'</button>'
     +'<textarea class="chat-input" id="chat-inp" rows="1" placeholder="'+placeholder+'" onkeydown="chatKey(event)" oninput="autoResize(this)"></textarea>'
     +'<button class="chat-send" id="chat-send" onclick="sendChat()">'+sendIcon+'</button>'
     +'</div></div></div>';
-  if(window.lucide) lucide.createIcons({nodes:[g('view')]});
-  // Load conversations for premium users
+  // Render immediately with whatever is in memory — prevents blank flash
+  renderBubbles();
+  // Refresh from Firestore in background
   const _isPrem=hasPremiumFeature('chat_conversations');
-  if(_isPrem){
-    loadConversations();
+  loadConversations().then(()=>{
     if(!activeChatId && chatConversations.length===0){
-      // First time premium — create first conversation
-      newConversation();
+      newConversation().then(()=>renderBubbles());
     } else if(!activeChatId && chatConversations.length>0){
       loadConversationById(chatConversations[0].id);
+      renderBubbles();
+    } else {
+      renderBubbles();
     }
-  } else {
-    loadChatHistory();
+  });
+  if(!_isPrem){
+    getConvoCountFS().then(count=>{
+      const indicator = g('convo-count-indicator');
+      if(indicator) indicator.textContent = count+'/'+FREE_MAX_CONVOS+' chats used';
+    });
   }
-  renderBubbles();
 }
-
 function chatSuggest(btn){
   const text=btn.dataset.txt;
   const hero=document.getElementById('chat-hero');
@@ -3585,7 +3582,7 @@ function toggleChatSheet(e){
       +'<div><div style="font-weight:700">'+(isCW?'Chidule cha AI':'AI Summary')+'</div>'
       +'<div style="font-size:.72rem;color:var(--mid);font-weight:400">'+(isCW?'Pezani ndemanga yazachuma chanu':'Get your financial review')+'</div></div>'
     +'</div>';
-    +(hasPremiumFeature('chat_conversations')?'<div class="chat-action-row" onclick="sheet_convos()">'+'<div class="chat-action-ico" style="background:#FFF3E0"><i data-lucide="message-square" style="color:#E65100"></i></div>'+'<div><div style="font-weight:700">'+(isCW?'Ziyankhulo':'Conversations')+'</div>'+'<div style="font-size:.72rem;color:var(--mid);font-weight:400">'+(isCW?'Sungani ziyankhulo zambiri':'Manage multiple chats')+'</div></div>'+'</div>':'');
+    +(('<div class="chat-action-row" onclick="sheet_convos()">'+'<div class="chat-action-ico" style="background:#FFF3E0"><i data-lucide="message-square" style="color:#E65100"></i></div>'+'<div><div style="font-weight:700">'+(isCW?'Ziyankhulo':'Conversations')+'</div>'+'<div style="font-size:.72rem;color:var(--mid);font-weight:400">'+(isCW?'Sungani ziyankhulo':'Manage saved chats')+'</div></div>'+'</div>'));
   const footer=document.querySelector('.chat-footer');
   footer.style.position='relative';
   footer.appendChild(sheet);
@@ -3637,30 +3634,61 @@ function renderBubbles(){
   const el=g('chat-msgs'); if(!el)return;
   const isPrem = hasPremiumFeature('chat_conversations');
 
-  // Show conversations header if premium and conversations exist
+  // Show conversations header for all users (both free and premium use Firestore convos)
   const existingHdr = el.parentElement ? el.parentElement.querySelector('.chat-convo-header') : null;
   if(existingHdr) existingHdr.remove();
-  if(isPrem && chatConversations.length > 0 && activeChatId){
+  if(chatConversations.length > 0 && activeChatId){
     const convo = activeConversation();
     const hdr = document.createElement('div');
     hdr.className='chat-convo-header';
+    // Free users: show X/3 usage indicator; premium: just "Unlimited"
+    const usageTag = isPrem
+      ? '<span style="font-size:.65rem;color:var(--g1);font-weight:700;padding:2px 7px;background:#E8F5E9;border-radius:8px">∞ Unlimited</span>'
+      : '<span id="convo-count-indicator" style="font-size:.65rem;color:var(--mid);font-weight:700;padding:2px 7px;background:var(--mist);border-radius:8px">…/'+FREE_MAX_CONVOS+' chats</span>';
     hdr.innerHTML='<button onclick="openConvoList()" style="background:none;border:none;cursor:pointer;color:var(--p1);padding:2px 6px;border-radius:6px;font-size:.78rem;font-weight:700;display:flex;align-items:center;gap:4px"><i data-lucide="list" style="width:13px;height:13px"></i> Chats</button>'
       +'<div class="chat-convo-header-title">'+(convo?esc(convo.title):'Chat')+'</div>'
-      +'<button class="chat-new-btn" onclick="startNewConversation()">+ New</button>';
+      +'<div style="display:flex;align-items:center;gap:6px">'+usageTag+'<button class="chat-new-btn" onclick="startNewConversation()">+ New</button></div>';
     el.parentElement.insertBefore(hdr, el);
     if(window.lucide) lucide.createIcons({nodes:[hdr]});
+    // Populate usage count for free users
+    if(!isPrem) getConvoCountFS().then(count=>{ const ind=g('convo-count-indicator'); if(ind)ind.textContent=count+'/'+FREE_MAX_CONVOS+' chats'; });
   }
 
   if(!chatHistory.length){
-    const suggs=lang==='cw'?CHAT_SUGGESTIONS_CW:CHAT_SUGGESTIONS;
+    const isCW=lang==='cw';
     const u=actU();
+    const firstName=curUser&&curUser.displayName?curUser.displayName.split(' ')[0]:(isCW?'Bwana':'there');
+    const greeting=isCW?'Moni, '+firstName+'!':'Hey, '+firstName+'!';
+    const subText=isCW?'Ine ndine Bajeti AI. Funsani chilichonse pa bajeti yanu!':"I'm Bajeti AI — your personal budget partner.";
+    const suggs=isCW?[
+      {icon:'trending-up',color:'#1B5E20',txt:'Kodi ndikuchita bwanji mwezi uno?'},
+      {icon:'alert-triangle',color:'#E65100',txt:'Kodi ndikupita kupitirira bajeti yanga?'},
+      {icon:'target',color:'#1565C0',txt:'Kodi ndingathe malipiro anga?'},
+      {icon:'lightbulb',color:'#F57F17',txt:'Ndipatseni malangizo obisa ndalama'},
+    ]:[
+      {icon:'trending-up',color:'#1B5E20',txt:'How am I doing this month?'},
+      {icon:'alert-triangle',color:'#E65100',txt:'Where am I overspending?'},
+      {icon:'target',color:'#1565C0',txt:'Can I afford my savings goals?'},
+      {icon:'lightbulb',color:'#F57F17',txt:'Give me tips to cut costs'},
+    ];
     el.innerHTML=
-      '<div class="chat-hero">'
-        +'<div class="chat-hero-ico"><i data-lucide="message-circle" style="font-size:2rem;color:var(--p1)"></i></div>'
-        +'<div class="chat-hero-ttl">'+(lang==='cw'?'Moni, '+esc(u.name)+'!':'Hey, '+esc(u.name)+'! ')+'</div>'
-        +'<div class="chat-hero-sub">'+(lang==='cw'?'Ndine Bajeti AI, Funsani mafunso onse pa ndalama zanu.':"I'm Bajeti AI — your personal budget partner. Ask me anything!")+'</div>'
+      '<div style="display:flex;flex-direction:column;align-items:center;text-align:center;padding:28px 20px 8px;flex-shrink:0">'
+      +'<div style="width:68px;height:68px;background:linear-gradient(135deg,#4A148C,#7B1FA2);border-radius:20px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;box-shadow:0 8px 24px rgba(123,31,162,.28)">'
+      +'<svg width="36" height="36" viewBox="0 0 52 52" fill="none"><rect x="8" y="34" width="9" height="10" rx="2.5" fill="rgba(255,255,255,0.45)"/><rect x="21" y="24" width="9" height="20" rx="2.5" fill="rgba(255,255,255,0.7)"/><rect x="34" y="14" width="9" height="30" rx="2.5" fill="#fff"/><polygon points="34,18 38.5,9 43,18" fill="#00E5FF"/></svg>'
       +'</div>'
-      +'<div class="chat-chips-grid">'+suggs.map(s=>'<div class="chat-chip" onclick="chipSend(this)">'+s+'</div>').join('')+'</div>';
+      +'<div style="font-family:Syne,sans-serif;font-size:1.4rem;font-weight:800;color:var(--p1);margin-bottom:5px">'+greeting+'</div>'
+      +'<div style="font-size:.8rem;color:var(--mid);max-width:240px;line-height:1.5">'+subText+'</div>'
+      +'</div>'
+      +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:10px 14px 4px;flex-shrink:0">'
+      +suggs.map(s=>
+        '<button onclick="chipSend(this)" data-txt="'+s.txt+'" style="background:var(--white);border:1.5px solid var(--border);border-radius:14px;padding:11px 10px;display:flex;align-items:flex-start;gap:8px;cursor:pointer;text-align:left;box-shadow:0 2px 8px rgba(123,31,162,.06)">'
+        +'<div style="width:28px;height:28px;border-radius:8px;background:'+s.color+'18;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">'
+        +'<i data-lucide="'+s.icon+'" style="width:14px;height:14px;color:'+s.color+'"></i></div>'
+        +'<span style="font-size:.72rem;font-weight:600;color:var(--ink);line-height:1.35">'+s.txt+'</span>'
+        +'</button>'
+      ).join('')
+      +'</div>';
+    if(window.lucide) lucide.createIcons({nodes:[el]});
     return;
   }
 
@@ -3740,10 +3768,9 @@ function confirmAiAction(msgIdx){
     delPx(pa.id);
     toast(lang==='cw'?'Chotsedwa':'Deleted','s');
   }
-  // Remove pending action card and update message
   msg.pendingAction=null;
   saveChatHistory();
-  syncActiveConvo();
+  syncActiveConvo(); // async — fire and forget is fine here
   renderBubbles();
 }
 function dismissAiAction(msgIdx){
@@ -3751,32 +3778,29 @@ function dismissAiAction(msgIdx){
   if(!msg) return;
   msg.pendingAction=null;
   saveChatHistory();
-  syncActiveConvo();
+  syncActiveConvo(); // async — fire and forget
   renderBubbles();
 }
 
-// -- Multiple conversations (premium) --
-function startNewConversation(){
-  const status=getPremiumStatus();
-  if(!status.isPremium && !status.isTrial){
-    showUpgradePrompt('chat_conversations',status);
-    return;
-  }
-  loadConversations();
-  newConversation();
-  rChat();
+// -- Multiple conversations (all users, Firestore-backed) --
+async function startNewConversation(){
+  const convo = await newConversation(); // handles limit check internally
+  if(convo) rChat();
 }
-function openConvoList(){
-  loadConversations();
+async function openConvoList(){
+  await loadConversations();
   const isPrem=hasPremiumFeature('chat_conversations');
-  if(!isPrem){ showUpgradePrompt('chat_conversations',getPremiumStatus()); return; }
+  const count = await getConvoCountFS();
+  const usageLine = isPrem
+    ? '<span style="font-size:.72rem;color:var(--g1);font-weight:700;padding:2px 8px;background:#E8F5E9;border-radius:8px;margin-left:auto">∞ Unlimited</span>'
+    : '<span style="font-size:.72rem;color:var(--mid);font-weight:700;padding:2px 8px;background:var(--mist);border-radius:8px;margin-left:auto">'+count+'/'+FREE_MAX_CONVOS+' used</span>';
   let h='<div class="dh"></div>'
-    +'<h3><i data-lucide="message-square" style="width:16px;height:16px;margin-right:6px;vertical-align:middle;color:var(--p1)"></i>Conversations</h3>';
+    +'<div style="display:flex;align-items:center;gap:8px;margin-bottom:12px"><h3 style="margin:0"><i data-lucide="message-square" style="width:16px;height:16px;margin-right:6px;vertical-align:middle;color:var(--p1)"></i>Conversations</h3>'+usageLine+'</div>';
   if(!chatConversations.length){
     h+='<p style="font-size:.82rem;color:var(--mid);text-align:center;padding:20px 0">No saved conversations yet.</p>';
   } else {
     h+='<div class="chat-convo-list">';
-    chatConversations.forEach((c,i)=>{
+    chatConversations.forEach((c)=>{
       const isActive=c.id===activeChatId;
       const dateStr=new Date(c.createdAt).toLocaleDateString([],{month:'short',day:'numeric'});
       h+='<div class="chat-convo-item'+(isActive?' on':'')+'" data-cid="'+c.id+'" onclick="switchConvoById(this)">'  
@@ -3806,8 +3830,8 @@ function switchConversation(id){
   closeM('mv-u');
   rChat();
 }
-function deleteConvoFromList(id){
-  deleteConversation(id);
+async function deleteConvoFromList(id){
+  await deleteConversation(id);
   openConvoList(); // re-render list
 }
 
@@ -3816,8 +3840,7 @@ function chatKey(e){ if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendCha
 function autoResize(el){ el.style.height='auto'; el.style.height=Math.min(el.scrollHeight,110)+'px'; }
 function clearChat(){
   if(activeChatId){
-    deleteConversation(activeChatId);
-    renderBubbles();
+    deleteConversation(activeChatId).then(()=>renderBubbles());
     return;
   }
   chatHistory=[]; localStorage.removeItem(chatStorageKey()); renderBubbles();
@@ -3882,16 +3905,15 @@ Last 15 transactions (with IDs): ${JSON.stringify(recentWithIds)}`;
 
 async function sendChat(){
   if(chatBusy)return;
-  // Check free tier AI limit (persists across tab closes via localStorage)
+  // Check free tier AI limit from Firestore (device-switch safe)
   const status=getPremiumStatus();
   if(!status.isPremium){
-    const used=getAiUsageToday();
-    if(used>=10){
-      toast('Daily AI limit reached (10/day). Upgrade for unlimited!','e');
+    const used = await getAiUsageTodayFS();
+    if(used >= FREE_DAILY_MSGS){
+      toast('Daily AI limit reached ('+FREE_DAILY_MSGS+'/day). Upgrade for unlimited!','e');
       showUpgradePrompt('unlimited_ai',status);
       return;
     }
-    // Usage will be incremented only on successful response
   }
   const inp=g('chat-inp'), sendBtn=g('chat-send');
   const msg=(inp?inp.value.trim():''); if(!msg)return;
@@ -3910,6 +3932,8 @@ async function sendChat(){
   try {
     // -- Cloudflare Worker proxy -- API key never exposed in browser --
     const url = "https://nyumba-ai.kabangorodrick6.workers.dev/chat";
+    
+    // Get Firebase ID token to authenticate the worker call
 
     // Map history to Gemini format (user/model)
     const geminiMessages = chatHistory.map(m => ({
@@ -3938,6 +3962,8 @@ async function sendChat(){
         
         if (!res.ok) {
            lastErr = new Error(resData?.error?.message || 'API Error');
+           // Only retry on rate-limit (429) or server unavailable (503)
+           if(res.status !== 429 && res.status !== 503) throw lastErr;
            if (i === delays.length) throw lastErr;
         } else {
            data = resData;
@@ -3953,7 +3979,10 @@ async function sendChat(){
     const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text || (lang==='cw'?'Pepani, pali chovuta. Chonde yesaninso.':'Sorry, something went wrong. Please try again.');
     
     // Only count successful responses against the daily limit
-    if(!getPremiumStatus().isPremium) incAiUsageToday();
+    if(!getPremiumStatus().isPremium){
+      incAiUsageTodayFS(); // Firestore-backed, device-switch safe
+      incAiUsageToday();   // localStorage cache for instant UI updates
+    }
 
     // Parse any action from the reply
     const action = parseAiAction(reply);
@@ -3961,7 +3990,7 @@ async function sendChat(){
     if(action) msgObj.pendingAction = action;
     chatHistory.push(msgObj);
     saveChatHistory();
-    syncActiveConvo();
+    await syncActiveConvo();
     
   } catch(err) {
     let errorMsg = lang==='cw'?'Pepani, kuna vuto la intaneti. Yesaninso.':'Sorry, there was a connection error. Please try again.';
@@ -4008,7 +4037,6 @@ function openMagicLog() {
   h += '<div style="display:flex;gap:8px"><button class="btnG" style="flex:1" onclick="closeM(&quot;mv-magic&quot;)">'+t.cancel+'</button><button class="btnM" id="magic-btn-process" style="flex:2;background:linear-gradient(135deg,#F57F17,#F9A825);" onclick="processMagicLog()">&#10024; Extract</button></div>';
   g('mb-magic').innerHTML = h;
   if(window.lucide)lucide.createIcons({nodes:[g('mb-magic')]});
-  if(window.lucide)lucide.createIcons({nodes:[g('mb-magic')]});
   openM('mv-magic');
 }
 
@@ -4049,7 +4077,7 @@ async function scanReceiptFromChat(input){
 
       // Build result message and save to chat history
       let msg=(lang==='cw'?'&#10024; Ndasankha zinthu '+items.length+' pachithunzi cha risiti:':'&#10024; Found '+items.length+' item(s) from your receipt:')+'\n\n';
-      items.forEach(function(tx){msg+='\u2022 **'+tx.item+'** — MK '+Number(tx.amount).toLocaleString()+'\n';});
+      items.forEach(function(tx){msg+='\u2022 **'+String(tx.item||'')+'** — MK '+Number(tx.amount||0).toLocaleString()+'\n';});
       msg+='\n'+(lang==='cw'?'Kodi mufune kuzigwiritsira ntchito? Ndingathe kuzilembera.':'Want me to log these? Just say "log them" and I\'ll add them to your expenses.');
 
       chatHistory.push({role:'assistant',text:msg,ts:Date.now()});
@@ -4095,11 +4123,11 @@ async function scanReceipt(input){
       let resHtml='<div style="background:var(--mist);padding:10px;border-radius:10px">';
       resHtml+='<div style="font-size:.72rem;font-weight:700;color:var(--p1);margin-bottom:6px">&#10024; Found '+pendingMagicTxs.length+' item(s):</div>';
       pendingMagicTxs.forEach(function(tx){
-        resHtml+='<div style="display:flex;justify-content:space-between;font-size:.8rem;margin-bottom:5px;border-bottom:1px solid var(--border);padding-bottom:5px"><span><b>'+tx.item+'</b></span><span style="color:var(--r1);font-weight:700">MK '+Number(tx.amount).toLocaleString()+'</span></div>';
+      resHtml+='<div style="display:flex;justify-content:space-between;font-size:.8rem;margin-bottom:5px;border-bottom:1px solid var(--border);padding-bottom:5px"><span><b>'+esc(String(tx.item||''))+'</b></span><span style="color:var(--r1);font-weight:700">MK '+esc(String(Number(tx.amount)||0))+'</span></div>';
       });
       resHtml+='</div>';
       if(resultsEl)resultsEl.innerHTML=resHtml;
-      if(btn){btn.disabled=false;btn.innerHTML='<i data-lucide="save" style="width:14px;height:14px;margin-right:4px;vertical-align:middle"></i> Save All '+pendingMagicTxs.length+' Items';btn.setAttribute('onclick','saveMagicTxs()');}
+      if(btn){btn.disabled=false;btn.innerHTML='<i data-lucide="save" style="width:14px;height:14px;margin-right:4px;vertical-align:middle"></i> Save All '+pendingMagicTxs.length+' Items'; if(window.lucide)lucide.createIcons({nodes:[btn]}); btn.setAttribute('onclick','saveMagicTxs()');}
       toast('Receipt scanned!','s');
     }catch(err){
       if(resultsEl)resultsEl.innerHTML='';
@@ -4116,7 +4144,7 @@ async function processMagicLog() {
   const input = val('magic-input').trim();
   if (!input) { toast('Please enter some text', 'e'); return; }
   const btn = g('magic-btn-process');
-  btn.disabled = true; btn.innerHTML = '<i data-lucide="refresh-cw" style="margin-right:4px"></i>...';
+  btn.disabled = true; btn.innerHTML = '<i data-lucide="refresh-cw" style="margin-right:4px"></i>...'; if(window.lucide)lucide.createIcons({nodes:[btn]});
   
   const prompt = `Extract transactions from this text. 
   Respond ONLY with a valid JSON array of objects. Do not include markdown formatting like \`\`\`json.
@@ -4144,17 +4172,17 @@ async function processMagicLog() {
     
     let resHtml = '<div style="background:var(--mist); padding:10px; border-radius:10px;">';
     pendingMagicTxs.forEach((tx) => {
-       resHtml += '<div style="display:flex; justify-content:space-between; font-size:0.8rem; margin-bottom:5px; border-bottom:1px solid var(--border); padding-bottom:5px;"><span><b>'+tx.item+'</b> ('+tx.type+')</span><span style="color:'+(tx.type==='income'?'var(--g1)':'var(--r1)')+'">MK '+tx.amount+'</span></div>';
+       resHtml += '<div style="display:flex; justify-content:space-between; font-size:0.8rem; margin-bottom:5px; border-bottom:1px solid var(--border); padding-bottom:5px;"><span><b>'+esc(String(tx.item||''))+'</b> ('+esc(tx.type==='income'?'income':'expense')+')</span><span style="color:'+(tx.type==='income'?'var(--g1)':'var(--r1)')+'">MK '+esc(String(Number(tx.amount)||0))+'</span></div>';
     });
     resHtml += '</div>';
     g('magic-results').innerHTML = resHtml;
       if(window.lucide)lucide.createIcons({nodes:[g('magic-results')]});
-    btn.innerHTML = '<i data-lucide="save" style="width:14px;height:14px;margin-right:4px;vertical-align:middle"></i> Save All';
+    btn.innerHTML = '<i data-lucide="save" style="width:14px;height:14px;margin-right:4px;vertical-align:middle"></i> Save All'; if(window.lucide)lucide.createIcons({nodes:[btn]});
     btn.setAttribute('onclick', 'saveMagicTxs()');
     btn.disabled = false;
   } catch (err) {
     toast('Extraction failed. Try rephrasing.', 'e');
-    btn.disabled = false; btn.innerHTML = '<i data-lucide="wand-2" style="margin-right:4px"></i> Extract Again';
+    btn.disabled = false; btn.innerHTML = '<i data-lucide="wand-2" style="margin-right:4px"></i> Extract Again'; if(window.lucide)lucide.createIcons({nodes:[btn]});
   }
 }
 
@@ -4162,11 +4190,13 @@ function saveMagicTxs() {
   const dStr = today();
   let ts = new Date().getTime();
   pendingMagicTxs.forEach(tx => {
+     const amt = Number(tx.amount) || 0;
+     if(amt <= 0 || amt > 99999999){ toast('Skipped invalid amount: '+esc(String(tx.item||'')),'e'); return; }
      addPx({
-       item: tx.item || 'Other',
+       item: String(tx.item || 'Other').slice(0,100),
        date: dStr,
-       timestamp: ts++, // increment ts to keep sort order
-       amount: Number(tx.amount) || 0,
+       timestamp: ts++,
+       amount: amt,
        notes: 'Added via Magic Log ✨',
        userId: actU().id,
        type: tx.type === 'income' ? 'income' : 'expense'
@@ -4181,10 +4211,11 @@ function saveMagicTxs() {
 async function generateAiSummary() {
   const btn = g('ai-sum-btn');
   const box = g('ai-sum-box');
-  btn.disabled = true; btn.innerHTML = '<i data-lucide="refresh-cw" style="margin-right:4px"></i> Analyzing...';
+  btn.disabled = true; btn.innerHTML = '<i data-lucide="refresh-cw" style="margin-right:4px"></i> Analyzing...'; if(window.lucide)lucide.createIcons({nodes:[btn]});
   
   try {
     const url = "https://nyumba-ai.kabangorodrick6.workers.dev/chat";
+    
     
     const prompt = `Based on the following budget data, provide a very brief (2-3 sentences) personalized financial review. Focus on their biggest expense this month and whether they are on track. Language must be ${lang === 'cw' ? 'Chichewa' : 'English'}. Data: ${buildCtx()}`;
     
@@ -4195,12 +4226,12 @@ async function generateAiSummary() {
     
     const reply = data.candidates?.[0]?.content?.parts?.[0]?.text;
     
-    box.innerHTML = '<div class="ai-summary-box"><b><i data-lucide="zap" style="margin-right:4px;color:var(--p1)"></i> AI Insight:</b><br>'+reply+'</div>';
+    box.innerHTML = '<div class="ai-summary-box"><b><i data-lucide="zap" style="margin-right:4px; if(window.lucide)lucide.createIcons({nodes:[box]});color:var(--p1)"></i> AI Insight:</b><br>'+esc(reply||'')+'</div>';
     box.classList.remove('hide');
     btn.style.display = 'none'; // hide button after success
   } catch (err) {
     toast('AI Analysis failed', 'e');
-    btn.disabled = false; btn.innerHTML = '<i data-lucide="zap" style="margin-right:4px"></i> Try Again';
+    btn.disabled = false; btn.innerHTML = '<i data-lucide="zap" style="margin-right:4px"></i> Try Again'; if(window.lucide)lucide.createIcons({nodes:[btn]});
   }
 }
 
